@@ -1,0 +1,33 @@
+import type { Metadata, Viewport } from "next";
+import { AppShell } from "@/components/app-shell";
+import { APP } from "@/lib/config";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: { default: APP.title, template: `%s | ${APP.name}` },
+  description: APP.description,
+  applicationName: APP.name,
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, statusBarStyle: "default", title: APP.name },
+  icons: {
+    icon: [{ url: "/icons/icon.svg", type: "image/svg+xml" }, { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: "/icons/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#f5f8fd" }, { media: "(prefers-color-scheme: dark)", color: "#0b1425" }],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="vi" suppressHydrationWarning>
+      <body>
+        <AppShell>{children}</AppShell>
+      </body>
+    </html>
+  );
+}
