@@ -51,3 +51,11 @@ No third-party GIS geometry is bundled into the distributed ZIP in this release;
 ## V0.7.0 historical commune geometry
 
 No third-party 2025-06-30 commune-level polygons are included in this release. The opt-in import interface under `public/data/legacy/` requires independent licensing, source attribution, dated verification and matching five-digit GSO codes. The previous PiSpace/Natural Earth reference applies to the older **province** layer only; it is not a certified old-commune boundary source.
+
+## V0.8.0 — Official statistics & license plate codes
+
+- Cục Thống kê / 2024 Statistical Yearbook, Table 19: area (31 Dec 2023), mean 2024 population (thousands rounded to one decimal). See `src/data/verified-sources.json`. Data were transcribed into the release's JSON; these are not GIS-derived measurements.
+- Resolution 202/2025/QH15: administrative areas and administrative population sizes for 23 merged provinces/cities (2025), distinct from statistical mean population.
+- Circular 79/2024/TT-BCA Appendix 02: old province vehicle plate prefixes in the pre-1 July 2025 snapshot.
+- Circular 51/2025/TT-BCA Appendix 02: current 34-province plate prefixes from 1 July 2025; code 80 belongs to the Traffic Police Department.
+- Legal instrument texts and government statistics are separately cited. The application's own code license does not grant ownership or legal certification over upstream official data. No mass-automated scraping or redistribution of third-party GIS geometry has been added in V0.8.0.

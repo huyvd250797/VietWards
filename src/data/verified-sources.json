@@ -1,0 +1,34 @@
+{
+  "na-202-2025": {
+    "id": "na-202-2025",
+    "title": "Nghị quyết 202/2025/QH15 — diện tích và quy mô dân số 23 địa phương hình thành sau sắp xếp",
+    "organization": "Quốc hội / Cổng Thông tin điện tử Chính phủ",
+    "url": "https://congbao.chinhphu.vn/tai-ve-van-ban-so-202-2025-qh15-45050-56708?format=pdf",
+    "issuedAt": "2025-06-12",
+    "notes": "Quy mô dân số hành chính, không phải dân số trung bình thống kê."
+  },
+  "nso-statistics-2024": {
+    "id": "nso-statistics-2024",
+    "title": "Niên giám thống kê 2024 — Bảng 19: Diện tích, dân số và mật độ dân số theo địa phương",
+    "organization": "Cục Thống kê Việt Nam",
+    "url": "https://www.nso.gov.vn/wp-content/uploads/2025/06/NGTK-Cuc-TK-2024_BQ.pdf",
+    "issuedAt": null,
+    "notes": "Diện tích thời điểm 31/12/2023, dân số trung bình 2024, công bố đến 0,1 nghìn người (100 người)."
+  },
+  "bca-79-2024": {
+    "id": "bca-79-2024",
+    "title": "Phụ lục 02 — Thông tư 79/2024/TT-BCA, biển số các tỉnh trước sáp nhập",
+    "organization": "Bộ Công an",
+    "url": "https://congbao.chinhphu.vn/tai-ve-van-ban-so-79-2024-tt-bca-43337-53056?format=pdf",
+    "issuedAt": "2024-11-15",
+    "notes": "Áp dụng cho chế độ lịch sử trước 01/07/2025."
+  },
+  "bca-51-2025": {
+    "id": "bca-51-2025",
+    "title": "Phụ lục 02 — Thông tư 51/2025/TT-BCA, biển số xe 34 tỉnh thành",
+    "organization": "Bộ Công an",
+    "url": "https://bocongan.gov.vn/media/bca-media/photo-library/20250722155624_718a2904-71b2-4a66-a97a-ea695f49cbeb-TT51.2025.TT.BCA.pdf",
+    "issuedAt": "2025-06-30",
+    "notes": "Có hiệu lực từ 01/07/2025. Mã 80 do Cục Cảnh sát giao thông quản lý, không phải mã tỉnh."
+  }
+}

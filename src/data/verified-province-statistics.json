@@ -1,0 +1,2110 @@
+{
+  "datasetVersion": "0.8.0",
+  "referenceChecked": "2026-11-23",
+  "data": {
+    "before": {
+      "ha noi": {
+        "displayName": "Hà Nội",
+        "area": {
+          "valueKm2": 3359.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 8717600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "40"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "vinh phuc": {
+        "displayName": "Vĩnh Phúc",
+        "area": {
+          "valueKm2": 1236.0,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1225300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "88"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "bac ninh": {
+        "displayName": "Bắc Ninh",
+        "area": {
+          "valueKm2": 822.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1546600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "99"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "quang ninh": {
+        "displayName": "Quảng Ninh",
+        "area": {
+          "valueKm2": 6208.0,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1396500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "14"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "hai duong": {
+        "displayName": "Hải Dương",
+        "area": {
+          "valueKm2": 1668.3,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1978200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "34"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "hai phong": {
+        "displayName": "Hải Phòng",
+        "area": {
+          "valueKm2": 1526.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 2124500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "15",
+          "16"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "hung yen": {
+        "displayName": "Hưng Yên",
+        "area": {
+          "valueKm2": 930.2,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1318100,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "89"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "thai binh": {
+        "displayName": "Thái Bình",
+        "area": {
+          "valueKm2": 1584.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1890400,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "17"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ha nam": {
+        "displayName": "Hà Nam",
+        "area": {
+          "valueKm2": 861.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 894200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "90"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "nam dinh": {
+        "displayName": "Nam Định",
+        "area": {
+          "valueKm2": 1668.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1894200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "18"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ninh binh": {
+        "displayName": "Ninh Bình",
+        "area": {
+          "valueKm2": 1411.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1030300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "35"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ha giang": {
+        "displayName": "Hà Giang",
+        "area": {
+          "valueKm2": 7927.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 911400,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "23"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "cao bang": {
+        "displayName": "Cao Bằng",
+        "area": {
+          "valueKm2": 6700.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 558500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "11"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "bac kan": {
+        "displayName": "Bắc Kạn",
+        "area": {
+          "valueKm2": 4853.3,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 329300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "97"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "tuyen quang": {
+        "displayName": "Tuyên Quang",
+        "area": {
+          "valueKm2": 5868.0,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 820300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "22"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "lao cai": {
+        "displayName": "Lào Cai",
+        "area": {
+          "valueKm2": 6364.3,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 792200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "24"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "yen bai": {
+        "displayName": "Yên Bái",
+        "area": {
+          "valueKm2": 6892.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 864400,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "21"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "thai nguyen": {
+        "displayName": "Thái Nguyên",
+        "area": {
+          "valueKm2": 3522.0,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1365200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "20"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "lang son": {
+        "displayName": "Lạng Sơn",
+        "area": {
+          "valueKm2": 8310.2,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 814000,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "12"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "bac giang": {
+        "displayName": "Bắc Giang",
+        "area": {
+          "valueKm2": 3895.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1962600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "98"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "phu tho": {
+        "displayName": "Phú Thọ",
+        "area": {
+          "valueKm2": 3534.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1543900,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "19"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "dien bien": {
+        "displayName": "Điện Biên",
+        "area": {
+          "valueKm2": 9539.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 656700,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "27"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "lai chau": {
+        "displayName": "Lai Châu",
+        "area": {
+          "valueKm2": 9068.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 495500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "25"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "son la": {
+        "displayName": "Sơn La",
+        "area": {
+          "valueKm2": 14108.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1330600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "26"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "hoa binh": {
+        "displayName": "Hòa Bình",
+        "area": {
+          "valueKm2": 4590.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 894500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "28"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "thanh hoa": {
+        "displayName": "Thanh Hóa",
+        "area": {
+          "valueKm2": 11114.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3764200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "36"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "nghe an": {
+        "displayName": "Nghệ An",
+        "area": {
+          "valueKm2": 16486.5,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3472300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "37"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ha tinh": {
+        "displayName": "Hà Tĩnh",
+        "area": {
+          "valueKm2": 5994.5,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1329800,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "38"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "quang binh": {
+        "displayName": "Quảng Bình",
+        "area": {
+          "valueKm2": 7998.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 924800,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "73"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "quang tri": {
+        "displayName": "Quảng Trị",
+        "area": {
+          "valueKm2": 4701.2,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 659200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "74"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "hue": {
+        "displayName": "Huế",
+        "area": {
+          "valueKm2": 4947.1,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1178600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "75"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "da nang": {
+        "displayName": "Đà Nẵng",
+        "area": {
+          "valueKm2": 1284.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1276000,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "43"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "quang nam": {
+        "displayName": "Quảng Nam",
+        "area": {
+          "valueKm2": 10574.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1543900,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "92"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "quang ngai": {
+        "displayName": "Quảng Ngãi",
+        "area": {
+          "valueKm2": 5155.3,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1259900,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "76"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "binh dinh": {
+        "displayName": "Bình Định",
+        "area": {
+          "valueKm2": 6066.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1518500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "77"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "phu yen": {
+        "displayName": "Phú Yên",
+        "area": {
+          "valueKm2": 5026.0,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 885200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "78"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "khanh hoa": {
+        "displayName": "Khánh Hòa",
+        "area": {
+          "valueKm2": 5200.1,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1269300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "79"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ninh thuan": {
+        "displayName": "Ninh Thuận",
+        "area": {
+          "valueKm2": 3355.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 612700,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "85"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "binh thuan": {
+        "displayName": "Bình Thuận",
+        "area": {
+          "valueKm2": 7942.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1266200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "86"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "kon tum": {
+        "displayName": "Kon Tum",
+        "area": {
+          "valueKm2": 9677.3,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 601800,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "82"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "gia lai": {
+        "displayName": "Gia Lai",
+        "area": {
+          "valueKm2": 15510.1,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1634900,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "81"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "dak lak": {
+        "displayName": "Đắk Lắk",
+        "area": {
+          "valueKm2": 13070.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1946200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "47"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "dak nong": {
+        "displayName": "Đắk Nông",
+        "area": {
+          "valueKm2": 6509.3,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 695700,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "48"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "lam dong": {
+        "displayName": "Lâm Đồng",
+        "area": {
+          "valueKm2": 9781.2,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1362500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "49"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "binh phuoc": {
+        "displayName": "Bình Phước",
+        "area": {
+          "valueKm2": 6873.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1062300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "93"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "tay ninh": {
+        "displayName": "Tây Ninh",
+        "area": {
+          "valueKm2": 4041.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1202800,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "70"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "binh duong": {
+        "displayName": "Bình Dương",
+        "area": {
+          "valueKm2": 2694.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 2870600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "61"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "dong nai": {
+        "displayName": "Đồng Nai",
+        "area": {
+          "valueKm2": 5863.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3365400,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "39",
+          "60"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ba ria vung tau": {
+        "displayName": "Bà Rịa - Vũng Tàu",
+        "area": {
+          "valueKm2": 1982.6,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1194600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "72"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ho chi minh": {
+        "displayName": "TP. Hồ Chí Minh",
+        "area": {
+          "valueKm2": 2095.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 9543600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "41",
+          "50",
+          "51",
+          "52",
+          "53",
+          "54",
+          "55",
+          "56",
+          "57",
+          "58",
+          "59"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "long an": {
+        "displayName": "Long An",
+        "area": {
+          "valueKm2": 4494.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1756200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "62"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "tien giang": {
+        "displayName": "Tiền Giang",
+        "area": {
+          "valueKm2": 2556.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1796100,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "63"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ben tre": {
+        "displayName": "Bến Tre",
+        "area": {
+          "valueKm2": 2379.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1306300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "71"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "tra vinh": {
+        "displayName": "Trà Vinh",
+        "area": {
+          "valueKm2": 2390.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1023900,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "84"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "vinh long": {
+        "displayName": "Vĩnh Long",
+        "area": {
+          "valueKm2": 1525.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1037300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "64"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "dong thap": {
+        "displayName": "Đồng Tháp",
+        "area": {
+          "valueKm2": 3382.3,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1601100,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "66"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "an giang": {
+        "displayName": "An Giang",
+        "area": {
+          "valueKm2": 3536.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1912600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "67"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "kien giang": {
+        "displayName": "Kiên Giang",
+        "area": {
+          "valueKm2": 6352.1,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1766700,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "68"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "can tho": {
+        "displayName": "Cần Thơ",
+        "area": {
+          "valueKm2": 1440.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1271700,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "65"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "hau giang": {
+        "displayName": "Hậu Giang",
+        "area": {
+          "valueKm2": 1622.2,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 730000,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "95"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "soc trang": {
+        "displayName": "Sóc Trăng",
+        "area": {
+          "valueKm2": 3298.2,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1205300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "83"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "bac lieu": {
+        "displayName": "Bạc Liêu",
+        "area": {
+          "valueKm2": 2667.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 928700,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "94"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      },
+      "ca mau": {
+        "displayName": "Cà Mau",
+        "area": {
+          "valueKm2": 5274.5,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1212000,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "69"
+        ],
+        "plateSourceId": "bca-79-2024",
+        "plateEffectiveFrom": "2025-01-01"
+      }
+    },
+    "current": {
+      "an giang": {
+        "displayName": "An Giang",
+        "area": {
+          "valueKm2": 9888.91,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4952238,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "67",
+          "68"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "bac ninh": {
+        "displayName": "Bắc Ninh",
+        "area": {
+          "valueKm2": 4718.6,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3619433,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "98",
+          "99"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "ca mau": {
+        "displayName": "Cà Mau",
+        "area": {
+          "valueKm2": 7942.39,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 2606672,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "69",
+          "94"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "can tho": {
+        "displayName": "Cần Thơ",
+        "area": {
+          "valueKm2": 6360.83,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4199824,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "65",
+          "83",
+          "95"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "cao bang": {
+        "displayName": "Cao Bằng",
+        "area": {
+          "valueKm2": 6700.4,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 558500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "11"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "da nang": {
+        "displayName": "Đà Nẵng",
+        "area": {
+          "valueKm2": 11859.59,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3065628,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "43",
+          "92"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "dak lak": {
+        "displayName": "Đắk Lắk",
+        "area": {
+          "valueKm2": 18096.4,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3346853,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "47",
+          "78"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "dien bien": {
+        "displayName": "Điện Biên",
+        "area": {
+          "valueKm2": 9539.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 656700,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "27"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "dong nai": {
+        "displayName": "Đồng Nai",
+        "area": {
+          "valueKm2": 12737.18,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4491408,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "39",
+          "60",
+          "93"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "dong thap": {
+        "displayName": "Đồng Tháp",
+        "area": {
+          "valueKm2": 5938.64,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4370046,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "63",
+          "66"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "gia lai": {
+        "displayName": "Gia Lai",
+        "area": {
+          "valueKm2": 21576.53,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3583693,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "77",
+          "81"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "ha noi": {
+        "displayName": "Hà Nội",
+        "area": {
+          "valueKm2": 3359.8,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 8717600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "40"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "ha tinh": {
+        "displayName": "Hà Tĩnh",
+        "area": {
+          "valueKm2": 5994.5,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1329800,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "38"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "hai phong": {
+        "displayName": "Hải Phòng",
+        "area": {
+          "valueKm2": 3194.72,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4664124,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "15",
+          "16",
+          "34"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "hung yen": {
+        "displayName": "Hưng Yên",
+        "area": {
+          "valueKm2": 2514.81,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3567943,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "17",
+          "89"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "khanh hoa": {
+        "displayName": "Khánh Hòa",
+        "area": {
+          "valueKm2": 8555.86,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 2243554,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "79",
+          "85"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "lai chau": {
+        "displayName": "Lai Châu",
+        "area": {
+          "valueKm2": 9068.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 495500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "25"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "lam dong": {
+        "displayName": "Lâm Đồng",
+        "area": {
+          "valueKm2": 24233.07,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3872999,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "48",
+          "49",
+          "86"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "lang son": {
+        "displayName": "Lạng Sơn",
+        "area": {
+          "valueKm2": 8310.2,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 814000,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "12"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "lao cai": {
+        "displayName": "Lào Cai",
+        "area": {
+          "valueKm2": 13256.92,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1778785,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "21",
+          "24"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "nghe an": {
+        "displayName": "Nghệ An",
+        "area": {
+          "valueKm2": 16486.5,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3472300,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "37"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "ninh binh": {
+        "displayName": "Ninh Bình",
+        "area": {
+          "valueKm2": 3942.62,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4412264,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "18",
+          "35",
+          "90"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "phu tho": {
+        "displayName": "Phú Thọ",
+        "area": {
+          "valueKm2": 9361.38,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4022638,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "19",
+          "28",
+          "88"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "quang ngai": {
+        "displayName": "Quảng Ngãi",
+        "area": {
+          "valueKm2": 14832.55,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 2161755,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "76",
+          "82"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "quang ninh": {
+        "displayName": "Quảng Ninh",
+        "area": {
+          "valueKm2": 6208.0,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1396500,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "14"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "quang tri": {
+        "displayName": "Quảng Trị",
+        "area": {
+          "valueKm2": 12700.0,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1870845,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "73",
+          "74"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "son la": {
+        "displayName": "Sơn La",
+        "area": {
+          "valueKm2": 14108.9,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1330600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "26"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "tay ninh": {
+        "displayName": "Tây Ninh",
+        "area": {
+          "valueKm2": 8536.44,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3254170,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "62",
+          "70"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "thai nguyen": {
+        "displayName": "Thái Nguyên",
+        "area": {
+          "valueKm2": 8375.21,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1799489,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "20",
+          "97"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "thanh hoa": {
+        "displayName": "Thanh Hóa",
+        "area": {
+          "valueKm2": 11114.7,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 3764200,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "36"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "hue": {
+        "displayName": "Huế",
+        "area": {
+          "valueKm2": 4947.1,
+          "referenceDate": "2023-12-31",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1178600,
+          "kind": "statistical_average",
+          "referencePeriod": "2024",
+          "sourceId": "nso-statistics-2024",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "75"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "ho chi minh": {
+        "displayName": "TP. Hồ Chí Minh",
+        "area": {
+          "valueKm2": 6772.59,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 14002598,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "41",
+          "50",
+          "51",
+          "52",
+          "53",
+          "54",
+          "55",
+          "56",
+          "57",
+          "58",
+          "59",
+          "61",
+          "72"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "tuyen quang": {
+        "displayName": "Tuyên Quang",
+        "area": {
+          "valueKm2": 13795.5,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 1865270,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "22",
+          "23"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      },
+      "vinh long": {
+        "displayName": "Vĩnh Long",
+        "area": {
+          "valueKm2": 6296.2,
+          "referenceDate": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "population": {
+          "value": 4257581,
+          "kind": "administrative_scale",
+          "referencePeriod": "2025-06-12",
+          "sourceId": "na-202-2025",
+          "status": "verified"
+        },
+        "plateCodes": [
+          "64",
+          "71",
+          "84"
+        ],
+        "plateSourceId": "bca-51-2025",
+        "plateEffectiveFrom": "2025-07-01"
+      }
+    }
+  }
+}

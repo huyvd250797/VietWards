@@ -26,6 +26,8 @@ jobs:
         run: npm run check:communes
       - name: Legacy Atlas structure and GIS provenance
         run: npm run check:legacy
+      - name: Verified statistics and plates
+        run: npm run check:verified
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

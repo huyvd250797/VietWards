@@ -178,13 +178,13 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
     <AppContext.Provider value={{ period, ready, selectedProvinceCode, historicalSelection, changePeriod, selectProvince, navigateProvince }}>
       <div className="app-frame">
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.7.0</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.8.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
-            <div className="progress-caption"><span>Tiến độ dự án</span><strong>7 / 10</strong></div>
+            <div className="progress-caption"><span>Tiến độ dự án</span><strong>8 / 10</strong></div>
             <div className="progress-track"><div className="progress-fill"/></div>
-            <p>Tra cứu huyện/xã trước sáp nhập và quan hệ cũ–mới; GIS cấp xã lịch sử chỉ hiển thị khi đã được kiểm chứng.</p>
+            <p>Tra cứu số liệu và biển số xe trước/sau sáp nhập, có nguồn và kỳ thống kê rõ ràng; GIS cấp xã cũ vẫn cần kiểm chứng.</p>
             <Link href="/gioi-thieu">Xem lộ trình <ArrowUpRight size={14}/></Link>
           </div>
           <div className="sidebar-foot"><CircleHelp size={15}/> Dữ liệu có kiểm chứng · V{APP.version}</div>

@@ -31,6 +31,6 @@ assert.match(route, /matchedCount: matched\.size/, "Return verifiable match coun
 assert.match(route, /missingCodes/, "Report missing GIS regions");
 const shell = fs.readFileSync("src/components/map-explorer.tsx", "utf8");
 assert.match(shell, /level.*commune/);
-assert.match(shell, /period === "current"/);
+assert.match(shell, /period === "before" \? previous : current/, "Both periods must support province selection in Map Explorer");
 assert.match(shell, /onSelectWard/);
-console.log("PASS: commune search, 5-digit codes, type filters, province-scoped GIS, missing regions, period guard and deep link.");
+console.log("PASS: commune search, 5-digit codes, type filters, province-scoped GIS, missing regions, dual-period navigation and deep link.");

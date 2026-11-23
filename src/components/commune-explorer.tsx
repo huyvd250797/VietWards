@@ -5,6 +5,7 @@ import { ArrowLeft, Check, ChevronRight, Compass, Database, Focus, Info, Layers3
 import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 import type { ProvinceRow, UnitRow } from "@/lib/admin-data";
 import { filterCommunes, type CommuneKindFilter } from "@/lib/commune-search";
+import { VerifiedStatisticsPanel } from "./verified-statistics-panel";
 import { useAtlas } from "./app-shell";
 
 const L = { source: "vw-communes", fill: "vw-communes-fill", dim: "vw-communes-dim", line: "vw-communes-line", labels: "vw-communes-labels" };
@@ -332,7 +333,7 @@ export function CommuneMapWorkbench({
               {relation.unresolvedReferences > 0 && <p>Còn {relation.unresolvedReferences} tham chiếu chưa xác định đủ mã xã cũ; không tự định vị.</p>}
             </>}
           </div>
-          <div className="gis-info-stat"><small>Diện tích và dân số</small><p>Dữ liệu có nguồn thống kê sẽ bổ sung ở V0.8.0.</p></div>
+          <VerifiedStatisticsPanel period={period} provinceCode={province.code} wardCode={selected.code} dense/>
           <div className="gis-info-share"><button type="button" onClick={() => void share()}><Share2 size={15}/> Chia sẻ xã/phường</button>{shareStatus && <span role="status"><Check size={13}/>{shareStatus}</span>}</div>
         </> : <div className="gis-info-idle"><div className="gis-info-visual"><MapPin size={34}/></div><h3>{period === "before" ? "Khám phá xã/phường cũ" : "Khám phá xã, phường"}</h3><p>{period === "before" ? "Chọn trong danh sách để xem huyện cũ, mã hành chính và các đơn vị kế thừa. Ranh giới xã chỉ xuất hiện khi đã kiểm chứng." : "Chọn trực tiếp trên bản đồ hoặc danh sách để xem tên, mã, loại đơn vị và ranh giới tham khảo."}</p><span><Info size={15}/> {period === "before" ? "Không nội suy GIS cấp xã từ ranh giới hiện hành." : "Tải bản đồ theo từng tỉnh để tiết kiệm dữ liệu."}</span></div>}
         {dataset && <div className="gis-source-note"><Database size={15}/><div><strong>{sourceLabel}</strong>

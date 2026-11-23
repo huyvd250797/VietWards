@@ -6,6 +6,7 @@ import { ArrowRight, BookOpenText, ChevronLeft, ChevronRight, ExternalLink, GitM
 import type { ProvinceRow, UnitRow } from "@/lib/admin-data";
 import { useAtlas, PeriodToggle } from "./app-shell";
 import { provinceHref, searchProvinces, type ProvinceTypeFilter } from "@/lib/province-search";
+import { LicensePlateLookup, VerifiedStatisticsPanel } from "./verified-statistics-panel";
 
 const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLowerCase();
 const count = (n: number) => new Intl.NumberFormat("vi-VN").format(n);
@@ -100,6 +101,7 @@ export function ProvinceExplorer({ previous, current }: { previous: ProvinceRow[
         <div className="data-province-filters" role="group" aria-label="Lọc loại tỉnh thành">
           {([ ["all", "Tất cả"], ["province", "Tỉnh"], ["city", "Thành phố"] ] as const).map(([value,label]) => <button type="button" key={value} className={typeFilter === value ? "active" : ""} aria-pressed={typeFilter === value} onClick={() => setTypeFilter(value)}>{label}</button>)}
         </div>
+        <LicensePlateLookup period={period} onSelectProvince={chooseProvince}/>
         <div className="data-province-count">{filtered.length}/{provinces.length} địa phương</div>
         <div className="data-province-scroll" role="list" ref={provinceListRef}>
           {filtered.map((province) => <button key={province.id} data-province-code={province.code} type="button" role="listitem" className={`data-province ${selected?.code === province.code ? "active" : ""}`} onClick={() => chooseProvince(province.code)} aria-pressed={selected?.code === province.code}>
@@ -119,6 +121,7 @@ export function ProvinceExplorer({ previous, current }: { previous: ProvinceRow[
           <div><span className="eyebrow"><MapPin size={14}/> ĐƠN VỊ HÀNH CHÍNH CẤP TỈNH</span><h2>{selected?.name}</h2><div className="data-selected-sub"><span>Mã hành chính <b>{selected?.code}</b></span><span>{selected?.kind}</span></div></div>
           <span className="data-verified"><ShieldCheck size={16}/> Có nguồn</span>
         </div>
+        <VerifiedStatisticsPanel period={period} provinceCode={selected.code}/>
         <div className="data-map-cta"><Link href={provinceHref("/ban-do", period, selected?.code)}><MapPin size={16}/> Xem {selected?.name} trên bản đồ <ExternalLink size={14}/></Link><p>Mở đúng tỉnh/thành và thời kỳ, tự động zoom và làm nổi địa giới khi có dữ liệu GIS đã đối chiếu.</p></div>
         {period === "current" && <div className="data-map-cta"><Link href={`/ban-do?period=current&province=${selected.code}&level=commune`}><Layers3 size={16}/> Xem xã/phường trên bản đồ <ExternalLink size={14}/></Link><p>Đồng bộ mã tỉnh; chỉ tải ranh giới cấp xã tương ứng và cho phép chọn từng vùng.</p></div>}
         <div className="data-selected-metrics"><div><small>Đơn vị cấp xã</small><strong>{count(selected?.communeCount ?? 0)}</strong></div><div><small>{period === "before" ? "Quận / huyện / thị xã" : "Thời điểm tham chiếu"}</small><strong>{period === "before" ? count(selected?.districtCount ?? 0) : "2026"}</strong></div></div>

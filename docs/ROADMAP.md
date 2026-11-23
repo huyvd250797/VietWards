@@ -35,7 +35,7 @@ Xây dựng ứng dụng giáo dục địa lý hành chính Việt Nam, dùng �
 
 ## Tiến độ hiện tại
 
-Đã triển khai tới **V0.7.0 — Legacy Administrative Atlas** (danh mục và quan hệ đã tích hợp; GIS lịch sử cấp xã còn thiếu nguồn đã xác minh). Bản đồ cấp xã hiện hành có tìm kiếm, lựa chọn và polygon tải theo từng tỉnh; nguồn GIS tham khảo chưa được nghiệm thu pháp lý. V0.7.0 có cổng nhận GIS lịch sử theo tỉnh nhưng không phân phối polygon chưa kiểm chứng.
+Đã triển khai tới **V0.8.0 — Verified Statistics & Plates** (bổ sung thống kê và biển số cấp tỉnh có nguồn cho hai thời kỳ; GIS lịch sử cấp xã vẫn chưa có polygon đủ điều kiện kiểm chứng). Bản đồ cấp xã hiện hành có tìm kiếm, lựa chọn và polygon tải theo từng tỉnh; nguồn GIS tham khảo chưa được nghiệm thu pháp lý. V0.7.0 có cổng nhận GIS lịch sử theo tỉnh nhưng không phân phối polygon chưa kiểm chứng.
 
 ## Mốc sử dụng được
 
