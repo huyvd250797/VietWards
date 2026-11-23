@@ -9,9 +9,14 @@ import {
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { APP, PERIODS, type Period } from "@/lib/config";
 import { provinceHref } from "@/lib/province-search";
+import {
+  emptyHistoricalSelection, historicHref, selectionFromParams, singleSelection,
+  switchHistoricalPeriod, validateHistoricalSelection, type HistoricalLink, type HistoricalSelection,
+} from "@/lib/historical-selection";
 
 type AppContextValue = {
   period: Period; ready: boolean; selectedProvinceCode: string | null;
+  historicalSelection: HistoricalSelection;
   changePeriod: (period: Period) => void;
   selectProvince: (code: string | null) => void;
   navigateProvince: (period: Period, code: string | null) => void;
@@ -60,12 +65,13 @@ export function PeriodToggle({ size = "default" }: { size?: "default" | "large" 
   );
 }
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children, links }: { children: React.ReactNode; links: HistoricalLink[] }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [period, setPeriod] = useState<Period>("current");
+  const [historicalSelection, setHistoricalSelection] = useState<HistoricalSelection>(() => emptyHistoricalSelection());
+  const period = historicalSelection.period;
+  const selectedProvinceCode = historicalSelection.selectedProvinceCode;
   const [ready, setReady] = useState(false);
-  const [selectedProvinceCode, setSelectedProvinceCode] = useState<string | null>(null);
   const initialized = useRef(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,12 +84,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       const urlPeriod = url.searchParams.get("period");
       let fallback: string | null = null;
       try { fallback = localStorage.getItem("vietwards-period") ?? localStorage.getItem("vietatlas-period"); } catch { /* restricted */ }
-      const nextPeriod = urlPeriod === "before" || urlPeriod === "current"
-        ? urlPeriod : initial && (fallback === "before" || fallback === "current") ? fallback : null;
-      if (nextPeriod) setPeriod(nextPeriod);
-      const code = url.searchParams.get("province");
-      if (code !== null) setSelectedProvinceCode(/^\d{2}$/.test(code) ? code : null);
-      else if (urlPeriod === "before" || urlPeriod === "current") setSelectedProvinceCode(null);
+      const nextPeriod: Period = urlPeriod === "before" || urlPeriod === "current" ? urlPeriod
+        : initial && (fallback === "before" || fallback === "current") ? fallback : "current";
+      // Normal client navigation without URL query retains the active selection.
+      if (urlPeriod === "before" || urlPeriod === "current" || url.searchParams.has("province") || initial) {
+        const restored = selectionFromParams(url.searchParams, nextPeriod);
+        setHistoricalSelection(validateHistoricalSelection(restored, links));
+      }
       if (initial) {
         try {
           const storedTheme = localStorage.getItem("vietwards-theme") ?? localStorage.getItem("vietatlas-theme");
@@ -96,12 +103,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       setReady(true);
     }
     const isFirstLoad = !initialized.current;
-    const frame = window.requestAnimationFrame(() => restoreFromUrl(isFirstLoad));
-    initialized.current = true;
+    const frame = window.requestAnimationFrame(() => {
+      restoreFromUrl(isFirstLoad);
+      initialized.current = true;
+    });
     const onPopState = () => restoreFromUrl();
     window.addEventListener("popstate", onPopState);
     return () => { window.cancelAnimationFrame(frame); window.removeEventListener("popstate", onPopState); };
-  }, [pathname]);
+  }, [pathname, links]);
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
@@ -112,21 +121,29 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const navigateProvince = useCallback((nextPeriod: Period, code: string | null) => {
-    const validCode = code && /^\d{2}$/.test(code) ? code : null;
-    setPeriod(nextPeriod);
-    setSelectedProvinceCode(validCode);
-    try { localStorage.setItem("vietwards-period", nextPeriod); } catch { /* restricted */ }
-    if (typeof window !== "undefined" && ["/ban-do", "/tinh-thanh"].includes(window.location.pathname)) {
-      const path = window.location.pathname as "/ban-do" | "/tinh-thanh";
-      const nextUrl = provinceHref(path, nextPeriod, validCode);
-      if (window.location.pathname + window.location.search !== nextUrl) {
-        window.history.replaceState(window.history.state, "", nextUrl);
+  const updateAddress = useCallback((state: HistoricalSelection) => {
+    try { localStorage.setItem("vietwards-period", state.period); } catch { /* restricted */ }
+    if (typeof window !== "undefined" && ["/ban-do", "/tinh-thanh", "/lich-su"].includes(window.location.pathname)) {
+      const path = window.location.pathname as "/ban-do" | "/tinh-thanh" | "/lich-su";
+      const url = historicHref(path, state);
+      if (window.location.pathname + window.location.search !== url) {
+        window.history.replaceState(window.history.state, "", url);
       }
     }
   }, []);
-  const changePeriod = useCallback((nextPeriod: Period) => navigateProvince(nextPeriod, null), [navigateProvince]);
-  const selectProvince = useCallback((code: string | null) => navigateProvince(period, code), [navigateProvince, period]);
+  const navigateProvince = useCallback((nextPeriod: Period, code: string | null) => {
+    const next = validateHistoricalSelection(singleSelection(nextPeriod, code), links);
+    setHistoricalSelection(next);
+    updateAddress(next);
+  }, [links, updateAddress]);
+  const changePeriod = useCallback((nextPeriod: Period) => {
+    const next = validateHistoricalSelection(switchHistoricalPeriod(historicalSelection, nextPeriod, links), links);
+    setHistoricalSelection(next);
+    updateAddress(next);
+  }, [historicalSelection, links, updateAddress]);
+  const selectProvince = useCallback((code: string | null) => {
+    navigateProvince(period, code);
+  }, [navigateProvince, period]);
 
   function toggleTheme() {
     const nextTheme = theme === "light" ? "dark" : "light";
@@ -158,16 +175,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <AppContext.Provider value={{ period, ready, selectedProvinceCode, changePeriod, selectProvince, navigateProvince }}>
+    <AppContext.Provider value={{ period, ready, selectedProvinceCode, historicalSelection, changePeriod, selectProvince, navigateProvince }}>
       <div className="app-frame">
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.4.0</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.5.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
-            <div className="progress-caption"><span>Tiến độ dự án</span><strong>4 / 10</strong></div>
+            <div className="progress-caption"><span>Tiến độ dự án</span><strong>5 / 10</strong></div>
             <div className="progress-track"><div className="progress-fill"/></div>
-            <p>Đồng bộ tìm kiếm địa phương và bản đồ. Tiếp theo: xem tách/gộp lịch sử.</p>
+            <p>Đã hỗ trợ tách/gộp địa giới theo thời kỳ. Tiếp theo: khám phá cấp xã.</p>
             <Link href="/gioi-thieu">Xem lộ trình <ArrowUpRight size={14}/></Link>
           </div>
           <div className="sidebar-foot"><CircleHelp size={15}/> Dữ liệu có kiểm chứng · V{APP.version}</div>
@@ -182,7 +199,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V0.4</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V0.5</span></button>
               <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -204,7 +221,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="mobile-drawer" role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={() => setMobileMenuOpen(false)}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Province Explorer</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Historical Merge Viewer</div>
             </div>
           </div>
         )}

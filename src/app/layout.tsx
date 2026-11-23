@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { AppShell } from "@/components/app-shell";
 import { APP } from "@/lib/config";
+import { getProvinceRows } from "@/lib/admin-data";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
 
@@ -27,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="vi" suppressHydrationWarning>
       <body>
-        <AppShell>{children}</AppShell>
+        <AppShell links={getProvinceRows("current").map(({ code, formerProvinces }) => ({ code, formerProvinces }))}>{children}</AppShell>
       </body>
     </html>
   );

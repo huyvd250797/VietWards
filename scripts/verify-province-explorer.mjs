@@ -8,15 +8,15 @@ const catalog = fromRoot("src/components/province-explorer.tsx");
 const shell = fromRoot("src/components/app-shell.tsx");
 const page = fromRoot("src/app/ban-do/page.tsx");
 const config = fromRoot("src/lib/config.ts");
-assert.match(config, /version: "0\.4\.0"/);
+assert.match(config, /version: "0\.5\.0"/);
 assert.match(map, /searchProvinces\(provinces, query, typeFilter\)/);
 assert.match(catalog, /searchProvinces\(provinces, provinceQuery, typeFilter\)/);
 assert.match(map, /selectedProvinceCode: selected/);
 assert.match(catalog, /selectedProvinceCode: selectedCode/);
-assert.match(shell, /selectedProvinceCode, changePeriod, selectProvince, navigateProvince/);
+assert.match(shell, /selectedProvinceCode, historicalSelection, changePeriod, selectProvince, navigateProvince/);
 assert.match(shell, /window\.history\.replaceState/);
 assert.match(page, /previous=\{getProvinceRows\("before"\)\}/);
-assert.match(map, /aria-pressed=\{selected === province.code\}/);
+assert.match(map, /aria-pressed=\{activeCodes.includes\(province.code\)\}/);
 assert.match(catalog, /provinceHref\("\/ban-do"/);
 
 const rows = [

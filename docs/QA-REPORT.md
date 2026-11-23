@@ -1,29 +1,32 @@
-# QA Report — VietWards V0.4.0 (Province Explorer)
+# QA Report — VietWards V0.5.0 (Historical Merge Viewer)
 
-## Completed in packaging environment
+## Đã kiểm tra trong môi trường đóng gói
 
-- Upgraded from the exact user-supplied V0.3.0 ZIP; original routes and administrative data gateway preserved.
-- `npm run check:structure`: **PASS**, 31 required files and package version 0.4.0.
-- `npm run check:province`: **PASS**, search normalization (diacritics, whitespace), aliases, administrative code, province/city filter and deep-link URL functions; component contracts for shared state and map/catalog links.
-- Parsed all 20 TS/TSX files with global TypeScript 5.x `transpileModule` compiler diagnostics: **0 syntax diagnostics**.
-- Final ZIP integrity checked via Python `zipfile.testzip()`; no `node_modules`, `.next` or secrets included.
+- Kế thừa source ZIP V0.4.0 gốc của người dùng và giữ API, dữ liệu hành chính, PWA, phong cách UI hiện có.
+- `node scripts/check.mjs`: PASS, cấu trúc và phiên bản V0.5.0.
+- `node --experimental-strip-types scripts/verify-historical-selection.mjs`: PASS với dữ liệu fixture 1/2/3 tỉnh tiền thân, chiều hiện tại ↔ trước sáp nhập, nhận diện mã sai, deep link nhóm hợp lệ/không hợp lệ và cấu trúc code camera.
+- `node --experimental-strip-types scripts/verify-province-explorer.mjs`: PASS, tìm kiếm tiếng Việt và liên kết danh mục V0.4.0.
+- TypeScript syntax AST parsing: 21 TypeScript/TSX source files, zero parse diagnostics.
+- Kiểm tra ZIP bằng `zipfile.testzip()` sau khi đóng gói.
 
-## Not yet confirmed in this offline packaging environment
+## Chưa xác nhận tại môi trường này
 
-- `npm install`, `npm run check:data`, `npm run typecheck`, `npm run lint`, `npm run build`: npm registry is unreachable, `vn-local-divisions` and other application dependencies cannot be installed. The code is **not claimed production-build-verified**.
-- Live external GIS gateway responses on Vercel (34 current / 63 historical) and all `matchedCount` mapping results: require connected environment testing.
-- Browser/device test on real iOS/Android and PC: not performed; CSS responsive design and keyboard Escape behavior were statically reviewed only.
+- `npm install`, `npm run check:data`, `npm run typecheck`, `npm run lint`, `npm run build`: npm registry không truy cập được; dependencies chưa được cài đặt ở môi trường đóng gói, do đó không thể báo build production đã đạt.
+- Browser UI trên Vercel và MapLibre render thực tế, cảm ứng iOS/Android, overlay và độ mượt: chưa kiểm thử trực tiếp.
+- Live GeoJSON source (34/63 polygon), `matchedCount` và quyền tái phân phối dữ liệu GIS gốc: cần đối chiếu sau deploy hoặc ở môi trường có Internet.
 
-## Required acceptance on GitHub Actions and Vercel
+## Việc cần kiểm tra trên GitHub Actions/Vercel
 
-1. `npm install && npm run check:structure && npm run check:data && npm run check:province && npm run typecheck && npm run lint && npm run build` succeeds.
-2. Open `/ban-do?period=current&province=75` and `/ban-do?period=before&province=70`, confirm both correct period and correct region are focused and highlighted.
-3. Search `dong nai`, `đồngnai`, `TPHCM`, `Sài Gòn`, `75`, and test **Tất cả / Tỉnh / Thành phố** in both catalog and map.
-4. Select a province via map, confirm list selection + scroll + detail sync; select via list, confirm map selection and zoom. Repeat after navigation to `/tinh-thanh` and back.
-5. Disable GIS upstream access; verify error/retry display and the catalog remains usable without fictitious geometry.
-6. Check open/close mobile list bottom sheet, select via touch, info card scroll above bottom navigation, and Escape close on keyboard.
-7. Check `metadata.matchedCount` / `metadata.unmatchedNames`; missing GIS boundaries must not be reported as verified.
+1. `npm install && npm run check:structure && npm run check:data && npm run check:province && npm run check:history && npm run typecheck && npm run lint && npm run build`
+2. Mở `/ban-do?period=current&province=75`, đợi GIS ghép vùng, chuyển kỳ và kiểm tra các màu của Bình Phước / Đồng Nai; chuyển trở lại Đồng Nai mới.
+3. Mở `/lich-su?period=current&province=79`, chuyển kỳ để hiển thị TP.HCM, Bình Dương, Bà Rịa – Vũng Tàu; bấm một tỉnh tiền thân và đổi kỳ lại.
+4. Hà Nội 01 là tỉnh không sáp nhập; chuyển hai chiều không mất lựa chọn.
+5. Khi đổi kỳ, xác nhận camera map không về mặc định; khi chọn tỉnh mới, map mới tự căn vùng và không bị cắt đảo/MultiPolygon.
+6. Trên mobile, xác nhận bottom sheet không che toàn bộ bản đồ; thao tác khoanh/zoom/chạm chính xác, bàn phím và màn hình tối hoạt động.
+7. Thử chặn nguồn GIS ngoài và kiểm tra cảnh báo/trạng thái dự phòng (không tự vẽ ranh giới sai), danh mục vẫn tra cứu được.
+8. Mở URL nhóm không hợp lệ, xác nhận không có hành vi highlight nhầm các tỉnh không cùng quan hệ.
+9. Xác minh source/giấy phép/khả năng tiếp cận của cả hai GIS trước khi công bố là dữ liệu đáng tin cậy.
 
 ## Scope guard
 
-Historical merge visualization is V0.5.0; commune polygon mapping is V0.6/V0.7; verified area, population, and registration plates are V0.8.0.
+V0.5.0 không thực hiện polygon cấp xã, thống kê dân số/diện tích hoặc biển số xe; các nội dung này lần lượt thuộc V0.6–V0.8.

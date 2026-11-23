@@ -4,7 +4,7 @@
 
 - Administrative boundary visualization **at province level only**.
 - 34 modern features from GeoVN, and 63 legacy features from the open Natural Earth data provided by PiSpace Maps; fallback legacy GitHub source if main source fails.
-- Two independent snapshots; no automatic trans-period split/merge until V0.5.0.
+- Two independent snapshots; from V0.5.0 the canonical relation table drives cross-period split/merge selection (geometry itself is never fabricated).
 - Not official survey-grade or legally definitive boundaries.
 
 ## Retrieval and checks (server endpoint)
@@ -20,7 +20,7 @@
 
 - Desktop browser: 3-column map layout and map gestures, mouse and trackpad zoom, click polygon, overlay, border, fitBounds, reset.
 - Mobile iPhone/Android: map fits column, one-finger drag, two-finger zoom, tap selection, controls, collapsible search list and information pane.
-- Switch current/before: source is replaced, selection cleared, map reset; no duplicate map instances.
+- Switch current/before: replace GeoJSON source **without** remounting MapLibre; preserve camera and show old/current related polygons if matched.
 - Map click + list click go through the same `select` handler.
 - MultiPolygon bounds computed by walking every ring, including detached portions/islands; does not compute only first ring bounds.
 - If GIS upstream is unavailable: graceful error UI, retry button; **no misleading geometric substitute**.
@@ -33,6 +33,6 @@ Due to npm registry and external GIS endpoints being unreachable from the packag
 ## Next work
 
 V0.4.0: robust catalogue-to-map linking across pages, global search and keyboard accessibility.
-V0.5.0: explicit old/current administrative mapping with spatial transitions.
+V0.5.0: implemented explicit old/current administrative mapping with multi-color spatial selections and camera preservation; live availability still requires QA.
 V0.6/0.7: commune and ward GIS, including partially merged geometries.
 V0.8.0: sourced statistical area/population/plate numbers.

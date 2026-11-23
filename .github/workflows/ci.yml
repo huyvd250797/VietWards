@@ -20,6 +20,8 @@ jobs:
         run: npm run check:data
       - name: Province Explorer behavior
         run: npm run check:province
+      - name: Historical split/merge behavior
+        run: npm run check:history
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

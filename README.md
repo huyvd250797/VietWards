@@ -1,4 +1,46 @@
-# VietWards V0.4.0 — Province Explorer
+# VietWards V0.5.0 — Historical Merge Viewer
+
+**VietWards** là ứng dụng web giáo dục về địa giới hành chính Việt Nam, triển khai trên Vercel, sử dụng trực tiếp trên PC/mobile không cần đăng nhập hoặc chạy localhost.
+
+## Nâng cấp V0.5.0 — Historical Merge Viewer
+
+- Dùng quan hệ kế thừa **63 tỉnh cũ → 34 tỉnh mới** từ `vn-local-divisions/convert`; dữ liệu quan hệ được truyền từ Next.js server layout đến client (không đưa 13.000+ đơn vị cấp xã vào bundle trình duyệt).
+- Chọn một tỉnh hiện tại rồi bấm **Trước 01/07/2025**: các tỉnh tiền thân được chọn đồng thời và **tô màu riêng** trên polygon có đối chiếu GIS, ví dụ Đồng Nai → Bình Phước + Đồng Nai; TP.HCM → TP.HCM + Bình Dương + Bà Rịa – Vũng Tàu.
+- Khi chọn một tỉnh cũ rồi chuyển về hiện tại, sẽ hiển thị đúng tỉnh/thành kế thừa. Trường hợp không sáp nhập giữ một vùng (ví dụ Hà Nội).
+- **Không tạo lại MapLibre** khi đổi thời kỳ: cùng một instance thay GeoJSON source theo snapshot, giữ vị trí, mức zoom và góc nhìn; zoom tự động khi click tỉnh khác trong cùng thời kỳ hoặc khi mở deep link ban đầu.
+- Bảng chi tiết liệt kê nhóm tỉnh tiền thân, có chú giải màu, bấm từng thành viên để xem riêng, nút căn khung toàn nhóm. Mọi lựa chọn đồng bộ bản đồ/danh sách/trang Lịch sử.
+- Trang `/lich-su` đã có bản đồ tương tác; chọn một quan hệ để xem ngay. Deep link nhóm có `group` (mã tỉnh cũ cách nhau bằng dấu phẩy), kèm `origin` và được **xác thực với quan hệ kế thừa** trước khi áp dụng; không cho ghép nhóm tỉnh tùy ý từ URL.
+- Giữ V0.4.0: tìm kiếm không dấu, lọc tỉnh/thành phố, tra cứu cấp xã, PWA, dark mode, responsive mobile, deploy Vercel.
+- CI bổ sung `npm run check:history` với các kiểm thử tách/gộp 1, 2, 3 tỉnh, chiều ngược lại, URL không hợp lệ; giữ `check:province`, `check:data`, typecheck, lint và build.
+
+**Hạn chế cần biết:** hình học GIS lấy từ dịch vụ tham khảo công khai của hai thời kỳ, chưa xác minh là ranh giới pháp lý hoặc bảo đảm đầy đủ trong mọi phiên làm việc. Nếu nguồn GIS không tải được hoặc một vùng chưa đối chiếu tên/mã, ứng dụng vẫn hiển thị quan hệ bằng danh sách và báo thiếu vùng, **không tự cắt, nội suy hay vẽ hình giả**. Dân số, diện tích và biển số xe có kỳ dữ liệu bổ sung ở V0.8.0. Không cần SQL migration.
+
+### Các URL mẫu
+
+- `/ban-do?period=current&province=75` — Đồng Nai hiện tại. Chọn "Trước 01/07/2025" để tách thành hai tỉnh.
+- `/ban-do?period=before&province=70&group=70%2C75&origin=75` — mở nhóm Bình Phước và Đồng Nai cũ. URL sẽ được xác thực từ Master Data.
+- `/lich-su?period=current&province=79` — TP.HCM hiện tại trong trang lịch sử, chuyển sang 63 tỉnh để thấy ba tỉnh tiền thân.
+
+### Kiểm tra trước khi deploy production
+
+```bash
+npm install
+npm run check:structure
+npm run check:data
+npm run check:province
+npm run check:history
+npm run typecheck
+npm run lint
+npm run build
+```
+
+Cài đặt môi trường Node.js 22.x trên Vercel. Xem `docs/QA-REPORT.md` để biết hạng mục nào đã kiểm chứng tại môi trường đóng gói và hạng mục nào **chưa được xác nhận trực tiếp trên Vercel**.
+
+---
+
+## Lịch sử các phiên bản trước
+
+## VietWards V0.4.0 — Province Explorer
 
 **VietWards** là web app giáo dục về địa giới hành chính Việt Nam, tra cứu dữ liệu cấp tỉnh và cấp xã ở hai thời kỳ, chạy PC/mobile qua Vercel, không yêu cầu tài khoản hoặc localhost.
 
@@ -20,7 +62,7 @@
 - Chạm/bấm vào polygon hoặc chọn từ danh sách tỉnh/thành, tô sáng vùng đã chọn và áp lớp tối ~57% lên các vùng khác. Nền ngoài vùng cũng chuyển tối khi có lựa chọn.
 - `fitBounds` theo **toàn bộ tọa độ Polygon/MultiPolygon**, hỗ trợ các phần không liền nhau; reset toàn quốc, zoom +/- và nhãn theo cấp zoom.
 - Giao diện PC 3 cột (danh sách — bản đồ — thông tin). Mobile bản đồ ưu tiên, danh sách có thể mở, panel thông tin phía dưới.
-- Đồng bộ period với các màn hình và lưu lựa chọn. Khi chuyển thời kỳ, lựa chọn được đặt lại. Tự động tách/gộp giữa thời kỳ thuộc **V0.5.0**.
+- Đồng bộ period với các màn hình và lưu lựa chọn. Tại thời điểm V0.3.0, chuyển thời kỳ từng đặt lại lựa chọn. V0.5.0 đã thay cơ chế này bằng giữ lựa chọn lịch sử và giữ góc nhìn.
 - Chế độ xem thông tin giữ **mã, tên, loại hình hành chính** từ Canonical Data V0.2.0; các vùng chưa ghép được mã được đánh dấu rõ.
 - API nội bộ `GET /api/map-boundaries?period=current|before` để đọc, kiểm tra, chuẩn hóa và cung cấp GeoJSON. Không cần browser truy cập cross-origin trực tiếp tới nguồn GIS.
 - Bảo toàn tra cứu danh mục 63/34, 10.035/3.321 cấp xã và API cũ `/api/administrative`.
