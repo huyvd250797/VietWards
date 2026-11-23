@@ -8,7 +8,7 @@ export function PageHeader({ eyebrow, title, description, icon: Icon }: { eyebro
       <h1>{title}</h1>
       <p>{description}</p>
     </div>
-    <span className="phase-badge">V0.2.0 · Data</span>
+    <span className="phase-badge">V0.3.0 · GIS</span>
   </div>;
 }
 

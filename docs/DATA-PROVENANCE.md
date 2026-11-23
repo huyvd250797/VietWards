@@ -1,10 +1,10 @@
-# VietWards V0.2.0 — Data provenance & change control
+# VietWards V0.3.0 — Data provenance & change control
 
 ## Mô hình mốc dữ liệu
 
 - Trước sáp nhập = snapshot vào **30/06/2025**, hệ thống 3 cấp 63 tỉnh/thành, 696 huyện, 10.035 đơn vị cấp xã.
 - Sau sắp xếp = snapshot từ **01/07/2025**, hệ thống 2 cấp 34 tỉnh/thành, 3.321 đơn vị cấp xã.
-- Hiện hành trong V0.2.0 = mốc **23/11/2026**: bản 2025 không thay đổi số lượng nhưng cập nhật loại hình thành phố trực thuộc Trung ương tại Đồng Nai (30/04), Quảng Ninh (01/09), Bắc Ninh (20/09); xã → phường ở Đồng Nai (10, 30/04) và Bắc Ninh (12, 20/09).
+- Hiện hành trong V0.3.0 = mốc **23/11/2026**: bản 2025 không thay đổi số lượng nhưng cập nhật loại hình thành phố trực thuộc Trung ương tại Đồng Nai (30/04), Quảng Ninh (01/09), Bắc Ninh (20/09); xã → phường ở Đồng Nai (10, 30/04) và Bắc Ninh (12, 20/09).
 
 ## Các nguồn chính
 
@@ -29,5 +29,13 @@
 
 - Bảng quan hệ xã cũ → mới không đủ để suy ra địa chỉ hộ dân hoặc ranh giới ở trường hợp chia nhiều phần.
 - Package nguồn là tổng hợp từ GSO, không phải API thời gian thực hoặc cơ sở GIS pháp lý. Các lỗi có thể được báo upstream; dữ liệu nhà nước có giá trị ưu tiên.
-- Dữ liệu diện tích, dân số cần giá trị, kỳ thống kê và nguồn độc lập; chưa hiển thị V0.2.0.
-- Cần kiểm tra định kỳ thay đổi pháp lý từ sau 23/11/2026. Không tự nhận V0.2.0 luôn mới nhất trong tương lai.
+- Dữ liệu diện tích, dân số cần giá trị, kỳ thống kê và nguồn độc lập; chưa hiển thị V0.3.0.
+- Cần kiểm tra định kỳ thay đổi pháp lý từ sau 23/11/2026. Không tự nhận V0.3.0 luôn mới nhất trong tương lai.
+
+## GIS cấp tỉnh — lớp dữ liệu V0.3.0
+
+- Hiện hành: GeoVN / Vietnamese Provinces Database, 34 features GeoJSON có mã. URL và chú thích nằm trong `src/app/api/map-boundaries/route.ts`.
+- Trước sáp nhập: Natural Earth / PiSpace Maps, 63 features public domain được tổng quát hóa; không phải hồ sơ địa giới chính thức năm 2025.
+- Lấy qua Vercel server API, đối chiếu mã theo master V0.2.0. Với features không ghép được mã, API trả `metadata.unmatchedNames` và giao diện ghi rõ chưa đối chiếu.
+- Dataset ngoài có thể lỗi hoặc cập nhật không tương thích; nếu sai số lượng/định dạng, ứng dụng từ chối và hiện nút thử lại.
+- Không khai báo dữ liệu GIS đủ độ chính xác đo đạc hoặc có quyền tái phân phối độc lập chưa được xác minh. Xem `docs/GIS-SOURCE-AND-TESTING.md` và `THIRD_PARTY_NOTICES.md`.

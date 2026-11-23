@@ -1,34 +1,40 @@
-# VietWards V0.2.0 — Canonical Administrative Data
+# VietWards V0.3.0 — Interactive Vietnam Map
 
-**VietWards** là web app giáo dục dùng để tra cứu và so sánh đơn vị hành chính Việt Nam trước 01/07/2025 và hiện hành. Bản V0.2.0 được nâng cấp trực tiếp từ VietAtlas V0.1.0, đã đổi thương hiệu toàn bộ sang VietWards.
+**VietWards** là web app giáo dục về địa giới hành chính Việt Nam, tra cứu dữ liệu cấp tỉnh và cấp xã ở hai thời kỳ, chạy PC/mobile qua Vercel, không yêu cầu tài khoản hoặc localhost.
 
-## Đã triển khai
+## Nâng cấp V0.3.0
 
-- Next.js App Router + TypeScript, theme sáng/tối, PC/mobile responsive, PWA cơ bản, Vercel-ready.
-- Danh mục tham chiếu **63 tỉnh/thành, 696 quận/huyện, 10.035 xã/phường/thị trấn** cũ (ảnh chụp ngày 30/06/2025).
-- Danh mục **34 tỉnh/thành và 3.321 xã/phường/đặc khu** từ 01/07/2025; cập nhật loại hình 3 thành phố trực thuộc TW và 22 xã chuyển phường theo văn bản năm 2026.
-- Tra cứu trực tiếp tại `/tinh-thanh`: danh mục tỉnh và mã, xã/phường có mã 5 số, lọc quận/huyện lịch sử, phân trang và tìm không dấu.
-- Quan hệ tỉnh cũ → tỉnh mới; quan hệ xã/phường cũ ↔ mới (phân biệt xã cũ chia cho nhiều xã mới). Màn hình `/lich-su` có danh sách đầy đủ 34 tỉnh hiện hành và tiền thân.
-- Endpoint nội bộ `/api/administrative`, không cần API key, không cần đăng nhập hoặc cơ sở dữ liệu độc lập.
-- Trang `/gioi-thieu` ghi nguồn, hiệu lực, giấy phép và nhật ký cập nhật.
-- Bộ kiểm tra tự động cho tổng số, mã hành chính, cha-con, chuyển đổi 63→34 và 22 tên chuyển loại hình năm 2026.
+- **Bản đồ MapLibre GL JS** tại `/ban-do`, hai chế độ bản đồ cấp tỉnh: **34 tỉnh/thành hiện hành** và **63 tỉnh/thành trước 01/07/2025**.
+- Chạm/bấm vào polygon hoặc chọn từ danh sách tỉnh/thành, tô sáng vùng đã chọn và áp lớp tối ~57% lên các vùng khác. Nền ngoài vùng cũng chuyển tối khi có lựa chọn.
+- `fitBounds` theo **toàn bộ tọa độ Polygon/MultiPolygon**, hỗ trợ các phần không liền nhau; reset toàn quốc, zoom +/- và nhãn theo cấp zoom.
+- Giao diện PC 3 cột (danh sách — bản đồ — thông tin). Mobile bản đồ ưu tiên, danh sách có thể mở, panel thông tin phía dưới.
+- Đồng bộ period với các màn hình và lưu lựa chọn. Khi chuyển thời kỳ, lựa chọn được đặt lại. Tự động tách/gộp giữa thời kỳ thuộc **V0.5.0**.
+- Chế độ xem thông tin giữ **mã, tên, loại hình hành chính** từ Canonical Data V0.2.0; các vùng chưa ghép được mã được đánh dấu rõ.
+- API nội bộ `GET /api/map-boundaries?period=current|before` để đọc, kiểm tra, chuẩn hóa và cung cấp GeoJSON. Không cần browser truy cập cross-origin trực tiếp tới nguồn GIS.
+- Bảo toàn tra cứu danh mục 63/34, 10.035/3.321 cấp xã và API cũ `/api/administrative`.
 
-## Giới hạn đã xác định
+## Nguồn ranh giới GIS
 
-- **Chưa có polygon GIS**: vùng chọn, highlight, dark-overlay, fitBounds triển khai ở V0.3.0.
-- **Chưa có** số liệu dân số/diện tích chính thức chi tiết và biển số xe: thuộc V0.8.0. Không dùng dữ liệu giả.
-- Bộ dữ liệu cũ và mới lấy từ thư viện **vn-local-divisions v1.0.1 (MIT)**, xuất phát từ GSO và bảng quan hệ mở. Được xem là **nguồn tổng hợp tham khảo có thể kiểm tra**, không phải dữ liệu địa giới pháp lý được cơ quan nhà nước chứng nhận.
-- Cập nhật năm 2026 dùng lớp điều chỉnh có ngày hiệu lực, không sửa ảnh chụp dữ liệu gốc 2025.
-- Với xã cũ bị chia cho nhiều nơi, quan hệ chỉ xác định đơn vị liên quan, **không** xác định một địa chỉ hoặc thửa đất thuộc xã mới nào nếu không có GIS và hồ sơ chi tiết.
+| Thời kỳ | Nguồn GeoJSON | Giấy phép / cảnh báo |
+| --- | --- | --- |
+| Hiện hành 34 tỉnh | [GeoVN — provinces.geojson](https://github.com/truongdinh018/GeoVN/blob/main/data/provinces.geojson), dẫn xuất từ Vietnamese Provinces Database | Dữ liệu GIS cộng đồng; xem [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). **Chưa xác minh quyền pháp lý và độ chính xác đo đạc của toàn bộ hình học gốc**. |
+| Trước 01/07/2025, 63 tỉnh | [PiSpace Maps — Natural Earth](https://maps.pispace.eu/data/vietnam/) | Public domain Natural Earth, **biên giới tổng quát hóa**, không phải ranh giới pháp lý. |
+| Nguồn thay thế nếu nguồn chính lỗi | [Vietnam Interactive Map, 63 tỉnh](https://github.com/thongnv99/vietnam-interactive-map) | Chỉ tải nếu nguồn chính không khả dụng, cần đối chiếu GIS riêng. |
 
-## Triển khai GitHub + Vercel
+**Đặc biệt:** API lấy bản đồ GIS qua Internet từ các nguồn công khai khi xem bản đồ; Vercel có cache CDN để giảm tải. Nếu nguồn đang lỗi, màn hình hiển thị trạng thái lỗi và nút **Thử tải lại**, **không dựng hình minh họa thay ranh giới thật**. Khi muốn deploy hoàn toàn tự chủ/offline cho GIS, cần có bộ dữ liệu đã được phép phân phối lại và được kiểm tra chính thức.
 
-1. Đưa toàn bộ các tệp bên trong thư mục nguồn này lên **root** repository GitHub (đảm bảo root có `package.json`).
-2. Mở https://vercel.com/new và **Import** repository.
-3. Chọn **Next.js**, Node.js **22.x**, command mặc định `npm run build`, nhấn **Deploy**.
-4. Mở URL HTTPS được cấp để dùng VietWards. Người dùng không cần chạy localhost hay cài đặt gì.
+**Phạm vi dữ liệu:** V0.3.0 chỉ là lớp polygon tỉnh/thành; **chưa có polygon xã/phường**. Không trình bày diện tích, dân số hoặc biển số như số liệu hiện hành nếu chưa có nguồn đủ chuẩn (V0.8.0).
 
-**Chỉ dành cho người phát triển/CI khi cần kiểm tra:**
+## Đưa source lên Vercel (không cần chạy localhost)
+
+1. Đưa **toàn bộ nội dung** source ZIP lên root của một repository GitHub (root chứa `package.json`).
+2. Tại [Vercel New Project](https://vercel.com/new) → Import Git Repository, chọn Next.js và Node.js **22.x**.
+3. Giữ Build Command `npm run build`, Install Command `npm install`, nhấn **Deploy**.
+4. Truy cập URL HTTPS Vercel cấp. `/ban-do` sẽ gọi endpoint nội bộ `/api/map-boundaries` để nạp GIS.
+
+Không cần `.env`, không có DB phải migration, không dùng khóa API. Lần đầu mở bản đồ cần kết nối Internet và truy cập được nguồn bản đồ GIS. Các chức năng nền V0.2.0 vẫn giữ nguyên.
+
+## Kiểm tra trên môi trường có npm registry
 
 ```bash
 npm install
@@ -39,30 +45,13 @@ npm run lint
 npm run build
 ```
 
-V0.2.0 yêu cầu npm registry hoạt động lúc cài dependencies, giống các dự án Next.js thông thường. Dữ liệu danh mục nằm trong npm dependency đã ghim phiên bản, không thực hiện gọi API nguồn ngoài khi người dùng truy cập trang. `node_modules`, `.next` không đóng gói vào ZIP.
+Các script trên cũng được cấu hình trong GitHub Actions CI. File ZIP **không bao gồm** `node_modules` hoặc `.next`.
 
-## API nội bộ
+## API
 
-- `GET /api/administrative?mode=provinces&period=current` — 34 tỉnh/thành + số lượng xã.
-- `GET /api/administrative?mode=provinces&period=before` — 63 tỉnh/thành và đơn vị kế thừa.
-- `GET /api/administrative?mode=units&period=current&province=75&page=1&size=40&q=trang%20bom` — danh sách xã/phường Đồng Nai (cập nhật đến 23/11/2026).
-- `GET /api/administrative?mode=units&period=before&province=75&district=<ma-huyen-cu>` — tìm các xã thuộc quận/huyện cũ theo mã thực được tra cứu từ UI (ví dụ `district` là mã 3 chữ số; không suy luận tên từ mã nếu chưa kiểm chứng).
-- `GET /api/administrative?mode=relation&period=before&code=00007` — xã cũ và các xã mới nhận một phần/toàn bộ.
-- `GET /api/administrative?mode=sources` — nguồn và metadata.
+- `GET /api/map-boundaries?period=current` — GeoJSON 34 tỉnh/thành, tên/mã/loại hình liên kết với dữ liệu chuẩn, metadata nguồn.
+- `GET /api/map-boundaries?period=before` — GeoJSON 63 tỉnh/thành, tên/mã đã đối chiếu khi nhận diện được, metadata nguồn.
+- `GET /api/administrative?mode=provinces&period=current|before` — danh mục hành chính V0.2.0.
+- `GET /api/administrative?mode=units&period=current|before&province=75` — tra cứu đơn vị cấp xã của từng tỉnh.
 
-Truy vấn giới hạn 80 bản ghi/trang và sử dụng mã 2/3/5 chữ số dưới dạng **string**, giữ nguyên số 0 đầu.
-
-## Tệp nền tảng
-
-- `src/lib/admin-data.ts`: adapter dữ liệu, chuẩn hóa loại hình năm 2026, thống kê, quan hệ.
-- `src/lib/admin-sources.ts`: văn bản nguồn, ngày hiệu lực, nhật ký.
-- `src/app/api/administrative/route.ts`: API tra cứu có phân trang.
-- `src/components/province-explorer.tsx`: tra cứu tỉnh/xã thực và đối chiếu.
-- `src/components/history-explorer.tsx`: quan hệ 63→34 và mốc pháp lý.
-- `scripts/verify-data.mjs`: kiểm định dữ liệu, chạy trong GitHub Actions CI.
-- `docs/DATA-PROVENANCE.md`: nguồn và giới hạn.
-- `docs/ROADMAP.md`: roadmap cố định V0.1.0–V1.0.0.
-
-## Giấy phép & ghi nguồn
-
-VietWards sử dụng dữ liệu từ package `vn-local-divisions@1.0.1` theo MIT, tác giả `mtri-git`. Ghi nguồn và giấy phép trong `THIRD_PARTY_NOTICES.md`; xem thêm https://github.com/mtri-git/vn-local-divisions/blob/main/NOTICE.md và nguồn pháp lý trong ứng dụng. Vẫn phải đối chiếu nghị quyết của cơ quan có thẩm quyền khi có khác biệt.
+**Độ chính xác dữ liệu:** nguồn GIS cần kiểm chứng chuyên môn; không được sử dụng bản đồ này để phân định sở hữu/địa giới pháp lý, quy hoạch hay điều hướng an toàn.

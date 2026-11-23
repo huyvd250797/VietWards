@@ -27,3 +27,15 @@ SOFTWARE.
 Data provenance according to upstream NOTICE: General Statistics Office (GSO), last legacy export 2025-07-18; current administrative catalogue 2025-08-05; old-to-new mapping from sapnhap.bando.com.vn as processed by vietnamadminunits. Full upstream notice: https://github.com/mtri-git/vn-local-divisions/blob/main/NOTICE.md.
 
 Legal sources linked in `src/lib/admin-sources.ts` take precedence if there is a conflict. Government administrative data itself is not being claimed to be exclusively licensed by this MIT notice.
+
+## V0.3.0 — GIS engine and cartographic data (23/11/2026)
+
+**MapLibre GL JS** (https://github.com/maplibre/maplibre-gl-js): Open-source WebGL vector rendering engine; license BSD-3-Clause. Installed through npm during deployment. Respect third-party notices of its dependencies.
+
+**GeoVN / Vietnamese Provinces Database** (https://github.com/truongdinh018/GeoVN and https://github.com/thanglequoc/vietnamese-provinces-database): The current 34-province GeoJSON is retrieved on-demand from the public source; the project claims MIT licensing for its code/data, but its GIS geometry is said to be derived from an official reference map. Its original third-party geometry rights and survey validity are **not independently verified**. VietWards links and credits this dataset and does not claim it is official.
+
+**Natural Earth / PiSpace Maps** (https://maps.pispace.eu/data/vietnam/): pre-2025 63-province dataset supplied under Natural Earth public domain terms, generalized for educational mapping, not legal boundaries.
+
+**thongnv99/vietnam-interactive-map** (https://github.com/thongnv99/vietnam-interactive-map): fallback publicly hosted 63-province GeoJSON; repository states MIT but attribution and original GIS source should be checked separately before redistribution.
+
+No third-party GIS geometry is bundled into the distributed ZIP in this release; the server retrieves the source files when needed. If permission to rehost the GIS is not established, disable the corresponding source rather than claiming legal authorization.

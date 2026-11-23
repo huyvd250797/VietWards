@@ -7,8 +7,8 @@ export const metadata: Metadata = { title: "Khám phá bản đồ" };
 
 export default function MapPage() {
   return <div className="page-content">
-    <PageHeader eyebrow="BẢN ĐỒ TƯƠNG TÁC" icon={Map} title="Khám phá bản đồ Việt Nam" description="Trải nghiệm nền tảng xem địa giới hành chính theo từng thời kỳ. Dữ liệu bản đồ sẽ được bổ sung theo roadmap đã phê duyệt."/>
+    <PageHeader eyebrow="BẢN ĐỒ TƯƠNG TÁC" icon={Map} title="Khám phá bản đồ Việt Nam" description="Chọn trực tiếp từng tỉnh/thành trên bản đồ GIS, làm nổi địa giới và chuyển giữa hai thời kỳ hành chính."/>
     <MapWorkbench/>
-    <div className="disclaimer-line">Lưu ý: V0.2.0 đã có danh mục hành chính, nhưng không có vùng hành chính thực hoặc ranh giới pháp lý nào được trình bày ở màn hình này.</div>
+    <div className="disclaimer-line">Ranh giới GIS từ dữ liệu tham khảo công khai; chưa thay thế hồ sơ địa giới hành chính được cơ quan có thẩm quyền phê duyệt.</div>
   </div>;
 }

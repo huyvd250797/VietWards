@@ -1,21 +1,26 @@
-# QA Report — VietWards V0.2.0
+# QA Report — VietWards V0.3.0
 
-## Verified in the construction environment
+## Checks achievable in packaging environment
 
-- V0.1.0 ZIP used as the exact baseline; structure and UI pages retained.
-- `npm run check:structure`: PASS (27 required files, v0.2.0).
-- `node --check scripts/verify-data.mjs`: PASS.
-- All 18 TS/TSX modules passed TypeScript transpiler syntax diagnostics (semantic typecheck requires installed packages).
-- Source dataset inspected via its GitHub repository: counts 63/696/10,035 old, 34/3,321 new, old-to-new conversion 10,035 rows.
-- Both 2026 ward reclassification sets inspected against source: 10 Dong Nai + 12 Bac Ninh. One GSO spelling variant `Hiệp Hoà` versus `Hiệp Hòa` is handled by accent-insensitive matching while displaying canonical spelling from 2026 resolution.
-- Source mapping independently checked: 63/63 former provinces map to 34/34 current provinces, 0 mismatched old-to-new province mappings in underlying conversion tables.
+- Source ZIP extracted from the supplied V0.2.0 release; no deleted application routes.
+- Added map API route, MapLibre component, map styling and 2026 branding.
+- `scripts/check.mjs` verifies required files and version 0.3.0.
+- TypeScript/TSX parse check possible with global TS compiler syntax parser.
 
-## Not verified in this environment
+## Checks not completed in the packaging environment
 
-- Dependencies from npm could not be installed because outbound npm registry/DNS access is unavailable.
-- Therefore **full** TypeScript typecheck, lint, Next production build and end-to-end UI tests have **not** been run here. CI workflow is prepared to perform `npm install`, `check:structure`, `check:data`, typecheck, lint, build on GitHub.
-- No live Vercel deployment or user's GitHub repo modifications were performed.
+- `npm install`, `npm run typecheck`, `npm run lint`, `npm run build`: npm registry network DNS unavailable in this session.
+- Server GIS reachability and geometry count at deployed runtime: cannot make HTTP requests from packaging environment.
+- Browser rendering on live Vercel URL: not deployed in this session.
 
-## Explicitly out of scope
+## Required pre-release QA in GitHub / Vercel
 
-- MapLibre polygon rendering (V0.3.0); province list to map synchronization (V0.4.0); GIS geometry history (V0.5–0.7); sourced area/population/vehicle plates (V0.8.0).
+1. CI `npm install && npm run check:structure && npm run check:data && npm run typecheck && npm run lint && npm run build`.
+2. Deploy to Vercel Node 22 and open `/api/map-boundaries?period=current` and `?period=before`: both status 200, 34/63 features, matchedCount and unmatchedNames reviewed.
+3. Click at least 10 diverse regions, including at least one MultiPolygon (islands); confirm selected-region coverage and reset.
+4. Switch periods repeatedly; confirm no stale geometry or selection.
+5. Test portrait iPhone/Android and desktop light/dark mode; check error/retry with GIS server unavailable.
+
+## Known limitation
+
+Legacy GIS names may not match every canonical province record. Do not assume full verified coverage merely because GeoJSON contains 63 features. Audit `metadata.matchedCount`, `metadata.unmatchedNames` after deployment.

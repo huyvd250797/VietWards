@@ -124,13 +124,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <AppContext.Provider value={{ period, changePeriod }}>
       <div className="app-frame">
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.2.0</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.3.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
-            <div className="progress-caption"><span>Tiến độ dự án</span><strong>2 / 10</strong></div>
+            <div className="progress-caption"><span>Tiến độ dự án</span><strong>3 / 10</strong></div>
             <div className="progress-track"><div className="progress-fill"/></div>
-            <p>Danh mục hành chính đã kết nối. Bản đồ GIS sẽ có ở V0.3.0.</p>
+            <p>Bản đồ GIS tương tác đã có. Tiếp theo: đồng bộ tra cứu địa phương.</p>
             <Link href="/gioi-thieu">Xem lộ trình <ArrowUpRight size={14}/></Link>
           </div>
           <div className="sidebar-foot"><CircleHelp size={15}/> Dữ liệu có kiểm chứng · V{APP.version}</div>
@@ -145,7 +145,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => window.location.assign("/tinh-thanh")}><Search size={17}/> Tìm tỉnh thành <span>V0.2</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => window.location.assign("/tinh-thanh")}><Search size={17}/> Tìm tỉnh thành <span>V0.3</span></button>
               <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -167,7 +167,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="mobile-drawer" role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={() => setMobileMenuOpen(false)}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Administrative Data</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Interactive Vietnam Map</div>
             </div>
           </div>
         )}
