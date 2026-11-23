@@ -1,4 +1,4 @@
-# VietAtlas — Roadmap chuẩn (Baseline V1.0)
+# VietWards — Roadmap chuẩn (Baseline V1.0)
 
 **Được chốt:** 22/11/2026 (Asia/Ho_Chi_Minh). **Trạng thái:** FROZEN về phạm vi cấp cao; thay đổi cần yêu cầu rõ ràng. 
 
@@ -31,7 +31,7 @@ Xây dựng ứng dụng giáo dục địa lý hành chính Việt Nam, dùng �
 | V0.7.0 | Legacy Administrative Atlas | Dữ liệu GIS cấp xã trước sáp nhập, xã cũ-mới và điều chỉnh một phần, cấp huyện lịch sử để tra cứu |
 | V0.8.0 | Verified Statistics & Plates | Diện tích, dân số theo kỳ thống kê, mã biển số hiện hành/lịch sử, nguồn trích dẫn, đánh dấu dữ liệu tạm |
 | V0.9.0 | Educational Experience & QA | Tương tác so sánh, hướng dẫn học tập, kiểm toán dữ liệu, accessibility, mobile và hiệu suất |
-| V1.0.0 | VietAtlas Public Release | Phát hành hoàn thiện, giám sát lỗi, quy trình cập nhật dữ liệu, caching, PWA và Vercel ổn định |
+| V1.0.0 | VietWards Public Release | Phát hành hoàn thiện, giám sát lỗi, quy trình cập nhật dữ liệu, caching, PWA và Vercel ổn định |
 
 ## Mốc sử dụng được
 

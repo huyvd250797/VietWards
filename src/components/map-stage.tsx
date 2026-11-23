@@ -44,8 +44,8 @@ export function MapWorkbench() {
         <div className="workbench-empty">
           <ScanLine size={22}/>
           <h4>Danh sách vùng địa giới</h4>
-          <p>Danh mục tỉnh/thành sẽ được bổ sung tại V0.2.0 và có thể chọn trực tiếp ở V0.4.0.</p>
-          <Link href="/tinh-thanh">Xem kế hoạch danh mục <ArrowUpRight size={15}/></Link>
+          <p>Danh mục 63/34 tỉnh thành đã có. Bấm để xem dữ liệu; vùng GIS triển khai ở V0.3.0.</p>
+          <Link href="/tinh-thanh">Tra cứu danh mục <ArrowUpRight size={15}/></Link>
         </div>
       </aside>
       <MapStage/>

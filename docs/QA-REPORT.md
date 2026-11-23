@@ -1,27 +1,21 @@
-# QA Report — VietAtlas V0.1.0
+# QA Report — VietWards V0.2.0
 
-## Checks completed in release workspace
+## Verified in the construction environment
 
-- PASS: Required route/source/asset structure: `node scripts/check.mjs`.
-- PASS: Parse/transpile syntax of all 14 authored TypeScript/TSX source/config modules using installed TypeScript compiler.
-- PASS: Resolve all local `@/` imports to existing source modules.
-- PASS: JavaScript syntax check for `public/sw.js` and `eslint.config.mjs` (`node --check`).
-- PASS: Generated PWA icon assets (192px, 512px, maskable 512px, apple touch 180px).
-- PASS: README, roadmap and Vercel deployment settings included.
+- V0.1.0 ZIP used as the exact baseline; structure and UI pages retained.
+- `npm run check:structure`: PASS (27 required files, v0.2.0).
+- `node --check scripts/verify-data.mjs`: PASS.
+- All 18 TS/TSX modules passed TypeScript transpiler syntax diagnostics (semantic typecheck requires installed packages).
+- Source dataset inspected via its GitHub repository: counts 63/696/10,035 old, 34/3,321 new, old-to-new conversion 10,035 rows.
+- Both 2026 ward reclassification sets inspected against source: 10 Dong Nai + 12 Bac Ninh. One GSO spelling variant `Hiệp Hoà` versus `Hiệp Hòa` is handled by accent-insensitive matching while displaying canonical spelling from 2026 resolution.
+- Source mapping independently checked: 63/63 former provinces map to 34/34 current provinces, 0 mismatched old-to-new province mappings in underlying conversion tables.
 
-## Checks not completed / deployment caveats
+## Not verified in this environment
 
-- NOT RUN: `npm install`, because the current workspace cannot resolve `registry.npmjs.org` (DNS EAI_AGAIN).
-- NOT RUN: full `next build`, `tsc --noEmit`, `eslint .`, real browser QA for Next application; these require dependencies to be installed.
-- NOT DONE: connecting a GitHub repository to the user's Vercel account or deploying a public Vercel URL. These are account-specific actions.
-- NOT IMPLEMENTED BY DESIGN: administrative GIS, polygon selection, real province search, statistics and license plate lookup (deferred by roadmap).
+- Dependencies from npm could not be installed because outbound npm registry/DNS access is unavailable.
+- Therefore **full** TypeScript typecheck, lint, Next production build and end-to-end UI tests have **not** been run here. CI workflow is prepared to perform `npm install`, `check:structure`, `check:data`, typecheck, lint, build on GitHub.
+- No live Vercel deployment or user's GitHub repo modifications were performed.
 
-## Recommended Vercel verification
+## Explicitly out of scope
 
-1. Deploy with Next.js preset, Node 22.x.
-2. Verify all 5 routes render and navigation works.
-3. Check mobile at 390px width and desktop at 1440px width.
-4. Switch theme and period, navigate and reload; confirm preferences persist.
-5. Check `/manifest.webmanifest`, `/sw.js` and icon URLs return 200 over HTTPS.
-6. Install PWA, switch offline and verify fallback `offline.html` appears rather than stale administrative data.
-7. Review Vercel logs and GitHub Actions typecheck/lint/build results before declaring production build validated.
+- MapLibre polygon rendering (V0.3.0); province list to map synchronization (V0.4.0); GIS geometry history (V0.5–0.7); sourced area/population/vehicle plates (V0.8.0).

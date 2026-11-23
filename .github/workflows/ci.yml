@@ -1,4 +1,4 @@
-name: VietAtlas CI
+name: VietWards CI
 on:
   push:
     branches: [main]
@@ -16,6 +16,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Structure check
         run: npm run check:structure
+      - name: Administrative data invariants
+        run: npm run check:data
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

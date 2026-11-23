@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "VietAtlas — Bản đồ hành chính Việt Nam",
-    short_name: "VietAtlas",
+    name: "VietWards — Bản đồ hành chính Việt Nam",
+    short_name: "VietWards",
     description: "Khám phá hành chính Việt Nam trước và sau 01/07/2025",
     start_url: "/",
     scope: "/",

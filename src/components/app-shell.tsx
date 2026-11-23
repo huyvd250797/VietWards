@@ -33,9 +33,9 @@ const primaryNav = [
 
 function Logo({ compact = false }: { compact?: boolean }) {
   return (
-    <Link className={`brand ${compact ? "brand-compact" : ""}`} href="/" aria-label="VietAtlas - Trang tổng quan">
+    <Link className={`brand ${compact ? "brand-compact" : ""}`} href="/" aria-label="VietWards - Trang tổng quan">
       <span className="brand-mark" aria-hidden="true"><Globe2 size={23} strokeWidth={2.1}/></span>
-      <span className="brand-copy"><strong>VietAtlas<span className="brand-dot">.</span></strong><small>KHÁM PHÁ VIỆT NAM</small></span>
+      <span className="brand-copy"><strong>VietWards<span className="brand-dot">.</span></strong><small>KHÁM PHÁ VIỆT NAM</small></span>
     </Link>
   );
 }
@@ -64,9 +64,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     // Read browser preferences after hydration; avoid server/client markup mismatches.
     const frame = window.requestAnimationFrame(() => {
       try {
-        const storedPeriod = localStorage.getItem("vietatlas-period");
+        const storedPeriod = localStorage.getItem("vietwards-period") ?? localStorage.getItem("vietatlas-period");
         if (storedPeriod === "before" || storedPeriod === "current") setPeriod(storedPeriod);
-        const storedTheme = localStorage.getItem("vietatlas-theme");
+        const storedTheme = localStorage.getItem("vietwards-theme") ?? localStorage.getItem("vietatlas-theme");
         const initialTheme = storedTheme === "dark" || storedTheme === "light"
           ? storedTheme
           : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -88,14 +88,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   function changePeriod(nextPeriod: Period) {
     setPeriod(nextPeriod);
-    try { localStorage.setItem("vietatlas-period", nextPeriod); } catch { /* no storage */ }
+    try { localStorage.setItem("vietwards-period", nextPeriod); } catch { /* no storage */ }
   }
 
   function toggleTheme() {
     const nextTheme = theme === "light" ? "dark" : "light";
     setTheme(nextTheme);
     document.documentElement.setAttribute("data-theme", nextTheme);
-    try { localStorage.setItem("vietatlas-theme", nextTheme); } catch { /* no storage */ }
+    try { localStorage.setItem("vietwards-theme", nextTheme); } catch { /* no storage */ }
   }
 
   const currentNav = [...primaryNav, { href: "/gioi-thieu", label: "Giới thiệu", icon: BookOpenText }]
@@ -124,13 +124,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <AppContext.Provider value={{ period, changePeriod }}>
       <div className="app-frame">
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.1.0</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.2.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
-            <div className="progress-caption"><span>Tiến độ dự án</span><strong>1 / 10</strong></div>
+            <div className="progress-caption"><span>Tiến độ dự án</span><strong>2 / 10</strong></div>
             <div className="progress-track"><div className="progress-fill"/></div>
-            <p>Đang xây dựng nền tảng. Bản đồ GIS sẽ có ở V0.3.0.</p>
+            <p>Danh mục hành chính đã kết nối. Bản đồ GIS sẽ có ở V0.3.0.</p>
             <Link href="/gioi-thieu">Xem lộ trình <ArrowUpRight size={14}/></Link>
           </div>
           <div className="sidebar-foot"><CircleHelp size={15}/> Dữ liệu có kiểm chứng · V{APP.version}</div>
@@ -141,11 +141,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="topbar-left">
               <button className="icon-button mobile-menu-button" type="button" aria-label="Mở menu" onClick={() => setMobileMenuOpen(true)}><Menu size={21}/></button>
               <span className="topbar-mobile-logo"><Logo compact/></span>
-              <span className="topbar-breadcrumb desktop-only">VietAtlas <span>/</span> <strong>{currentNav?.label || "Khám phá"}</strong></span>
+              <span className="topbar-breadcrumb desktop-only">VietWards <span>/</span> <strong>{currentNav?.label || "Khám phá"}</strong></span>
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Tìm kiếm địa phương sẽ có trong V0.4.0" disabled><Search size={17}/> Tìm tỉnh thành <span>V0.4</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => window.location.assign("/tinh-thanh")}><Search size={17}/> Tìm tỉnh thành <span>V0.2</span></button>
               <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -153,7 +153,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </header>
           <main className="page-container" id="main-content">{children}</main>
-          <footer className="app-footer"><span>© 2026 VietAtlas. Xây dựng để học và khám phá địa lý Việt Nam.</span><span>V{APP.version} · {APP.releaseName}</span></footer>
+          <footer className="app-footer"><span>© 2026 VietWards. Xây dựng để học và khám phá địa lý Việt Nam.</span><span>V{APP.version} · {APP.releaseName}</span></footer>
         </div>
         <nav className="bottom-nav" aria-label="Điều hướng nhanh trên điện thoại">
           {primaryNav.map(({ href, label, icon: Icon }) => (
@@ -167,7 +167,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="mobile-drawer" role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={() => setMobileMenuOpen(false)}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietAtlas v{APP.version} · Foundation</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Administrative Data</div>
             </div>
           </div>
         )}

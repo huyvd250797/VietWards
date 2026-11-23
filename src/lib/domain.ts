@@ -1,4 +1,4 @@
-/** Contracts for later versions. No administrative dataset is claimed as verified in V0.1.0. */
+/** Contracts for later versions. Contracts for administrative data, GIS and metrics. Snapshot data lives in admin-data.ts. */
 export type HistoricalPeriod = "pre_2025_07_01" | "current";
 export type AdministrativeLevel = "province" | "district_legacy" | "commune";
 export type AdministrativeKind = "province" | "municipality" | "ward" | "commune" | "special_zone" | "district_legacy";

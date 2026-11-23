@@ -8,23 +8,23 @@ import { PERIODS, ROADMAP } from "@/lib/config";
 
 const quickLinks = [
   { href: "/ban-do", icon: MapPinned, title: "Khám phá bản đồ", description: "Khung bản đồ và bộ chọn thời kỳ", tone: "blue" },
-  { href: "/tinh-thanh", icon: Layers3, title: "Tỉnh & thành phố", description: "Danh mục hành chính theo thời kỳ", tone: "mint" },
-  { href: "/lich-su", icon: Clock3, title: "Dòng thời gian", description: "Hiểu về quá trình sắp xếp", tone: "violet" },
+  { href: "/tinh-thanh", icon: Layers3, title: "Tỉnh & thành phố", description: "Tra cứu tỉnh, xã phường, mã hành chính thật", tone: "mint" },
+  { href: "/lich-su", icon: Clock3, title: "Dòng thời gian", description: "Xem quan hệ sáp nhập có dữ liệu", tone: "violet" },
 ];
 
 export function HomeDashboard() {
   const { period } = useAtlas();
   return (
     <div className="home-page">
-      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Đang phát triển <b>V0.1.0</b></div></div>
+      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Đã tích hợp <b>V0.2.0</b></div></div>
       <section className="home-hero" aria-labelledby="hero-heading">
         <div className="hero-text">
-          <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETATLAS · GEOGRAPHIC KNOWLEDGE</span>
+          <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETWARDS · GEOGRAPHIC KNOWLEDGE</span>
           <h1 id="hero-heading">Mỗi vùng đất.<br/><span>Một câu chuyện.</span></h1>
           <p>Khám phá Việt Nam qua địa giới hành chính, lịch sử sáp nhập và những dữ liệu được kiểm chứng. Mọi kiến thức, trên một bản đồ.</p>
           <div className="hero-actions">
             <Link className="button button-white" href="/ban-do"><Map size={18}/> Khám phá bản đồ <ArrowUpRight size={16}/></Link>
-            <Link className="button button-hero-subtle" href="/gioi-thieu">Về VietAtlas <ArrowRight size={17}/></Link>
+            <Link className="button button-hero-subtle" href="/gioi-thieu">Về VietWards <ArrowRight size={17}/></Link>
           </div>
           <div className="hero-fineprint"><Check size={15}/> Không cần tài khoản <span/> Sẵn sàng cho PC & Mobile</div>
         </div>
@@ -45,14 +45,14 @@ export function HomeDashboard() {
       <section className="stats-layout">
         <div className="stat-card stat-card-main">
           <div className="stat-card-top"><span className="stat-icon"><Globe2 size={20}/></span><span className="stat-type">ĐANG CHỌN</span></div>
-          <div className="stat-caption">Số tỉnh, thành phố</div>
+          <div className="stat-caption">Tỉnh/thành hiện hành và lịch sử</div>
           <div className="stat-number">{PERIODS[period].provinceCount}<span>đơn vị cấp tỉnh</span></div>
           <div className="stat-divider"/>
           <div className="stat-bottom"><span>{PERIODS[period].label}</span><span><TrendingUp size={16}/> Mốc tham chiếu</span></div>
         </div>
         <div className="stat-side">
           <div className="stat-period-card"><div><span className="eyebrow">CHUYỂN THỜI KỲ</span><h3>Hai góc nhìn, một Việt Nam.</h3><p>Chuyển qua lại giữa địa giới trước và sau ngày 01/07/2025.</p></div><PeriodToggle size="large"/></div>
-          <div className="source-note"><Database size={17}/><span>Số lượng cấp tỉnh dùng làm mốc sản phẩm. Dữ liệu hành chính chi tiết được tích hợp và kiểm chứng ở V0.2.0.</span></div>
+          <div className="source-note"><Database size={17}/><span>Đã tích hợp 34/63 tỉnh thành và 3.321/10.035 đơn vị cấp xã có mã. Xem nguồn dữ liệu và mốc hiệu lực trong phần Giới thiệu.</span></div>
         </div>
       </section>
 
@@ -66,9 +66,9 @@ export function HomeDashboard() {
 
       <div className="section-heading"><div><span className="eyebrow">CẬP NHẬT PHÁT TRIỂN</span><h2>Điều gì sẽ xuất hiện tiếp theo?</h2></div><Link href="/gioi-thieu" className="section-link">Toàn bộ roadmap <ArrowUpRight size={17}/></Link></div>
       <div className="milestone-strip">
-        {ROADMAP.slice(0, 3).map(({ version, name, detail }, index) => <div className="milestone" key={version}><div className={`milestone-index ${index === 0 ? "now" : ""}`}>{index === 0 ? <Check size={16}/> : `0${index + 1}`}</div><div><div className="milestone-version">V{version} {index === 0 && <span>ĐANG THỰC HIỆN</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
+        {ROADMAP.slice(0, 3).map(({ version, name, detail }, index) => <div className="milestone" key={version}><div className={`milestone-index ${index <= 1 ? "now" : ""}`}>{index <= 1 ? <Check size={16}/> : `0${index + 1}`}</div><div><div className="milestone-version">V{version} {index === 1 && <span>PHIÊN BẢN HIỆN TẠI</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
       </div>
-      <div className="home-bottom-note"><BookOpenText size={18}/><span>VietAtlas được xây dựng với nguyên tắc: <strong>nội dung có nguồn, ranh giới có kiểm chứng, mốc thời gian rõ ràng.</strong></span></div>
+      <div className="home-bottom-note"><BookOpenText size={18}/><span>VietWards được xây dựng với nguyên tắc: <strong>nội dung có nguồn, ranh giới có kiểm chứng, mốc thời gian rõ ràng.</strong></span></div>
     </div>
   );
 }

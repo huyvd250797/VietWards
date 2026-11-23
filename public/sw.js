@@ -1,7 +1,7 @@
-/* VietAtlas V0.1.0 — minimal, safe PWA offline fallback.
+/* VietWards V0.2.0 — minimal, safe PWA offline fallback.
  * Pages/data are not cached to avoid serving stale administrative information.
  */
-const CACHE_NAME = "vietatlas-shell-v0.1.0";
+const CACHE_NAME = "vietwards-shell-v0.2.0";
 const PRE_CACHE = ["/offline.html", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {
