@@ -608,3 +608,33 @@ button:focus-visible, a:focus-visible { outline: 3px solid #66b4ff; outline-offs
   .commune-workbench .gis-info-panel.has-selection{bottom:calc(78px + env(safe-area-inset-bottom,0px));max-height:42dvh}
 }
 @media(prefers-reduced-motion:reduce){.map-level-switch button,.commune-back{transition:none!important}}
+
+/* VietWards V0.7.0 — Legacy Administrative Atlas */
+.legacy-district-select{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-bottom:1px solid var(--border,#d9e4eb)}
+.legacy-district-select span{font-size:11px;font-weight:700;color:var(--muted,#64748b)}
+.legacy-district-select select,.legacy-atlas-filters select{width:100%;min-width:0;padding:9px 10px;border:1px solid #bdd0db;border-radius:9px;background:var(--surface,#fff);color:var(--text,#18364a);font:inherit;font-size:13px}
+.ward-relation-list{display:grid;gap:7px;margin-top:9px}
+.ward-relation-list button,.legacy-choice-list button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;width:100%;padding:10px;border:1px solid #a9c9da;border-radius:11px;background:rgba(37,99,235,.07);color:inherit;cursor:pointer}
+.ward-relation-list button:hover,.legacy-choice-list button:hover{border-color:#2563eb;background:rgba(37,99,235,.14)}
+.ward-relation-list small,.legacy-choice-list small{font-size:11px;opacity:.8}
+.legacy-relation-choices{padding:13px 16px;margin:10px 0 14px;border:1px solid #90b5d0;border-radius:14px;background:rgba(35,114,194,.08)}
+.legacy-relation-choices>div:first-child{display:flex;align-items:center;gap:8px;color:#2563eb}
+.legacy-relation-choices p{font-size:12px;line-height:1.5;margin:8px 0}
+.legacy-choice-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.legacy-map-warning{position:absolute;left:14px;right:auto;bottom:40px;top:auto;transform:none;max-width:min(360px,calc(100% - 28px));padding:12px 14px;text-align:left;align-items:flex-start;gap:6px;background:rgba(248,250,252,.95);box-shadow:0 4px 20px rgba(16,35,57,.1);border:1px solid #bdd0db;border-radius:12px;z-index:5}
+.legacy-map-warning svg{width:18px;height:18px}
+.legacy-map-warning strong{font-size:13px}
+.legacy-map-warning small{font-size:11px;line-height:1.5}
+.legacy-atlas-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.legacy-atlas-filters label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted,#64748b);font-weight:700;min-width:0}
+.legacy-atlas-search{display:flex;align-items:center;gap:6px;background:var(--surface,#fff);border:1px solid #bdd0db;border-radius:9px;padding:0 10px;min-height:40px}
+.legacy-atlas-search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:inherit;font:inherit;font-weight:400}
+.legacy-atlas-meta{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted,#64748b);margin:8px 0}
+.legacy-atlas-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px;max-height:420px;overflow:auto}
+.legacy-atlas-result{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--surface,#fff);border:1px solid #d6e4ed;border-radius:12px;color:inherit;text-decoration:none}
+.legacy-atlas-result:hover{border-color:#2563eb}
+.legacy-atlas-result>span{flex:1;display:flex;flex-direction:column;gap:4px}
+.legacy-atlas-result strong{font-size:13px}
+.legacy-atlas-result small{font-size:11px;color:var(--muted,#64748b)}
+.legacy-atlas-overflow{font-size:12px;color:var(--muted,#64748b)}
+@media (max-width:780px){.legacy-atlas-filters{grid-template-columns:1fr}.legacy-atlas-results{grid-template-columns:1fr}.legacy-map-warning{bottom:55px;max-height:150px;overflow:auto}}

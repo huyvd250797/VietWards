@@ -24,6 +24,8 @@ jobs:
         run: npm run check:history
       - name: Commune & Ward Explorer behavior
         run: npm run check:communes
+      - name: Legacy Atlas structure and GIS provenance
+        run: npm run check:legacy
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

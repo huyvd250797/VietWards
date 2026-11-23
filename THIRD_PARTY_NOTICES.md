@@ -47,3 +47,7 @@ No third-party GIS geometry is bundled into the distributed ZIP in this release;
 - The dataset repository is open source, but underlying cartographic/source-data licensing must be checked separately before production redistribution or commercial use.
 - VietWards does not bundle these raw GIS polygons into the ZIP. The Next.js gateway requests an individual province's GeoJSON when needed and records the source in response metadata.
 - These geometries are **reference material, not legally certified boundary coordinates**. Matched administrative codes do not by themselves validate geometry precision.
+
+## V0.7.0 historical commune geometry
+
+No third-party 2025-06-30 commune-level polygons are included in this release. The opt-in import interface under `public/data/legacy/` requires independent licensing, source attribution, dated verification and matching five-digit GSO codes. The previous PiSpace/Natural Earth reference applies to the older **province** layer only; it is not a certified old-commune boundary source.

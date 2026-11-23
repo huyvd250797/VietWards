@@ -1,5 +1,5 @@
 /** Search and GIS mapping are code-first: a renamed 2026 ward keeps its 5-digit code. */
-export type CommuneKindFilter = "all" | "Xã" | "Phường" | "Đặc khu";
+export type CommuneKindFilter = "all" | "Xã" | "Phường" | "Đặc khu" | "Thị trấn";
 export type CommuneCandidate = { code: string; name: string; kind: string; provinceCode: string };
 
 export function normalizeCommuneQuery(value: string): string {

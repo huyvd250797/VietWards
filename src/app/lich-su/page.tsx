@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArrowRight, History, Info } from "lucide-react";
 import { PageHeader } from "@/components/page-ui";
 import { HistoryExplorer } from "@/components/history-explorer";
+import { LegacyAtlasExplorer } from "@/components/legacy-atlas-explorer";
 import { MapWorkbench } from "@/components/map-stage";
 import { getProvinceRows } from "@/lib/admin-data";
 
@@ -15,5 +16,6 @@ export default function HistoryPage() {
     <div className="history-panel"><div className="history-diagram"><div className="history-node before"><span className="node-small">TRƯỚC 01/07/2025</span><strong>63</strong><span>Tỉnh/thành phố</span></div><div className="history-middle"><ArrowRight size={25}/><small>SẮP XẾP</small></div><div className="history-node after"><span className="node-small">HIỆN TẠI</span><strong>34</strong><span>Tỉnh/thành phố</span></div></div><div className="history-footnote"><Info size={17}/> Dữ liệu quan hệ cấp tỉnh lấy từ danh mục hành chính. Các vùng bản đồ thuộc hai nguồn GIS riêng và chưa được nghiệm thu pháp lý.</div></div>
     <MapWorkbench previous={before} current={current} historyMode/>
     <HistoryExplorer provinces={current}/>
+    <LegacyAtlasExplorer provinces={before}/>
   </div>;
 }

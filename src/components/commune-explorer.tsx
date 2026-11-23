@@ -16,7 +16,11 @@ type CommuneDataset = { type: "FeatureCollection"; features: CommuneFeature[]; m
   expected: number; matchedCount: number; geometryCount: number; missingCodes: string[]; unmatchedGeometryNames: string[];
   duplicateCodes: number; wrongProvinceCount: number; source: string; sourceDate: string; accuracy: string;
 } };
-type Catalog = { provinceCode: string; expected: number; rows: UnitRow[] };
+type Catalog = { provinceCode: string; expected: number; rows: UnitRow[]; period: "before" | "current"; districts?: {code: string; name: string; count: number}[] };
+export type WardRelationTarget = { code: string; name: string; kind: string; provinceCode: string;
+  districtCode: string | null; districtName: string | null; partial: boolean };
+type WardRelation = { status: string; targets: WardRelationTarget[]; targetPeriod: "before" | "current";
+  unresolvedReferences: number; note: string };
 
 type Bounds = [[number, number], [number, number]];
 function getBounds(features: CommuneFeature[]): Bounds | null {
@@ -50,9 +54,10 @@ function isError(error: unknown): error is Error { return error instanceof Error
 function message(error: unknown) { return isError(error) ? error.message : "Không thể tải dữ liệu."; }
 
 export function CommuneMapWorkbench({
-  province, provinces, selectedWardCode, onSelectWard, onChooseProvince, onBack,
+  province, provinces, selectedWardCode, onSelectWard, onChooseProvince, onBack, onNavigateRelation,
 }: { province: ProvinceRow; provinces: ProvinceRow[]; selectedWardCode: string | null;
   onSelectWard: (code: string | null) => void; onChooseProvince: (code: string) => void; onBack: () => void;
+  onNavigateRelation: (period: "before" | "current", target: WardRelationTarget) => void;
 }) {
   const { period } = useAtlas();
   const provinceCode = province.code;
@@ -70,6 +75,10 @@ export function CommuneMapWorkbench({
   const [gisLoading, setGisLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState<CommuneKindFilter>("all");
+  const [districtCode, setDistrictCode] = useState("");
+  const [relation, setRelation] = useState<WardRelation | null>(null);
+  const [relationError, setRelationError] = useState("");
+  const [legacyOutline, setLegacyOutline] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [retry, setRetry] = useState(0);
   const [shareStatus, setShareStatus] = useState("");
@@ -78,7 +87,8 @@ export function CommuneMapWorkbench({
 
   useEffect(() => { chooseRef.current = onSelectWard; }, [onSelectWard]);
   const rows = useMemo(() => catalog?.provinceCode === provinceCode ? catalog.rows : [], [catalog, provinceCode]);
-  const shown = useMemo(() => filterCommunes(rows, query, kind), [rows, query, kind]);
+  const shown = useMemo(() => filterCommunes(rows, query, kind).filter((ward) =>
+    !districtCode || (period === "before" && ward.districtCode === districtCode)), [rows, query, kind, districtCode, period]);
   const selected = rows.find((row) => row.code === selectedWardCode) ?? null;
   const matchedCodes = useMemo(() => new Set(dataset?.features.filter((feature) => feature.properties.matched).map((feature) => feature.properties.code) ?? []), [dataset]);
   const mapped = !!selected && matchedCodes.has(selected.code);
@@ -140,40 +150,57 @@ export function CommuneMapWorkbench({
   useEffect(() => {
     const controller = new AbortController();
     const frame = requestAnimationFrame(() => {
-      setCatalog(null); setCatalogError(""); setCatalogLoading(true); setQuery(""); setKind("all"); setListOpen(false);
-      fetch(`/api/communes?province=${encodeURIComponent(provinceCode)}`, { signal: controller.signal })
+      setCatalog(null); setCatalogError(""); setCatalogLoading(true); setQuery(""); setKind("all"); setDistrictCode(""); setListOpen(false);
+      fetch(`/api/communes?period=${period}&province=${encodeURIComponent(provinceCode)}`, { signal: controller.signal })
         .then(async (res) => { if (!res.ok) throw new Error("Không thể tải danh mục hành chính"); return res.json() as Promise<Catalog>; })
         .then((data) => { if (!controller.signal.aborted) setCatalog(data); })
         .catch((error) => { if (!controller.signal.aborted) setCatalogError(message(error)); })
         .finally(() => { if (!controller.signal.aborted) setCatalogLoading(false); });
     });
     return () => { controller.abort(); cancelAnimationFrame(frame); };
-  }, [provinceCode]);
+  }, [provinceCode, period]);
 
   useEffect(() => {
     if (!mapReady || !mapRef.current) return;
     const controller = new AbortController();
     const frame = requestAnimationFrame(() => {
-      setDataset(null); setGisError(""); setGisLoading(true); lastFocused.current = null;
+      setDataset(null); setGisError(""); setGisLoading(true); setLegacyOutline(false); lastFocused.current = null;
       (mapRef.current?.getSource(L.source) as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features: [] });
-      const cached = cache.get(provinceCode);
+      const cached = cache.get(`${period}:${provinceCode}`);
       const work: Promise<CommuneDataset> = cached ? Promise.resolve(cached) :
-        fetch(`/api/commune-boundaries?province=${encodeURIComponent(provinceCode)}`, { signal: controller.signal })
+        fetch(`/api/commune-boundaries?period=${period}&province=${encodeURIComponent(provinceCode)}`, { signal: controller.signal })
           .then(async (res) => { if (!res.ok) { const error = await res.json().catch(() => ({})) as { error?: string }; throw new Error(error.error ?? `HTTP ${res.status}`); } return res.json() as Promise<CommuneDataset>; });
       void work.then((data) => {
         if (controller.signal.aborted) return;
         if (!Array.isArray(data.features) || data.metadata.matchedCount < 1) throw new Error("Không đối chiếu được dữ liệu GIS.");
-        cache.set(provinceCode, data);
+        cache.set(`${period}:${provinceCode}`, data);
         const source = mapRef.current?.getSource(L.source) as GeoJSONSource | undefined;
         if (!source) throw new Error("Nguồn bản đồ chưa sẵn sàng.");
         source.setData({ type: "FeatureCollection", features: data.features } as unknown as Parameters<GeoJSONSource["setData"]>[0]);
         setDataset(data);
         focused(data.features.filter((f) => f.properties.matched), 0);
-      }).catch((error) => { if (!controller.signal.aborted) setGisError(message(error)); })
+      }).catch(async (error) => {
+        if (controller.signal.aborted) return;
+        setGisError(message(error));
+        if (period === "before") {
+          // Only show the already-sourced province outline when historical ward
+          // shapes are unavailable. Never present this as ward-level geometry.
+          try {
+            const response = await fetch("/api/map-boundaries?period=before", { signal: controller.signal });
+            if (!response.ok) return;
+            const payload = await response.json() as { features: CommuneFeature[] };
+            const outline = payload.features?.find((feature) => feature.properties.code === provinceCode && feature.properties.matched);
+            if (!outline || controller.signal.aborted) return;
+            const shape = { ...outline, id: "province-outline", properties: { ...outline.properties, code: "province-outline", matched: false, name: province.name, tone: 0 } };
+            (mapRef.current?.getSource(L.source) as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features: [shape] } as unknown as Parameters<GeoJSONSource["setData"]>[0]);
+            focused([shape], 0); setLegacyOutline(true);
+          } catch { /* Outline is optional; catalogue works without it. */ }
+        }
+      })
         .finally(() => { if (!controller.signal.aborted) setGisLoading(false); });
     });
     return () => { controller.abort(); cancelAnimationFrame(frame); };
-  }, [mapReady, provinceCode, retry, focused]);
+  }, [mapReady, provinceCode, period, retry, focused, province.name]);
 
   useEffect(() => {
     if (!mapReady) return;
@@ -201,6 +228,18 @@ export function CommuneMapWorkbench({
     if (row) node.scrollTo({ top: Math.max(0, row.offsetTop - node.offsetTop - node.clientHeight / 2), behavior: "smooth" });
   }, [selectedWardCode, query, catalog]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    const frame = requestAnimationFrame(() => { setRelation(null); setRelationError(""); });
+    if (selectedWardCode && selected) {
+      fetch(`/api/ward-relations?period=${period}&code=${selectedWardCode}`, { signal: controller.signal })
+        .then(async (res) => { if (!res.ok) throw new Error("Không tải được quan hệ sáp nhập."); return res.json() as Promise<WardRelation>; })
+        .then((value) => { if (!controller.signal.aborted) setRelation(value); })
+        .catch((err) => { if (!controller.signal.aborted) setRelationError(message(err)); });
+    }
+    return () => { controller.abort(); cancelAnimationFrame(frame); };
+  }, [period, selectedWardCode, selected?.code]);
+
   const choose = (code: string | null) => { onSelectWard(code); if (code) setListOpen(false); };
   const reset = () => {
     choose(null);
@@ -219,12 +258,13 @@ export function CommuneMapWorkbench({
     } catch (error) { if ((error as Error)?.name !== "AbortError") setShareStatus("Chưa chia sẻ được liên kết"); }
   }
   const warning = dataset && dataset.metadata.matchedCount < dataset.metadata.expected;
-  const sourceLabel = dataset?.metadata.source.includes("GeoVN") ? "GeoVN (GIS tham khảo, tháng 3/2026)" : "Nguồn GIS tham khảo";
+  const sourceLabel = period === "before" ? "GIS lịch sử đã đối chiếu mã hành chính" :
+    dataset?.metadata.source.includes("GeoVN") ? "GeoVN (GIS tham khảo, tháng 3/2026)" : "Nguồn GIS tham khảo";
 
   return <section className="gis-workbench commune-workbench" aria-label={`Bản đồ xã phường ${province.name}`}>
     <header className="gis-toolbar commune-toolbar">
-      <div className="gis-toolbar-copy"><span className="gis-overline"><span className="live-dot"/> KHÁM PHÁ CẤP XÃ</span>
-        <h2>{province.name} — Xã, phường, đặc khu</h2><p>Chạm vùng địa lý hoặc chọn trong danh sách để xem ranh giới từng đơn vị.</p>
+      <div className="gis-toolbar-copy"><span className="gis-overline"><span className="live-dot"/> {period === "before" ? "ĐỊA GIỚI CẤP XÃ TRƯỚC 01/07/2025" : "KHÁM PHÁ CẤP XÃ HIỆN HÀNH"}</span>
+        <h2>{province.name} — {period === "before" ? "Xã, phường, thị trấn cũ" : "Xã, phường, đặc khu"}</h2><p>{period === "before" ? "Tra cứu tỉnh → huyện → xã cũ và đơn vị kế thừa. GIS lịch sử chỉ hiển thị khi đã xác minh." : "Chạm vùng địa lý hoặc chọn trong danh sách để xem ranh giới từng đơn vị."}</p>
       </div>
       <div className="commune-toolbar-actions">
         <button type="button" className="commune-back" onClick={onBack}><ArrowLeft size={16}/> Cấp tỉnh</button>
@@ -233,14 +273,18 @@ export function CommuneMapWorkbench({
         </select></label>
       </div>
     </header>
-    {period !== "current" && <p role="alert" className="commune-notice">Bản đồ cấp xã trước 01/07/2025 sẽ được triển khai tại V0.7.0.</p>}
+
     <div className="gis-layout">
       <aside className={`gis-region-panel ${listOpen ? "gis-list-open" : ""}`}>
-        <div className="gis-panel-head"><div><Layers3 size={17}/><strong>Xã / phường / đặc khu</strong></div><span>{catalog?.expected ?? province.communeCount}</span></div>
+        <div className="gis-panel-head"><div><Layers3 size={17}/><strong>{period === "before" ? "Xã / phường / thị trấn cũ" : "Xã / phường / đặc khu"}</strong></div><span>{catalog?.expected ?? province.communeCount}</span></div>
         <button type="button" className="gis-mobile-list-close" aria-label="Đóng danh sách" onClick={() => setListOpen(false)}><X size={18}/></button>
         <label className="gis-search"><Search size={16}/><input type="search" aria-label="Tìm xã phường theo tên hoặc mã" placeholder="Tên xã/phường, mã 5 số..." value={query} onChange={(e) => setQuery(e.target.value)}/></label>
+        {period === "before" && <label className="legacy-district-select"><span>Quận/huyện/thị xã trước sáp nhập</span><select aria-label="Lọc huyện lịch sử" value={districtCode} onChange={(event) => { setDistrictCode(event.target.value); onSelectWard(null); }}>
+          <option value="">Tất cả huyện ({catalog?.districts?.length ?? province.districtCount ?? 0})</option>
+          {catalog?.districts?.map((district) => <option key={district.code} value={district.code}>{district.name} ({district.count})</option>)}
+        </select></label>}
         <div className="gis-type-filters" role="group" aria-label="Lọc loại đơn vị cấp xã">
-          {([ ["all", "Tất cả"], ["Xã", "Xã"], ["Phường", "Phường"], ["Đặc khu", "Đặc khu"] ] as const).map(([value,label]) =>
+          {([ ["all", "Tất cả"], ["Xã", "Xã"], ["Phường", "Phường"], [period === "before" ? "Thị trấn" : "Đặc khu", period === "before" ? "Thị trấn" : "Đặc khu"] ] as const).map(([value,label]) =>
             <button key={value} type="button" className={kind === value ? "active" : ""} aria-pressed={kind === value} onClick={() => setKind(value)}>{label}</button>)}
         </div>
         {catalogError && <p className="commune-notice" role="alert">{catalogError}</p>}
@@ -248,16 +292,16 @@ export function CommuneMapWorkbench({
           {catalogLoading && <div className="gis-empty">Đang tải danh mục cấp xã…</div>}
           {!catalogLoading && shown.map((ward) => <button key={ward.code} type="button" data-ward-code={ward.code}
             className={`gis-region-row ${selectedWardCode === ward.code ? "active" : ""}`} aria-pressed={selectedWardCode === ward.code} onClick={() => choose(ward.code)}>
-            <span className="gis-region-dot"/><span className="gis-region-text"><strong>{ward.name}</strong><small>Mã {ward.code} · {ward.kind}{ward.reclassified ? " · Đổi loại hình 2026" : ""}</small></span>
+            <span className="gis-region-dot"/><span className="gis-region-text"><strong>{ward.name}</strong><small>Mã {ward.code} · {ward.kind}{period === "before" && ward.districtName ? ` · ${ward.districtName}` : ""}{ward.reclassified ? " · Đổi loại hình 2026" : ""}</small></span>
             {dataset && !matchedCodes.has(ward.code) ? <span className="gis-unmapped" title="Chưa có polygon đối chiếu">!</span> : <ChevronRight size={16}/>}
           </button>)}
           {!catalogLoading && !catalogError && !shown.length && <div className="gis-empty">Không tìm thấy xã/phường phù hợp.</div>}
         </div>
-        <div className="gis-list-count">Hiển thị {shown.length}/{rows.length} đơn vị · {matchedCodes.size} vùng có GIS</div>
+        <div className="gis-list-count">Hiển thị {shown.length}/{rows.length} đơn vị · {matchedCodes.size} vùng có GIS {period === "before" ? "lịch sử" : "hiện hành"}</div>
       </aside>
       <div className="gis-map-column"><div className="gis-map-shell">
         <div ref={mapContainer} className="gis-map-canvas" role="application" aria-label={`Bản đồ ranh giới cấp xã ${province.name}`}/>
-        <div className="gis-map-top"><span><Compass size={15}/> {province.name}</span><span>{dataset ? `${dataset.metadata.matchedCount}/${rows.length || dataset.metadata.expected} vùng GIS` : "Cấp xã hiện hành"}</span></div>
+        <div className="gis-map-top"><span><Compass size={15}/> {province.name}</span><span>{dataset ? `${dataset.metadata.matchedCount}/${rows.length || dataset.metadata.expected} vùng GIS` : period === "before" ? "GIS lịch sử chưa xác minh" : "Cấp xã hiện hành"}</span></div>
         <div className="gis-map-actions" aria-label="Điều khiển bản đồ cấp xã">
           <button type="button" aria-label="Phóng to" title="Phóng to" disabled={!mapReady} onClick={() => mapRef.current?.zoomIn({ duration: 220 })}><Plus size={19}/></button>
           <button type="button" aria-label="Thu nhỏ" title="Thu nhỏ" disabled={!mapReady} onClick={() => mapRef.current?.zoomOut({ duration: 220 })}><Minus size={19}/></button>
@@ -266,28 +310,37 @@ export function CommuneMapWorkbench({
         </div>
         <button type="button" className="gis-mobile-list-trigger" aria-expanded={listOpen} onClick={() => setListOpen((value) => !value)}><Search size={16}/> {listOpen ? "Ẩn danh sách" : "Chọn xã/phường"}</button>
         {gisLoading && <div className="gis-map-status" role="status"><LoaderCircle className="gis-spin" size={28}/><strong>Đang tải ranh giới cấp xã…</strong><small>Chỉ tải GIS của {province.name}</small></div>}
-        {!gisLoading && gisError && <div className="gis-map-status gis-map-error" role="alert"><ShieldAlert size={28}/><strong>Chưa có bản đồ cấp xã</strong><small>{gisError}</small><button type="button" onClick={() => setRetry((n) => n + 1)}><RotateCcw size={15}/> Thử tải lại</button></div>}
+        {!gisLoading && gisError && <div className={`gis-map-status gis-map-error ${period === "before" ? "legacy-map-warning" : ""}`} role="alert"><ShieldAlert size={28}/><strong>{period === "before" ? "GIS cấp xã cũ chưa xác minh" : "Chưa có bản đồ cấp xã"}</strong><small>{gisError}{legacyOutline ? " Đang hiển thị ranh giới cấp tỉnh cũ, KHÔNG phải ranh giới xã." : ""}</small><button type="button" onClick={() => setRetry((n) => n + 1)}><RotateCcw size={15}/> Thử tải lại</button></div>}
         {!gisLoading && !gisError && !selectedWardCode && <div className="gis-map-hint"><MapPin size={16}/> Chạm vào xã/phường để xem địa giới</div>}
-        <div className="gis-map-credits">GIS tham khảo · Không thay thế bản đồ pháp lý</div>
+        <div className="gis-map-credits">{period === "before" ? "Mốc 30/06/2025 · GIS cấp xã chỉ hiển thị khi được kiểm chứng" : "GIS tham khảo · Không thay thế bản đồ pháp lý"}</div>
       </div></div>
       {listOpen && <button type="button" className="gis-mobile-scrim" aria-label="Đóng danh sách xã phường" onClick={() => setListOpen(false)}/>}
       <aside className={`gis-info-panel ${selected ? "has-selection" : ""}`} aria-live="polite">
         {selected ? <><div className="gis-mobile-detail-grip" aria-hidden="true"/>
           <div className="gis-info-top"><span><Info size={16}/> ĐƠN VỊ HÀNH CHÍNH CẤP XÃ</span><button type="button" title="Bỏ chọn" aria-label="Bỏ chọn xã phường" onClick={() => choose(null)}><X size={18}/></button></div>
-          <div className="gis-info-name"><span className="gis-info-accent"/><h3>{selected.name}</h3><p>{province.name}</p></div>
+          <div className="gis-info-name"><span className="gis-info-accent"/><h3>{selected.name}</h3><p>{province.name}{period === "before" && selected.districtName ? ` · ${selected.districtName}` : ""}</p></div>
           <div className="gis-info-stat"><small>Mã hành chính</small><strong>{selected.code}</strong></div>
           <div className="gis-info-stat"><small>Loại đơn vị</small><strong>{selected.kind}</strong>{selected.reclassified && <p>Đã thay đổi loại hình năm 2026 theo dữ liệu V0.2.0.</p>}</div>
-          <div className="gis-info-stat"><small>Hiệu lực thông tin hiện hành</small><strong>{selected.effectiveFrom}</strong></div>
+          <div className="gis-info-stat"><small>{period === "before" ? "Mốc danh mục lịch sử" : "Hiệu lực thông tin hiện hành"}</small><strong>{selected.effectiveFrom}</strong></div>
           <div className="gis-info-stat"><small>Ranh giới địa lý</small><strong>{mapped ? "Đã ghép mã với polygon" : "Chưa có vùng GIS đối chiếu"}</strong><p>{mapped ? "Đang highlight vùng chọn; các vùng khác được làm tối." : "Danh mục vẫn đúng mã; không tự vẽ ranh giới khi thiếu polygon."}</p></div>
+          <div className="gis-info-stat"><small>Quan hệ {period === "before" ? "kế thừa" : "tiền thân"}</small>
+            {relationError && <p role="alert">{relationError}</p>}
+            {relation && <><p>{relation.targets.length} đơn vị đối ứng · {relation.status === "partial" ? "Có điều chỉnh một phần" : "Quan hệ theo danh mục"}. Không suy đoán hình học chuyển giao.</p>
+              <div className="ward-relation-list">{relation.targets.map((target) => <button type="button" key={target.code} onClick={() => onNavigateRelation(relation.targetPeriod, target)}>
+                <strong>{target.name}</strong><small>Mã {target.code}{target.districtName ? ` · ${target.districtName}` : ""}{target.partial ? " · Một phần địa giới" : ""}</small>
+              </button>)}</div>
+              {relation.unresolvedReferences > 0 && <p>Còn {relation.unresolvedReferences} tham chiếu chưa xác định đủ mã xã cũ; không tự định vị.</p>}
+            </>}
+          </div>
           <div className="gis-info-stat"><small>Diện tích và dân số</small><p>Dữ liệu có nguồn thống kê sẽ bổ sung ở V0.8.0.</p></div>
           <div className="gis-info-share"><button type="button" onClick={() => void share()}><Share2 size={15}/> Chia sẻ xã/phường</button>{shareStatus && <span role="status"><Check size={13}/>{shareStatus}</span>}</div>
-        </> : <div className="gis-info-idle"><div className="gis-info-visual"><MapPin size={34}/></div><h3>Khám phá xã, phường</h3><p>Chọn trực tiếp trên bản đồ hoặc danh sách để xem tên, mã, loại đơn vị và ranh giới tham khảo.</p><span><Info size={15}/> Tải bản đồ theo từng tỉnh để tiết kiệm dữ liệu.</span></div>}
+        </> : <div className="gis-info-idle"><div className="gis-info-visual"><MapPin size={34}/></div><h3>{period === "before" ? "Khám phá xã/phường cũ" : "Khám phá xã, phường"}</h3><p>{period === "before" ? "Chọn trong danh sách để xem huyện cũ, mã hành chính và các đơn vị kế thừa. Ranh giới xã chỉ xuất hiện khi đã kiểm chứng." : "Chọn trực tiếp trên bản đồ hoặc danh sách để xem tên, mã, loại đơn vị và ranh giới tham khảo."}</p><span><Info size={15}/> {period === "before" ? "Không nội suy GIS cấp xã từ ranh giới hiện hành." : "Tải bản đồ theo từng tỉnh để tiết kiệm dữ liệu."}</span></div>}
         {dataset && <div className="gis-source-note"><Database size={15}/><div><strong>{sourceLabel}</strong>
           <p>Đối chiếu {dataset.metadata.matchedCount}/{dataset.metadata.expected} mã cấp xã của tỉnh. Không phải ranh giới pháp lý.</p>
           {warning && <p role="status">Còn {dataset.metadata.missingCodes.length} mã chưa có polygon; không nội suy ranh giới.</p>}
         </div></div>}
       </aside>
     </div>
-    <div className="gis-underbar"><ShieldAlert size={15}/><span>Ranh giới từ dữ liệu tham khảo GeoVN, chưa được nghiệm thu pháp lý; thay đổi tên/loại hình năm 2026 dùng danh mục hành chính theo mã. Lớp cấp xã trước sáp nhập thuộc V0.7.0.</span></div>
+    <div className="gis-underbar"><ShieldAlert size={15}/><span>{period === "before" ? "Danh mục và quan hệ xã cũ có nguồn đối chiếu; ranh giới cấp xã cũ chưa có bộ GIS được xác minh đầy đủ. Nếu hiển thị viền tỉnh, đó KHÔNG phải viền xã cũ." : "Ranh giới hiện hành từ GeoVN (tham khảo); danh mục cập nhật thay đổi loại hình năm 2026. Không thay thế bản đồ địa giới pháp lý."}</span></div>
   </section>;
 }

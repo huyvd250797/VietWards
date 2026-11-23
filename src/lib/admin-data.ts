@@ -71,6 +71,9 @@ const currentWardsByProvince = counterBy(currentWards, (w) => w.provinceCode);
 const legacyByProvince = Map.groupBy(legacyWards, (w) => w.provinceCode);
 const currentByProvince = Map.groupBy(currentWards, (w) => w.provinceCode);
 const districtByProvince = Map.groupBy(legacyDistricts, (d) => d.provinceCode);
+const districtCommuneCounts = counterBy(legacyWards, (w) => w.districtCode);
+const legacyByCode = new Map(legacyWards.map((w) => [w.code, w]));
+const currentByCode = new Map(currentWards.map((w) => [w.code, w]));
 
 function currentProvinceName(name: string): string {
   const short = cleanProvince(name);
@@ -114,7 +117,7 @@ export function getProvinceRows(period: AdminPeriod): ProvinceRow[] {
 
 export function getDistrictRows(provinceCode: string): Array<{ code: string; name: string; count: number }> {
   return (districtByProvince.get(provinceCode) ?? []).map((d) => ({
-    code: d.code, name: d.name, count: legacyWards.filter((ward) => ward.districtCode === d.code).length,
+    code: d.code, name: d.name, count: districtCommuneCounts.get(d.code) ?? 0,
   }));
 }
 
@@ -130,6 +133,19 @@ export function getUnitRows(period: AdminPeriod, provinceCode: string): UnitRow[
     districtName: ward.districtName, sourceId: "gso-legacy",
     effectiveFrom: "2025-06-30",
   }));
+}
+
+export function getUnitByCode(period: AdminPeriod, code: string): UnitRow | null {
+  if (period === "current") {
+    const ward = currentByCode.get(code);
+    return ward ? currentWardDisplay(ward) : null;
+  }
+  const ward = legacyByCode.get(code);
+  return ward ? {
+    id: `before-ward:${ward.code}`, code: ward.code, name: ward.name, kind: ward.unit,
+    provinceCode: ward.provinceCode, districtCode: ward.districtCode,
+    districtName: ward.districtName, sourceId: "gso-legacy", effectiveFrom: "2025-06-30",
+  } : null;
 }
 
 export function getWardRelation(wardCode: string, period: AdminPeriod) {

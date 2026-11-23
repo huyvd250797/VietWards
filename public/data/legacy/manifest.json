@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "snapshot": "2025-06-30",
+  "note": "No verified historical ward polygons are distributed in V0.7.0. Add only verified/licensed province files and declare them under provinces.",
+  "provinces": {}
+}

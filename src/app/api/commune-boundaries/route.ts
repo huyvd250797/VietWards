@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProvinceRows, getUnitRows } from "@/lib/admin-data";
+import { loadVerifiedHistoricalGIS, HistoricalGISUnavailable } from "@/lib/legacy-geometry";
 import { canonicalCommuneCode, isValidProvinceCode } from "@/lib/commune-search";
 
 /** Only serves 2025+ current commune GIS. Historical commune boundaries are V0.7.0. */
@@ -45,8 +46,20 @@ async function getRemoteDataset(code: string): Promise<{ dataset: RawDataset; ur
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("province") ?? "";
-  const province = isValidProvinceCode(code) && getProvinceRows("current").find((row) => row.code === code);
+  const period = request.nextUrl.searchParams.get("period") === "before" ? "before" : "current";
+  const province = isValidProvinceCode(code) && getProvinceRows(period).find((row) => row.code === code);
   if (!province) return NextResponse.json({ error: "Mã tỉnh/thành không hợp lệ." }, { status: 400 });
+  if (period === "before") {
+    try {
+      const geojson = await loadVerifiedHistoricalGIS(code);
+      return NextResponse.json(geojson, { headers: { "Cache-Control": "public, max-age=0, s-maxage=86400", "X-Content-Type-Options": "nosniff" } });
+    } catch (error) {
+      const absent = error instanceof HistoricalGISUnavailable;
+      return NextResponse.json({ code: absent ? "HISTORICAL_GIS_UNAVAILABLE" : "HISTORICAL_GIS_INVALID",
+        error: absent ? error.message : "Lớp GIS lịch sử không qua kiểm tra. Không hiển thị vùng chưa xác minh." },
+        { status: absent ? 424 : 503 });
+    }
+  }
   const wards = getUnitRows("current", code);
   const byCode = new Map(wards.map((ward) => [ward.code, ward]));
   try {
