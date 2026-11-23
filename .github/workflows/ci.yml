@@ -18,6 +18,8 @@ jobs:
         run: npm run check:structure
       - name: Administrative data invariants
         run: npm run check:data
+      - name: Province Explorer behavior
+        run: npm run check:province
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

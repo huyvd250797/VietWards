@@ -16,7 +16,7 @@ export function HomeDashboard() {
   const { period } = useAtlas();
   return (
     <div className="home-page">
-      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Đã tích hợp <b>V0.3.0</b></div></div>
+      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Đã tích hợp <b>V0.4.0</b></div></div>
       <section className="home-hero" aria-labelledby="hero-heading">
         <div className="hero-text">
           <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETWARDS · GEOGRAPHIC KNOWLEDGE</span>
@@ -66,7 +66,7 @@ export function HomeDashboard() {
 
       <div className="section-heading"><div><span className="eyebrow">CẬP NHẬT PHÁT TRIỂN</span><h2>Điều gì sẽ xuất hiện tiếp theo?</h2></div><Link href="/gioi-thieu" className="section-link">Toàn bộ roadmap <ArrowUpRight size={17}/></Link></div>
       <div className="milestone-strip">
-        {ROADMAP.slice(0, 3).map(({ version, name, detail }, index) => <div className="milestone" key={version}><div className={`milestone-index ${index <= 2 ? "now" : ""}`}>{index <= 2 ? <Check size={16}/> : `0${index + 1}`}</div><div><div className="milestone-version">V{version} {index === 2 && <span>PHIÊN BẢN HIỆN TẠI</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
+        {ROADMAP.slice(0, 4).map(({ version, name, detail }, index) => <div className="milestone" key={version}><div className={`milestone-index ${index <= 3 ? "now" : ""}`}>{index <= 3 ? <Check size={16}/> : `0${index + 1}`}</div><div><div className="milestone-version">V{version} {index === 3 && <span>PHIÊN BẢN HIỆN TẠI</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
       </div>
       <div className="home-bottom-note"><BookOpenText size={18}/><span>VietWards được xây dựng với nguyên tắc: <strong>nội dung có nguồn, ranh giới có kiểm chứng, mốc thời gian rõ ràng.</strong></span></div>
     </div>

@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowUpRight, ChevronRight, Compass, Database, Focus, Info, Layers3, LoaderCircle, MapPinned, Minus, Plus, RotateCcw, Search, ShieldAlert, X } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, Compass, Database, Focus, Info, Layers3, LoaderCircle, MapPinned, Minus, Plus, RotateCcw, Search, Share2, ShieldAlert, X } from "lucide-react";
 import Link from "next/link";
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useAtlas, PeriodToggle } from "./app-shell";
 import { PERIODS } from "@/lib/config";
+import type { ProvinceRow } from "@/lib/admin-data";
+import { provinceHref, searchProvinces, type ProvinceTypeFilter } from "@/lib/province-search";
 
 type RegionProperties = {
   code: string; name: string; kind: string; matched: boolean; tone: number;
@@ -22,7 +24,6 @@ type RegionDataset = {
 
 const VN_BOUNDS: [[number, number], [number, number]] = [[100.5, 7.4], [116.9, 24.7]];
 const FILLS = ["#9dc9de", "#aed4e6", "#8cb9d6", "#a7cbd2", "#b9d7e8"];
-const removeAccents = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/gi, "d").toLowerCase();
 
 function getBounds(feature: RegionFeature): [[number, number], [number, number]] {
   let minX = 180, minY = 90, maxX = -180, maxY = -90;
@@ -71,7 +72,7 @@ function applySelection(map: MapLibreMap, selectedCode: string | null, prev: str
 export function MapStage({ compact = false }: { compact?: boolean }) {
   const { period } = useAtlas();
   return <Link href="/ban-do" className={`map-stage gis-preview ${compact ? "map-stage-compact" : ""}`}>
-    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V0.3.0</span></div>
+    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V0.4.0</span></div>
     <div className="gis-preview-art" aria-hidden="true"><span className="gis-preview-grid"/><MapPinned size={72} strokeWidth={1.15}/><div className="gis-preview-orbit"/></div>
     <div className="gis-preview-copy"><span className="map-stage-eyebrow">BẢN ĐỒ TƯƠNG TÁC</span><h3>Khám phá từng vùng đất.</h3>
       <p>Chạm vào tỉnh/thành để làm nổi bật địa giới, khám phá ranh giới trước và sau sáp nhập.</p>
@@ -81,57 +82,68 @@ export function MapStage({ compact = false }: { compact?: boolean }) {
   </Link>;
 }
 
-export function MapWorkbench() {
-  const { period } = useAtlas();
+export function MapWorkbench({ previous, current }: { previous: ProvinceRow[]; current: ProvinceRow[] }) {
+  const { period, ready, selectedProvinceCode: selected, selectProvince } = useAtlas();
+  const provinces = period === "before" ? previous : current;
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const dataRef = useRef<RegionDataset | null>(null);
   const selectedRef = useRef<string | null>(null);
   const [dataset, setDataset] = useState<RegionDataset | null>(null);
-  const [selected, setSelected] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState<ProvinceTypeFilter>("all");
+  const [shareStatus, setShareStatus] = useState("");
+  const listRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [requestId, setRequestId] = useState(0);
   const [listOpen, setListOpen] = useState(false);
   const [mapReady, setMapReady] = useState(false);
   const [showNames, setShowNames] = useState(true);
+  const showNamesRef = useRef(true);
 
   const select = useCallback((code: string | null) => {
-    const map = mapRef.current;
-    const feature = dataRef.current?.features.find((item) => item.properties.code === code);
-    if (map && map.getSource(SOURCE)) {
-      applySelection(map, code, selectedRef.current);
-      if (feature) {
-        map.fitBounds(getBounds(feature), {
-          padding: typeof window !== "undefined" && window.innerWidth < 800 ? 42 : { top: 56, bottom: 56, left: 70, right: 70 },
-          maxZoom: 9.6, duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 750,
-        });
-      }
-    }
-    selectedRef.current = code;
-    setSelected(code);
+    selectProvince(code);
     if (code) setListOpen(false);
-  }, []);
+  }, [selectProvince]);
 
   const reset = useCallback(() => {
     select(null);
     mapRef.current?.fitBounds(VN_BOUNDS, { padding: 16, duration: 500 });
   }, [select]);
 
+  async function shareSelection() {
+    if (!selected) return;
+    const url = new URL(provinceHref("/ban-do", period, selected), window.location.origin).toString();
+    try {
+      if (navigator.share && window.matchMedia("(max-width: 680px)").matches) {
+        await navigator.share({ title: "VietWards · Bản đồ hành chính", url });
+        setShareStatus("Đã mở bảng chia sẻ");
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        setShareStatus("Đã sao chép liên kết");
+      } else {
+        setShareStatus("Trình duyệt không hỗ trợ sao chép tự động");
+      }
+    } catch (error) {
+      if ((error as Error)?.name !== "AbortError") setShareStatus("Không thể chia sẻ. Hãy sao chép URL trên thanh địa chỉ.");
+    }
+  }
+
   useEffect(() => {
+    if (!ready) return;
     let cancelled = false;
     const abort = new AbortController();
     const id = window.requestAnimationFrame(() => {
       // Ensure no stale selection leaks across independently sourced historical maps (V0.5 covers trans-period mapping).
       selectedRef.current = null;
       dataRef.current = null;
-      setSelected(null);
       setDataset(null);
       setLoading(true);
       setError("");
       setMapReady(false);
       setQuery("");
+      setTypeFilter("all");
     });
 
     async function initialize() {
@@ -171,18 +183,20 @@ export function MapWorkbench() {
           map.addLayer({ id: LAYER_LABEL, type: "symbol", source: SOURCE, minzoom: 5.25, layout: {
             "text-field": ["get", "name"], "text-size": ["interpolate", ["linear"], ["zoom"], 5.25, 10, 8, 12],
             "text-font": ["Open Sans Regular"], "text-max-width": 8, "text-allow-overlap": false,
+            "visibility": showNamesRef.current ? "visible" : "none",
           }, paint: { "text-color": "#224b62", "text-halo-color": "#e8f5f9", "text-halo-width": 1.15 } });
           map.on("mouseenter", LAYER_FILL, () => { map.getCanvas().style.cursor = "pointer"; });
           map.on("mouseleave", LAYER_FILL, () => { map.getCanvas().style.cursor = "grab"; });
           map.on("click", LAYER_FILL, (event) => {
             const code = event.features?.[0]?.properties?.code;
-            if (typeof code === "string") select(code);
+            if (typeof code === "string" && event.features?.[0]?.properties?.matched) {
+              setQuery(""); setTypeFilter("all"); select(code);
+            }
           });
           map.on("click", (event) => {
             if (!map.queryRenderedFeatures(event.point, { layers: [LAYER_FILL] }).length) select(null);
           });
           map.fitBounds(VN_BOUNDS, { padding: 12, duration: 0 });
-          if (selectedRef.current) applySelection(map, selectedRef.current, null);
           setMapReady(true);
           setLoading(false);
         });
@@ -205,11 +219,52 @@ export function MapWorkbench() {
       dataRef.current = null;
       selectedRef.current = null;
     };
-  }, [period, requestId, select]);
+  }, [period, requestId, select, ready]);
 
-  const regions = useMemo(() => (dataset?.features ?? []).slice().sort((a, b) => a.properties.name.localeCompare(b.properties.name, "vi")), [dataset]);
-  const shown = useMemo(() => regions.filter((region) => removeAccents(region.properties.name).includes(removeAccents(query)) || region.properties.code.includes(query)), [regions, query]);
-  const active = dataset?.features.find((feature) => feature.properties.code === selected) ?? null;
+  // Selection is owned by AppShell; map, catalog and URL all observe this one value.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady || !map.getSource(SOURCE)) return;
+    const feature = dataRef.current?.features.find((item) => item.properties.code === selected && item.properties.matched);
+    const mappedCode = feature ? selected : null;
+    applySelection(map, mappedCode, selectedRef.current);
+    selectedRef.current = mappedCode;
+    if (feature) {
+      map.fitBounds(getBounds(feature), {
+        padding: window.innerWidth < 800 ? 42 : { top: 56, bottom: 56, left: 70, right: 70 },
+        maxZoom: 9.6, duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 650,
+      });
+    }
+  }, [selected, mapReady, dataset]);
+
+  const shown = useMemo(() => searchProvinces(provinces, query, typeFilter), [provinces, query, typeFilter]);
+  const active = provinces.find((row) => row.code === selected) ?? null;
+  const activeFeature = dataset?.features.find((feature) => feature.properties.code === selected && feature.properties.matched);
+  const matchedCodes = useMemo(() => new Set(dataset?.features.filter((f) => f.properties.matched).map((f) => f.properties.code) ?? []), [dataset]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setShareStatus(""));
+    return () => window.cancelAnimationFrame(frame);
+  }, [selected, period]);
+
+  useEffect(() => {
+    if (!listOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setListOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [listOpen]);
+
+  useEffect(() => {
+    const box = listRef.current;
+    if (!box || !selected || query) return;
+    const node = Array.from(box.querySelectorAll<HTMLButtonElement>("[data-province-code]"))
+      .find((element) => element.dataset.provinceCode === selected);
+    if (!node) return;
+    const target = node.offsetTop - box.offsetTop - box.clientHeight / 2 + node.clientHeight / 2;
+    box.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
+  }, [selected, query, period, dataset]);
 
   return <section className="gis-workbench" aria-label="Bản đồ địa giới tương tác">
     <header className="gis-toolbar">
@@ -218,43 +273,52 @@ export function MapWorkbench() {
     </header>
     <div className="gis-layout">
       <aside className={`gis-region-panel ${listOpen ? "gis-list-open" : ""}`}>
-        <div className="gis-panel-head"><div><Layers3 size={17}/><strong>Danh sách địa phương</strong></div><span>{PERIODS[period].provinceCount}</span></div>
-        <label className="gis-search"><Search size={16}/><input aria-label="Tìm tỉnh thành trên bản đồ" type="search" placeholder="Tìm tên tỉnh/thành..." value={query} onChange={(e) => setQuery(e.target.value)}/></label>
-        <div className="gis-region-list">
-          {shown.map(({ properties }) => <button key={properties.code} type="button" className={`gis-region-row ${selected === properties.code ? "active" : ""}`} onClick={() => select(properties.code)}>
-            <span className="gis-region-dot"/><span className="gis-region-text"><strong>{properties.name}</strong><small>{properties.kind} {properties.matched ? `· Mã ${properties.code}` : "· Chưa ghép mã"}</small></span><ChevronRight size={16}/>
+        <div className="gis-panel-head"><div><Layers3 size={17}/><strong>Danh sách địa phương</strong></div><span>{provinces.length}</span></div>
+        <button type="button" className="gis-mobile-list-close" onClick={() => setListOpen(false)} aria-label="Đóng danh sách"><X size={18}/></button>
+        <label className="gis-search"><Search size={16}/><input aria-label="Tìm tỉnh thành trên bản đồ" type="search" placeholder="Tìm tên, mã, Saigon, TPHCM..." value={query} onChange={(e) => setQuery(e.target.value)}/></label>
+        <div className="gis-type-filters" role="group" aria-label="Lọc loại địa phương">
+          {([ ["all", "Tất cả"], ["province", "Tỉnh"], ["city", "Thành phố"] ] as const).map(([value,label]) =>
+            <button key={value} type="button" className={typeFilter === value ? "active" : ""} aria-pressed={typeFilter === value} onClick={() => setTypeFilter(value)}>{label}</button>)}
+        </div>
+        <div className="gis-region-list" ref={listRef}>
+          {shown.map((province) => <button key={province.code} data-province-code={province.code} type="button" className={`gis-region-row ${selected === province.code ? "active" : ""}`} aria-pressed={selected === province.code} onClick={() => select(province.code)}>
+            <span className="gis-region-dot"/><span className="gis-region-text"><strong>{province.name}</strong><small>{province.kind} · Mã {province.code}</small></span>{dataset && !matchedCodes.has(province.code) ? <span title="Chưa ghép ranh giới GIS" className="gis-unmapped">!</span> : <ChevronRight size={16}/>}
           </button>)}
           {!shown.length && <div className="gis-empty">Không tìm thấy địa phương phù hợp.</div>}
         </div>
-        <div className="gis-list-count">Hiển thị {shown.length}/{regions.length} vùng địa giới</div>
+        <div className="gis-list-count">Hiển thị {shown.length}/{provinces.length} tỉnh/thành · {matchedCodes.size} vùng GIS đối chiếu</div>
       </aside>
       <div className="gis-map-column">
         <div className="gis-map-shell">
           <div ref={containerRef} className="gis-map-canvas" role="application" aria-label={`Bản đồ ${PERIODS[period].provinceCount} tỉnh/thành Việt Nam`}/>
-          <div className="gis-map-top"><span><Compass size={15}/> {PERIODS[period].label}</span><span>{mapReady ? `${regions.length} vùng GIS` : "Đang chuẩn bị"}</span></div>
+          <div className="gis-map-top"><span><Compass size={15}/> {PERIODS[period].label}</span><span>{mapReady ? `${dataset?.metadata.matchedCount ?? 0}/${provinces.length} vùng đối chiếu` : "Đang chuẩn bị"}</span></div>
           <div className="gis-map-actions" aria-label="Điều khiển bản đồ">
             <button type="button" title="Phóng to" aria-label="Phóng to" disabled={!mapReady} onClick={() => mapRef.current?.zoomIn({ duration: 240 })}><Plus size={19}/></button>
             <button type="button" title="Thu nhỏ" aria-label="Thu nhỏ" disabled={!mapReady} onClick={() => mapRef.current?.zoomOut({ duration: 240 })}><Minus size={19}/></button>
             <button type="button" title="Xem toàn Việt Nam" aria-label="Đặt lại bản đồ" disabled={!mapReady} onClick={reset}><Focus size={18}/></button>
             <button type="button" title="Bật/tắt nhãn tỉnh thành" aria-label="Bật tắt nhãn địa phương" disabled={!mapReady} onClick={() => {
-              const next = !showNames; setShowNames(next); mapRef.current?.setLayoutProperty(LAYER_LABEL, "visibility", next ? "visible" : "none");
+              const next = !showNames; showNamesRef.current = next; setShowNames(next); mapRef.current?.setLayoutProperty(LAYER_LABEL, "visibility", next ? "visible" : "none");
             }}><Layers3 size={17}/></button>
           </div>
-          <button type="button" className="gis-mobile-list-trigger" onClick={() => setListOpen((x) => !x)}><Search size={16}/> {listOpen ? "Ẩn danh sách" : "Chọn tỉnh/thành"}</button>
+          <button type="button" className="gis-mobile-list-trigger" aria-expanded={listOpen} onClick={() => setListOpen((x) => !x)}><Search size={16}/> {listOpen ? "Ẩn danh sách" : "Chọn tỉnh/thành"}</button>
           {loading && <div className="gis-map-status" role="status"><LoaderCircle size={28} className="gis-spin"/><strong>Đang tải bản đồ GIS…</strong><small>Chuẩn bị các vùng địa giới {PERIODS[period].label.toLowerCase()}</small></div>}
           {error && <div className="gis-map-status gis-map-error" role="alert"><ShieldAlert size={28}/><strong>Chưa thể hiển thị ranh giới</strong><small>{error}</small><button type="button" onClick={() => setRequestId((n) => n+1)}><RotateCcw size={15}/> Thử tải lại</button></div>}
           {!loading && !error && !selected && <div className="gis-map-hint"><MapPinned size={16}/> Chạm vào một vùng địa lý để xem địa giới</div>}
           <div className="gis-map-credits">GIS tham khảo · Không thay thế bản đồ pháp lý</div>
         </div>
       </div>
+      {listOpen && <button type="button" className="gis-mobile-scrim" aria-label="Đóng danh sách tỉnh/thành" onClick={() => setListOpen(false)}/>}
       <aside className={`gis-info-panel ${active ? "has-selection" : ""}`} aria-live="polite">
         {active ? <>
+          <div className="gis-mobile-detail-grip" aria-hidden="true"/>
           <div className="gis-info-top"><span><Info size={16}/> ĐỊA PHƯƠNG ĐÃ CHỌN</span><button type="button" title="Bỏ chọn" aria-label="Bỏ chọn" onClick={() => select(null)}><X size={18}/></button></div>
-          <div className="gis-info-name"><span className="gis-info-accent"/><h3>{active.properties.name}</h3><p>{active.properties.kind} · {PERIODS[period].label}</p></div>
-          <div className="gis-info-stat"><small>Mã hành chính</small><strong>{active.properties.matched ? active.properties.code : "Chưa đối chiếu"}</strong></div>
-          <div className="gis-info-stat"><small>Ranh giới GIS</small><strong>Đang hiển thị</strong><p>Vùng được tô sáng, các vùng khác có lớp phủ tối.</p></div>
-          <div className="gis-info-stat"><small>Diện tích · dân số · biển số</small><p>Sẽ tích hợp số liệu có nguồn và kỳ thống kê ở V0.8.0.</p></div>
-          <Link href="/tinh-thanh" className="gis-info-link">Tra cứu đơn vị cấp xã <ArrowUpRight size={15}/></Link>
+          <div className="gis-info-name"><span className="gis-info-accent"/><h3>{active.name}</h3><p>{active.kind} · {PERIODS[period].label}</p></div>
+          <div className="gis-info-stat"><small>Mã hành chính</small><strong>{active.code}</strong></div>
+          <div className="gis-info-stat"><small>Đơn vị hành chính cấp xã</small><strong>{active.communeCount.toLocaleString("vi-VN")}</strong><p>Số đơn vị theo danh mục hành chính của thời kỳ này.</p></div>
+          <div className="gis-info-stat"><small>Ranh giới GIS</small><strong>{activeFeature ? "Đã ghép vùng bản đồ" : "Chưa xác nhận vùng bản đồ"}</strong><p>{activeFeature ? "Địa phương được làm sáng; các vùng khác tối đi." : "Có thể tra cứu danh mục nhưng chưa thể highlight khi thiếu dữ liệu GIS đối chiếu."}</p></div>
+          <div className="gis-info-stat"><small>Diện tích · dân số · biển số</small><p>Dữ liệu có nguồn và kỳ thống kê sẽ bổ sung ở V0.8.0.</p></div>
+          <div className="gis-info-share"><button type="button" onClick={() => { void shareSelection(); }}><Share2 size={15}/> Chia sẻ bản đồ</button>{shareStatus && <span role="status"><Check size={13}/>{shareStatus}</span>}</div>
+          <Link href={provinceHref("/tinh-thanh", period, active.code)} className="gis-info-link">Tra cứu đơn vị cấp xã <ArrowUpRight size={15}/></Link>
         </> : <div className="gis-info-idle"><div className="gis-info-visual"><MapPinned size={34}/></div><h3>Khám phá một địa phương</h3><p>Bấm vào tỉnh/thành trên bản đồ để làm sáng toàn bộ ranh giới và hiển thị thông tin hành chính.</p><span><Info size={15}/> Vùng ngoài được làm tối khi chọn.</span></div>}
         {dataset && <div className="gis-source-note"><Database size={15}/><div><strong>Nguồn địa giới tham khảo</strong><p>{dataset.metadata.source.includes("pispace") ? "Natural Earth / PiSpace Maps" : dataset.metadata.source.includes("GeoVN") ? "GeoVN / Vietnamese Provinces Database" : "Nguồn GeoJSON công khai"}</p><p>Đã ghép mã {dataset.metadata.matchedCount}/{dataset.metadata.expected} tỉnh/thành. {dataset.metadata.matchedCount < dataset.metadata.expected ? "Một số tên GIS đang cần đối chiếu." : "Tên GIS đã đối chiếu danh mục."}</p></div></div>}
       </aside>

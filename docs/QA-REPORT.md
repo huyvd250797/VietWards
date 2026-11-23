@@ -1,26 +1,29 @@
-# QA Report — VietWards V0.3.0
+# QA Report — VietWards V0.4.0 (Province Explorer)
 
-## Checks achievable in packaging environment
+## Completed in packaging environment
 
-- Source ZIP extracted from the supplied V0.2.0 release; no deleted application routes.
-- Added map API route, MapLibre component, map styling and 2026 branding.
-- `scripts/check.mjs` verifies required files and version 0.3.0.
-- TypeScript/TSX parse check possible with global TS compiler syntax parser.
+- Upgraded from the exact user-supplied V0.3.0 ZIP; original routes and administrative data gateway preserved.
+- `npm run check:structure`: **PASS**, 31 required files and package version 0.4.0.
+- `npm run check:province`: **PASS**, search normalization (diacritics, whitespace), aliases, administrative code, province/city filter and deep-link URL functions; component contracts for shared state and map/catalog links.
+- Parsed all 20 TS/TSX files with global TypeScript 5.x `transpileModule` compiler diagnostics: **0 syntax diagnostics**.
+- Final ZIP integrity checked via Python `zipfile.testzip()`; no `node_modules`, `.next` or secrets included.
 
-## Checks not completed in the packaging environment
+## Not yet confirmed in this offline packaging environment
 
-- `npm install`, `npm run typecheck`, `npm run lint`, `npm run build`: npm registry network DNS unavailable in this session.
-- Server GIS reachability and geometry count at deployed runtime: cannot make HTTP requests from packaging environment.
-- Browser rendering on live Vercel URL: not deployed in this session.
+- `npm install`, `npm run check:data`, `npm run typecheck`, `npm run lint`, `npm run build`: npm registry is unreachable, `vn-local-divisions` and other application dependencies cannot be installed. The code is **not claimed production-build-verified**.
+- Live external GIS gateway responses on Vercel (34 current / 63 historical) and all `matchedCount` mapping results: require connected environment testing.
+- Browser/device test on real iOS/Android and PC: not performed; CSS responsive design and keyboard Escape behavior were statically reviewed only.
 
-## Required pre-release QA in GitHub / Vercel
+## Required acceptance on GitHub Actions and Vercel
 
-1. CI `npm install && npm run check:structure && npm run check:data && npm run typecheck && npm run lint && npm run build`.
-2. Deploy to Vercel Node 22 and open `/api/map-boundaries?period=current` and `?period=before`: both status 200, 34/63 features, matchedCount and unmatchedNames reviewed.
-3. Click at least 10 diverse regions, including at least one MultiPolygon (islands); confirm selected-region coverage and reset.
-4. Switch periods repeatedly; confirm no stale geometry or selection.
-5. Test portrait iPhone/Android and desktop light/dark mode; check error/retry with GIS server unavailable.
+1. `npm install && npm run check:structure && npm run check:data && npm run check:province && npm run typecheck && npm run lint && npm run build` succeeds.
+2. Open `/ban-do?period=current&province=75` and `/ban-do?period=before&province=70`, confirm both correct period and correct region are focused and highlighted.
+3. Search `dong nai`, `đồngnai`, `TPHCM`, `Sài Gòn`, `75`, and test **Tất cả / Tỉnh / Thành phố** in both catalog and map.
+4. Select a province via map, confirm list selection + scroll + detail sync; select via list, confirm map selection and zoom. Repeat after navigation to `/tinh-thanh` and back.
+5. Disable GIS upstream access; verify error/retry display and the catalog remains usable without fictitious geometry.
+6. Check open/close mobile list bottom sheet, select via touch, info card scroll above bottom navigation, and Escape close on keyboard.
+7. Check `metadata.matchedCount` / `metadata.unmatchedNames`; missing GIS boundaries must not be reported as verified.
 
-## Known limitation
+## Scope guard
 
-Legacy GIS names may not match every canonical province record. Do not assume full verified coverage merely because GeoJSON contains 63 features. Audit `metadata.matchedCount`, `metadata.unmatchedNames` after deployment.
+Historical merge visualization is V0.5.0; commune polygon mapping is V0.6/V0.7; verified area, population, and registration plates are V0.8.0.

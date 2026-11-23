@@ -1,6 +1,18 @@
-# VietWards V0.3.0 — Interactive Vietnam Map
+# VietWards V0.4.0 — Province Explorer
 
 **VietWards** là web app giáo dục về địa giới hành chính Việt Nam, tra cứu dữ liệu cấp tỉnh và cấp xã ở hai thời kỳ, chạy PC/mobile qua Vercel, không yêu cầu tài khoản hoặc localhost.
+
+## Nâng cấp V0.4.0 — Province Explorer
+
+- Dùng chung một nguồn lựa chọn tỉnh/thành trong `AppShell`: **bản đồ / danh mục hành chính / thanh điều hướng / liên kết** thống nhất mã đơn vị và thời kỳ. Không còn hai bộ `selectedCode` độc lập.
+- Tìm kiếm tiếng Việt **có dấu, không dấu, khoảng trắng linh hoạt**, theo mã hai chữ số và tên quen dùng (`TPHCM`, `Sài Gòn`, `Hanoi`); ưu tiên kết quả trùng chính xác, hỗ trợ lọc **Tất cả / Tỉnh / Thành phố**.
+- Bản đồ lấy danh sách 34/63 từ **Canonical Administrative Data** V0.2.0 chứ không lấy tên danh sách từ GIS ngoại vi. Nếu thiếu GeoJSON hoặc không ghép được mã, vẫn xem được danh sách và thông tin, có cảnh báo khi không thể highlight vùng.
+- Bấm vùng trên bản đồ sẽ chọn đúng dòng danh sách và cuộn tới vùng đang chọn; bấm danh sách cập nhật vùng được chọn và `fitBounds`. Trên mobile danh sách mở như bottom sheet; thẻ thông tin địa phương xuất hiện phía trên thanh điều hướng dưới.
+- Chọn tỉnh/thành trong màn hình `/tinh-thanh` rồi nhấn **Xem trên bản đồ** sẽ mở `/ban-do?period=current&province=75` (ví dụ mã 75). Ngược lại, bảng thông tin map có liên kết đến danh mục cấp xã đúng địa phương.
+- URL lưu `period` và `province` để chia sẻ và mở trực tiếp, có nút chia sẻ/copy link trên bản đồ. Mở deep link hoặc back/forward sẽ khôi phục lựa chọn; lịch sử sáp nhập tự động tách/gộp vẫn thuộc V0.5.0.
+- Làm mới nhãn phiên bản, roadmap, PWA cache và CI; thêm test `npm run check:province` trên Node.js 22.
+
+**Giới hạn:** V0.4.0 vẫn là bản đồ cấp tỉnh với **GIS tham khảo bên thứ ba**, không có bảo đảm pháp lý về địa giới. Bản đồ trước năm 2025 và hiện hành vẫn phụ thuộc kết nối tới nguồn GIS; cần kiểm tra đủ số lượng, độ ghép mã và quyền sử dụng khi triển khai trên Vercel. Diện tích, dân số, mã biển số là phạm vi V0.8.0.
 
 ## Nâng cấp V0.3.0
 
@@ -40,6 +52,7 @@ Không cần `.env`, không có DB phải migration, không dùng khóa API. L�
 npm install
 npm run check:structure
 npm run check:data
+npm run check:province
 npm run typecheck
 npm run lint
 npm run build
@@ -55,3 +68,12 @@ Các script trên cũng được cấu hình trong GitHub Actions CI. File ZIP *
 - `GET /api/administrative?mode=units&period=current|before&province=75` — tra cứu đơn vị cấp xã của từng tỉnh.
 
 **Độ chính xác dữ liệu:** nguồn GIS cần kiểm chứng chuyên môn; không được sử dụng bản đồ này để phân định sở hữu/địa giới pháp lý, quy hoạch hay điều hướng an toàn.
+
+## Liên kết tra cứu theo thời kỳ và mã hành chính (V0.4.0)
+
+- `/ban-do?period=current&province=75` — chọn Đồng Nai hiện hành và phóng đến vùng nếu đã đối chiếu GIS.
+- `/ban-do?period=before&province=70` — chọn Bình Phước trong snapshot trước 01/07/2025 nếu GIS đã đối chiếu.
+- `/tinh-thanh?period=before&province=70` — tra cứu xã/phường cấp tỉnh của Bình Phước cũ.
+- `/tinh-thanh?period=current&province=75` — tra cứu danh mục cấp xã Đồng Nai hiện hành.
+
+`province` là mã hai ký tự; mã không hợp lệ không được tự đổi sang địa phương khác. Nếu GIS tải lỗi hoặc mã chưa ghép được với polygon, thông tin danh mục vẫn sử dụng được và phần hình học có thông báo trạng thái.

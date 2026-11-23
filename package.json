@@ -1,6 +1,6 @@
 {
   "name": "vietwards",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "VietWards — Bản đồ và danh mục địa giới hành chính Việt Nam",
   "scripts": {
@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "check:structure": "node scripts/check.mjs",
     "check:data": "node scripts/verify-data.mjs",
+    "check:province": "node --experimental-strip-types scripts/verify-province-explorer.mjs",
     "check:gis:online": "node scripts/verify-live-gis.mjs"
   },
   "engines": {

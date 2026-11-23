@@ -1,4 +1,4 @@
-/* VietWards Design System v0.3.0 — educational GIS, accessible and responsive */
+/* VietWards Design System v0.4.0 — educational GIS, accessible and responsive */
 :root {
   color-scheme: light;
   --bg: #f5f8fd;
@@ -512,3 +512,51 @@ button:focus-visible, a:focus-visible { outline: 3px solid #66b4ff; outline-offs
 .gis-preview .map-stage-tag{background:rgba(255,255,255,.1);color:#e3faff;border-color:rgba(255,255,255,.2)}
 .gis-preview .map-stage-top{padding-bottom:0}
 .gis-preview:hover .gis-preview-link{background:#d9fff9}
+
+/* =============================================================
+ * VietWards V0.4.0 — Province Explorer, synchronized selectors
+ * ============================================================= */
+.data-province-filters,.gis-type-filters{display:flex;gap:5px;padding:0 0 9px;flex-wrap:wrap}
+.data-province-filters button,.gis-type-filters button{border:1px solid var(--line);background:var(--surface);color:var(--text-soft);border-radius:9px;padding:8px 10px;font-size:11px;font-weight:720;cursor:pointer;min-height:34px}
+.data-province-filters button:hover,.gis-type-filters button:hover{border-color:var(--blue);color:var(--blue)}
+.data-province-filters button.active,.gis-type-filters button.active{border-color:color-mix(in srgb,var(--blue) 40%,transparent);background:var(--blue-light);color:var(--blue)}
+.data-province-count{font-size:10px;color:var(--text-faint);margin-bottom:4px}
+.data-map-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:18px 0 0}
+.data-map-cta a{display:flex;align-items:center;gap:7px;color:var(--blue);font-size:12px;font-weight:800}
+.data-map-cta a:hover{text-decoration:underline}
+.data-map-cta p{margin:0;color:var(--text-faint);font-size:10px;line-height:1.6;flex:1;min-width:160px}
+.gis-type-filters{padding:0 12px 10px}
+.gis-type-filters button{font-size:10px;padding:7px 9px;min-height:31px}
+.gis-unmapped{display:grid;place-items:center;width:17px;height:17px;flex:none;border-radius:50%;background:#fff1cc;color:#985c00;font-size:11px;font-weight:800}
+.gis-info-share{padding:12px 18px 0;display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+.gis-info-share button{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 12px;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;color:var(--blue);font-weight:750;font-size:11px;cursor:pointer}
+.gis-info-share span{display:flex;align-items:center;gap:4px;color:var(--mint);font-size:10px}
+.gis-mobile-list-close,.gis-mobile-detail-grip,.gis-mobile-scrim{display:none}
+.data-province:focus-visible,.data-province-filters button:focus-visible,.data-map-cta a:focus-visible,.gis-region-row:focus-visible,.gis-type-filters button:focus-visible,.gis-info-share button:focus-visible,.gis-mobile-list-trigger:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+@media(max-width:760px){
+  .data-province-filters{padding:4px 0 9px}
+  .data-map-cta{align-items:flex-start}
+}
+@media(max-width:680px){
+  .gis-mobile-scrim{display:block;position:fixed;inset:0;z-index:45;background:rgba(8,21,38,.58);border:0;width:100%;cursor:pointer}
+  .gis-region-panel.gis-list-open{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom,0px));left:8px;right:8px;z-index:46;max-height:min(78dvh,750px);border:1px solid var(--line);border-radius:18px;box-shadow:0 15px 50px #06142540;overflow:hidden;background:var(--surface)}
+  .gis-region-panel.gis-list-open .gis-region-list{max-height:none;min-height:90px;overflow:auto}
+  .gis-mobile-list-close{display:grid;place-items:center;position:absolute;z-index:1;right:9px;top:11px;border:1px solid var(--line);border-radius:9px;width:29px;height:29px;background:var(--surface);color:var(--text)}
+  .gis-region-panel.gis-list-open .gis-panel-head{padding-right:45px}
+  .gis-info-panel.has-selection{position:fixed;left:8px;right:8px;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:35;max-height:min(48dvh,440px);overflow:auto;border:1px solid var(--line);border-radius:17px;box-shadow:0 9px 32px rgba(2,28,53,.19);background:var(--surface);overscroll-behavior:contain}
+  .gis-mobile-detail-grip{display:block;width:38px;height:4px;background:var(--line);border-radius:8px;margin:9px auto 0}
+  .gis-info-panel.has-selection .gis-info-stat{padding:8px 16px}
+  .gis-info-panel.has-selection .gis-info-stat p{margin-top:4px}
+  .gis-info-panel.has-selection .gis-source-note{display:none}
+  .gis-info-panel.has-selection .gis-info-share{padding:9px 16px 0}
+  .gis-info-panel.has-selection .gis-info-link{margin:9px 16px 14px}
+}
+@media(prefers-reduced-motion:reduce){.gis-region-row,.gis-info-panel,.data-province{transition:none!important}}
+
+@media(min-width:681px){.milestone-strip{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.data-selection-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:13px;min-height:460px;padding:35px 18px}
+.data-selection-empty-icon{width:66px;height:66px;border-radius:18px;background:var(--blue-light);display:grid;place-items:center;color:var(--blue)}
+.data-selection-empty h2{font-size:20px;letter-spacing:-.4px;color:var(--text);margin:0}
+.data-selection-empty p{color:var(--text-soft);font-size:12px;line-height:1.8;max-width:390px;margin:0}
+.data-selection-empty a{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--blue);background:var(--blue-light);border-radius:10px;padding:11px 14px;margin-top:6px}
+@media(max-width:760px){.data-selection-empty{min-height:265px;padding:28px 15px}}
