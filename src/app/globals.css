@@ -320,7 +320,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #66b4ff; outline-offs
   .topbar-mobile-logo .brand-mark { width: 37px; height: 37px; border-radius: 11px; }
   .page-container { padding: 22px 22px 108px; }
   .app-footer { margin: 0 22px 0; padding-bottom: 115px; }
-  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); background: color-mix(in srgb,var(--surface) 96%,transparent); backdrop-filter: blur(20px); border-top: 1px solid var(--line); padding: 10px 13px calc(10px + env(safe-area-inset-bottom,0px)); box-shadow: 0 -12px 35px #102a5010; }
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); background: color-mix(in srgb,var(--surface) 96%,transparent); backdrop-filter: blur(20px); border-top: 1px solid var(--line); padding: 10px 8px calc(10px + env(safe-area-inset-bottom,0px)); box-shadow: 0 -12px 35px #102a5010; }
   .bottom-nav-item { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; min-height: 46px; color: var(--text-faint); font-size: 10px; font-weight: 650; }
   .bottom-nav-item.active { color: var(--blue); font-weight: 800; }
   .mobile-menu-overlay { display: block; position: fixed; inset: 0; z-index: 60; background: #020a19ad; }

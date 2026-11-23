@@ -1,6 +1,6 @@
 {
   "name": "vietwards",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "description": "VietWards — Bản đồ và danh mục địa giới hành chính Việt Nam",
   "scripts": {
@@ -16,7 +16,10 @@
     "check:history": "node --experimental-strip-types scripts/verify-historical-selection.mjs",
     "check:communes": "node --experimental-strip-types scripts/verify-commune-explorer.mjs",
     "check:legacy": "node --experimental-strip-types scripts/verify-legacy-atlas.mjs",
-    "check:verified": "node scripts/verify-verified-stats.mjs"
+    "check:verified": "node scripts/verify-verified-stats.mjs",
+    "check:education": "node --experimental-strip-types scripts/verify-education.mjs",
+    "check:qa": "node scripts/verify-quality-gates.mjs",
+    "test:e2e": "playwright test"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -35,6 +38,7 @@
     "@types/react-dom": "^19.2.0",
     "eslint": "^9.25.0",
     "eslint-config-next": "16.4.6",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "@playwright/test": "^1.56.0"
   }
 }

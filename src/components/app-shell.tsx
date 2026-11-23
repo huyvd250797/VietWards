@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  BookOpenText, ChevronDown, Compass, Globe2, History, Layers3, Map,
+  BookOpenText, GraduationCap, ChevronDown, Compass, Globe2, History, Layers3, Map,
   Menu, Moon, Search, Sun, X, ArrowUpRight, CircleHelp
 } from "lucide-react";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -40,6 +40,7 @@ const primaryNav = [
   { href: "/ban-do", label: "Khám phá bản đồ", icon: Map },
   { href: "/tinh-thanh", label: "Tỉnh thành", icon: Layers3 },
   { href: "/lich-su", label: "Lịch sử sáp nhập", icon: History },
+  { href: "/hoc-dia-ly", label: "Học địa lý", icon: GraduationCap },
 ];
 
 function Logo({ compact = false }: { compact?: boolean }) {
@@ -178,13 +179,13 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
     <AppContext.Provider value={{ period, ready, selectedProvinceCode, historicalSelection, changePeriod, selectProvince, navigateProvince }}>
       <div className="app-frame">
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.8.0</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.9.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
-            <div className="progress-caption"><span>Tiến độ dự án</span><strong>8 / 10</strong></div>
+            <div className="progress-caption"><span>Tiến độ dự án</span><strong>9 / 10</strong></div>
             <div className="progress-track"><div className="progress-fill"/></div>
-            <p>Tra cứu số liệu và biển số xe trước/sau sáp nhập, có nguồn và kỳ thống kê rõ ràng; GIS cấp xã cũ vẫn cần kiểm chứng.</p>
+            <p>Học địa lý, so sánh hai tỉnh và quiz. GIS cấp xã cũ chưa hoàn thành, dữ liệu cần tiếp tục kiểm chứng.</p>
             <Link href="/gioi-thieu">Xem lộ trình <ArrowUpRight size={14}/></Link>
           </div>
           <div className="sidebar-foot"><CircleHelp size={15}/> Dữ liệu có kiểm chứng · V{APP.version}</div>
@@ -199,7 +200,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V0.7</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V0.9</span></button>
               <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -212,7 +213,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
         <nav className="bottom-nav" aria-label="Điều hướng nhanh trên điện thoại">
           {primaryNav.map(({ href, label, icon: Icon }) => (
             <Link key={href} href={href} className={`bottom-nav-item ${pathname === href ? "active" : ""}`} aria-current={pathname === href ? "page" : undefined}>
-              <Icon size={21} strokeWidth={1.9}/><span>{label === "Khám phá bản đồ" ? "Bản đồ" : label === "Lịch sử sáp nhập" ? "Lịch sử" : label === "Tổng quan" ? "Tổng quan" : "Tỉnh thành"}</span>
+              <Icon size={21} strokeWidth={1.9}/><span>{label === "Khám phá bản đồ" ? "Bản đồ" : label === "Lịch sử sáp nhập" ? "Lịch sử" : label === "Tổng quan" ? "Tổng quan" : label === "Học địa lý" ? "Học" : "Tỉnh thành"}</span>
             </Link>
           ))}
         </nav>
@@ -221,7 +222,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             <div className="mobile-drawer" role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={() => setMobileMenuOpen(false)}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Legacy Administrative Atlas</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Educational Experience & QA</div>
             </div>
           </div>
         )}

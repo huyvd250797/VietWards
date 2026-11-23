@@ -35,7 +35,7 @@ Xây dựng ứng dụng giáo dục địa lý hành chính Việt Nam, dùng �
 
 ## Tiến độ hiện tại
 
-Đã triển khai tới **V0.8.0 — Verified Statistics & Plates** (bổ sung thống kê và biển số cấp tỉnh có nguồn cho hai thời kỳ; GIS lịch sử cấp xã vẫn chưa có polygon đủ điều kiện kiểm chứng). Bản đồ cấp xã hiện hành có tìm kiếm, lựa chọn và polygon tải theo từng tỉnh; nguồn GIS tham khảo chưa được nghiệm thu pháp lý. V0.7.0 có cổng nhận GIS lịch sử theo tỉnh nhưng không phân phối polygon chưa kiểm chứng.
+Đã triển khai tới **V0.9.0 — Educational Experience & QA** (bổ sung thống kê và biển số cấp tỉnh có nguồn cho hai thời kỳ; GIS lịch sử cấp xã vẫn chưa có polygon đủ điều kiện kiểm chứng). V0.9.0 bổ sung Học địa lý, so sánh 2 địa phương có điều kiện về kỳ dữ liệu, quiz kiểm chứng và kiểm thử tự động. Bản đồ cấp xã hiện hành có tìm kiếm, lựa chọn và polygon tải theo từng tỉnh; nguồn GIS tham khảo chưa được nghiệm thu pháp lý. V0.7.0 có cổng nhận GIS lịch sử theo tỉnh nhưng không phân phối polygon chưa kiểm chứng.
 
 ## Mốc sử dụng được
 

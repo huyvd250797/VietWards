@@ -4,6 +4,7 @@ import { APP } from "@/lib/config";
 import { getProvinceRows } from "@/lib/admin-data";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
+import "./educational.css";
 
 export const metadata: Metadata = {
   title: { default: APP.title, template: `%s | ${APP.name}` },

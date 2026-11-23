@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, BookOpenText, Check, Clock3, Database, Globe2, Layers3, Map, MapPinned, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BookOpenText, Check, Clock3, Database, Globe2, Layers3, Map, MapPinned, GraduationCap, Sparkles, TrendingUp } from "lucide-react";
 import { MapStage } from "./map-stage";
 import { PeriodToggle, useAtlas } from "./app-shell";
 import { PERIODS, ROADMAP } from "@/lib/config";
 
 const quickLinks = [
+  { href: "/hoc-dia-ly?tab=compare&a=75&b=79", icon: GraduationCap, title: "Học & so sánh địa lý", description: "So sánh hai tỉnh bằng bản đồ, thống kê và thử thách", tone: "blue" },
   { href: "/ban-do", icon: MapPinned, title: "Khám phá bản đồ", description: "Xem tỉnh thành và từng xã/phường trên bản đồ", tone: "blue" },
   { href: "/tinh-thanh", icon: Layers3, title: "Tỉnh & thành phố", description: "Tra cứu tỉnh, xã phường, mã hành chính thật", tone: "mint" },
   { href: "/lich-su", icon: Clock3, title: "Dòng thời gian", description: "Xem quan hệ sáp nhập có dữ liệu", tone: "violet" },
@@ -16,7 +17,7 @@ export function HomeDashboard() {
   const { period } = useAtlas();
   return (
     <div className="home-page">
-      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Đã tích hợp <b>V0.8.0</b></div></div>
+      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Đã tích hợp <b>V0.9.0</b></div></div>
       <section className="home-hero" aria-labelledby="hero-heading">
         <div className="hero-text">
           <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETWARDS · GEOGRAPHIC KNOWLEDGE</span>
@@ -66,7 +67,7 @@ export function HomeDashboard() {
 
       <div className="section-heading"><div><span className="eyebrow">CẬP NHẬT PHÁT TRIỂN</span><h2>Điều gì sẽ xuất hiện tiếp theo?</h2></div><Link href="/gioi-thieu" className="section-link">Toàn bộ roadmap <ArrowUpRight size={17}/></Link></div>
       <div className="milestone-strip">
-        {ROADMAP.slice(3, 7).map(({ version, name, detail, status }, index) => <div className="milestone" key={version}><div className={`milestone-index ${status === "done" || status === "current" ? "now" : ""}`}>{status === "done" || status === "current" ? <Check size={16}/> : `0${index + 4}`}</div><div><div className="milestone-version">V{version} {status === "current" && <span>PHIÊN BẢN HIỆN TẠI</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
+        {ROADMAP.slice(6, 10).map(({ version, name, detail, status }, index) => <div className="milestone" key={version}><div className={`milestone-index ${status === "done" || status === "current" ? "now" : ""}`}>{status === "done" || status === "current" ? <Check size={16}/> : `0${index + 4}`}</div><div><div className="milestone-version">V{version} {status === "current" && <span>PHIÊN BẢN HIỆN TẠI</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
       </div>
       <div className="home-bottom-note"><BookOpenText size={18}/><span>VietWards được xây dựng với nguyên tắc: <strong>nội dung có nguồn, ranh giới có kiểm chứng, mốc thời gian rõ ràng.</strong></span></div>
     </div>

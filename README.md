@@ -1,45 +1,52 @@
-# VietWards V0.8.0 — Verified Statistics & Plates
+# VietWards V0.9.0 — Educational Experience & QA
 
-An interactive Vietnamese administrative education web app (Next.js App Router, TypeScript, MapLibre GL JS and responsive PWA) deployable directly to Vercel. End users do not run localhost and no account or SQL database is needed.
+VietWards is a Vietnamese educational geography PWA built with **Next.js App Router, React 19, TypeScript, MapLibre GL JS** and a canonical administrative database. Deploy the source directly to Vercel from GitHub; visitors need no user accounts or local servers.
 
-## Features
+## What's new in V0.9.0
 
-- Two administrative snapshots: **before 01/07/2025** (63 provinces, 696 historical districts and 10,035 communes/wards/towns) and **current** (34 provinces and 3,321 commune-level entities at the 2025 baseline, with supported 2026 changes).
-- GIS province map (two periods), province split/merge, current commune-level GIS, historical three-level province→district→commune catalogue and relation cross-links.
-- **New in V0.8.0:** Published area and population data for **all 63 legacy** and **all 34 current** provinces; population clearly labeled as **2025 administrative scale** for the 23 merged units and **2024 statistical mean** for the 11 unchanged units. Legacy stats use the **2024 NSO yearbook**, with area referenced to **31/12/2023**.
-- Two-period vehicle registration plate code tables, 63 old + 34 current provinces, with exact two-digit code lookup, and special recognition of police **code 80**.
-- Statistics visible in Province Explorer, selected map region details and commune panel. Each metric shows dates, kind and official source links; density is derived only from displayed area and population of the same official record.
-- Commune-level area/population is **not extrapolated**: unavailable data is labeled. Commune panel displays the corresponding **provincial** vehicle plate codes.
-- Cited reproducible transcription script `scripts/seed-verified-data.py`, source JSON and invariant checker `scripts/verify-verified-stats.mjs`.
+Open **Học địa lý** (`/hoc-dia-ly`) in the desktop sidebar or mobile bottom navigation:
 
-## Important scope limits
+- **So sánh**: two province selectors synchronized with a two-color MapLibre map, darkened other provinces, fit-to-bounds camera, a side-by-side statistical table and provenance links. Defaults to **Đồng Nai (75)** versus **TP. Hồ Chí Minh (79)**. Share the comparison with `?period=current&tab=compare&a=75&b=79`. Directly compare *population, area and density differences only if the source type, reference period and relevant reference dates are compatible*; mismatches remain visible without fabricated delta.
+- **Khám phá**: guided five-step learning flow through location, area, population, vehicle registration prefixes and pre-merger provinces, with source links and map/history navigation.
+- **Thử thách**: deterministic, source-linked multiple-choice quizzes and click-the-province map questions; alternative button answers work when GIS/WebGL is unavailable. Record the best result in browser storage per historical period, without a login.
+- **Kiểm chứng**: live data coverage counts for 34/63 provinces and 97 provincial statistical records, with explicit warnings about uncertified third-party GIS and the unavailable pre-2025 commune geometry.
+- **QA**: data comparison and plate-prefix invariants, educational question tests, provenance/quality gate tests, plus a Playwright browser smoke suite for desktop and mobile (uses **synthetic GIS fixtures for UI behavior tests only**, not to assert legal boundary accuracy).
 
-- **No certified, rights-cleared pre-merger commune GIS is bundled** (0/63 provinces). Historical commune lists and old/new conversion work, but the commune boundary view is not complete without verified geometry.
-- Current GIS polygons use public reference datasets with original underlying geometry rights not independently verified; do not claim legal boundary accuracy.
-- The 11 unchanged provinces currently show *2024 historical statistical population*, not a 2026 real-time census. Data is not silently updated or labeled “current population”.
-- Province population figures from 2025 merging resolution and those from 2024 yearbook follow different methodologies/dates and **must not be interpreted as population growth**.
-- These plate assignments describe provincial **two-digit prefixes**, not the identification of vehicle owners.
+V0.9.0 builds on all existing V0.8.0 features: national province GIS for current and pre-2025 periods; administrative search, historical relationships, current commune GIS loaded per province; legacy three-level catalog and conversion; 97 sourced province statistic records and vehicle registration prefixes.
 
-## Vercel deployment
+## Run and deploy
 
-Upload the source directory to a GitHub repository, import in Vercel as Next.js, select Node.js 22.x, and deploy. `npm install`, `npm run build` run on Vercel. No environment secrets or SQL migrations are required by default. GIS reference layers require third-party upstream connectivity when requested.
+1. Push all source files in this ZIP to GitHub (repository root). Node.js **22.x**.
+2. Import the repo in [Vercel](https://vercel.com/new) and keep the autodetected **Next.js** framework. No database or environment variables are required for basic functionality.
+3. On Vercel, verify build logs and open `/hoc-dia-ly?tab=compare&a=75&b=79` on a desktop and mobile device. MapLibre geometry is loaded from documented external sources through application API routes; those sources must be reachable.
+4. For development (optional): `npm install && npm run dev`. **End users never need localhost.**
 
-## Checks
+## Quality checks
 
-```bash
-npm install
+```sh
 npm run check:structure
-npm run check:data
 npm run check:province
 npm run check:history
 npm run check:communes
 npm run check:legacy
 npm run check:verified
+npm run check:education
+npm run check:qa
 npm run typecheck
 npm run lint
 npm run build
+npm run test:e2e
 ```
 
-Local JS-only checks can be run without installing dependencies: `node scripts/verify-verified-stats.mjs` and `node scripts/check.mjs`.
+Playwright browser tests require `npx playwright install chromium`; the GitHub CI `browser-smoke` job installs the browser. Playwright tests mock GIS responses using synthetic regions to test UI only; verify **live GIS** with `npm run check:gis:online` and real-browser inspection separately. The last command relies on upstream connectivity.
 
-Detailed coverage and source URLs are in `docs/VERIFIED-STATISTICS-PROVENANCE.md`, `docs/RELEASE-V0.8.0.md`, `docs/QA-REPORT-V0.8.0.md`, and `THIRD_PARTY_NOTICES.md`.
+## Release limitations and provenance
+
+- **GIS polygons before July 2025 at commune level:** **0/63 provinces** verified and packaged. V0.7.0's strict provenance gateway remains; missing regions are not invented. Do not describe national legacy commune GIS as complete.
+- **Current GIS:** third-party cartographic reference, not certified legal boundary geometry. Check third-party licensing and rights to redistribute before publishing.
+- **Population:** 23 merged provinces use **2025 administrative-scale population**, 11 unchanged ones use **2024 statistical-average population**, and 63 legacy provinces use **2024 statistical averages**. These must be interpreted by their own reference periods, not as live 2026 estimates.
+- **Area:** see each province's source reference date; don't replace published values with polygon-computed values.
+- **Communes:** no comprehensive sourced per-commune population/area dataset is bundled; this information remains unavailable rather than estimated.
+- **Production QA:** browser, build and live GIS runtime must be confirmed by CI/Vercel; passing code structure and pure logic checks alone does **not** certify runtime or GIS accuracy.
+
+See `docs/RELEASE-V0.9.0.md`, `docs/QA-REPORT-V0.9.0.md`, `docs/VERIFIED-STATISTICS-PROVENANCE.md`, and `THIRD_PARTY_NOTICES.md` for detailed notes. No SQL migration is required.

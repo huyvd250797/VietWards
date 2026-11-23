@@ -28,9 +28,27 @@ jobs:
         run: npm run check:legacy
       - name: Verified statistics and plates
         run: npm run check:verified
+      - name: Educational experience and comparison invariants
+        run: npm run check:education
+      - name: Quality and release gates
+        run: npm run check:qa
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check
         run: npm run lint
       - name: Production build
         run: npm run build
+  browser-smoke:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install browser for smoke tests
+        run: npx playwright install --with-deps chromium
+      - name: Browser smoke tests (GIS calls mocked)
+        run: npm run test:e2e
