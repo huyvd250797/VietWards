@@ -642,42 +642,42 @@ button:focus-visible, a:focus-visible { outline: 3px solid #66b4ff; outline-offs
 /* VietWards 0.8.0 — verified geography and vehicle plate statistics */
 .verified-panel{border:1px solid var(--line,rgba(140,160,184,.25));border-radius:16px;padding:16px;background:var(--surface,rgba(255,255,255,.05));margin:14px 0;min-width:0}
 .verified-panel-compact{padding:12px;margin:10px 0}
-.verified-panel-head{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:11px;color:var(--ink,#16324c)}
+.verified-panel-head{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:11px;color:var(--text)}
 .verified-metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .verified-metric{min-width:0;display:flex;flex-direction:column;gap:6px;background:var(--surface-2,rgba(134,170,200,.1));border:1px solid var(--line,rgba(140,160,184,.22));border-radius:12px;padding:12px}
-.verified-metric>span{font-size:12px;display:flex;gap:6px;align-items:center;color:var(--text-muted,#64748b)}
-.verified-metric strong{font-size:clamp(13px,1.35vw,20px);line-height:1.28;overflow-wrap:anywhere;color:var(--ink,#16324c)}
-.verified-metric small,.verified-plate small{font-size:11px;color:var(--text-muted,#64748b);line-height:1.5}
+.verified-metric>span{font-size:12px;display:flex;gap:6px;align-items:center;color:var(--text-soft)}
+.verified-metric strong{font-size:clamp(13px,1.35vw,20px);line-height:1.28;overflow-wrap:anywhere;color:var(--text)}
+.verified-metric small,.verified-plate small{font-size:11px;color:var(--text-soft);line-height:1.5}
 .verified-density{display:flex;justify-content:space-between;gap:10px;padding:12px 3px;border-bottom:1px solid var(--line,rgba(140,160,184,.22));font-size:12px}
 .verified-density strong{font-size:13px}
-.verified-muted{font-size:11px;line-height:1.55;color:var(--text-muted,#64748b);margin:8px 0}
+.verified-muted{font-size:11px;line-height:1.55;color:var(--text-soft);margin:8px 0}
 .verified-error{color:#dc2626;font-size:12px}
-.verified-unavailable{display:flex;gap:7px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--text-muted,#64748b);padding:10px;border-radius:10px;background:var(--surface-2,rgba(134,170,200,.1))}
+.verified-unavailable{display:flex;gap:7px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--text-soft);padding:10px;border-radius:10px;background:var(--surface-2,rgba(134,170,200,.1))}
 .verified-unavailable svg{flex-shrink:0;margin-top:2px}
 .verified-plate{margin-top:10px;display:flex;flex-direction:column;gap:8px}
 .verified-plate>span{font-size:13px;font-weight:700;display:flex;gap:7px;align-items:center}
 .verified-plates{display:flex;flex-wrap:wrap;gap:6px}
-.verified-plate-chip{font-weight:800;font-size:13px;letter-spacing:.03em;background:var(--surface-2,rgba(134,170,200,.1));color:var(--ink,#16324c);border:1px solid var(--line,rgba(140,160,184,.3));border-radius:6px;padding:6px 9px;min-width:38px;text-align:center}
+.verified-plate-chip{font-weight:800;font-size:13px;letter-spacing:.03em;background:var(--surface-2,rgba(134,170,200,.1));color:var(--text);border:1px solid var(--line,rgba(140,160,184,.3));border-radius:6px;padding:6px 9px;min-width:38px;text-align:center}
 .verified-sources,.verified-comparison{border-top:1px solid var(--line,rgba(140,160,184,.2));margin-top:12px;padding-top:10px}
 .verified-sources summary,.verified-comparison summary{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;font-weight:650;list-style:none}
 .verified-sources summary::after,.verified-comparison summary::after{content:'⌄';margin-left:auto}
 .verified-sources details,.verified-comparison details{padding:6px}
-.verified-sources a{display:flex;gap:8px;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line,rgba(140,160,184,.12));color:var(--ink,#16324c);text-decoration:none;min-width:0}
+.verified-sources a{display:flex;gap:8px;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line,rgba(140,160,184,.12));color:var(--text);text-decoration:none;min-width:0}
 .verified-sources a>span{min-width:0;display:flex;flex-direction:column;gap:3px}
 .verified-sources a strong{font-size:11px}
-.verified-sources a small{font-size:11px;color:var(--text-muted,#64748b);line-height:1.4}
+.verified-sources a small{font-size:11px;color:var(--text-soft);line-height:1.4}
 .verified-comparison-list{display:flex;flex-direction:column;gap:7px;margin-top:10px}
 .verified-comparison-list>div{display:flex;flex-direction:column;gap:3px;padding:10px;border-radius:10px;background:var(--surface-2,rgba(134,170,200,.1))}
 .verified-comparison-list strong{font-size:12px}
-.verified-comparison-list span,.verified-comparison-list small{font-size:11px;color:var(--text-muted,#64748b);line-height:1.4}
+.verified-comparison-list span,.verified-comparison-list small{font-size:11px;color:var(--text-soft);line-height:1.4}
 .verified-group h4{margin:12px 0 0;font-size:13px}
 .plate-lookup{display:flex;flex-direction:column;gap:7px;padding:12px;border-radius:12px;border-top:1px solid var(--line,rgba(140,160,184,.2));min-width:0}
 .plate-lookup label{display:flex;gap:7px;align-items:center;font-size:12px;font-weight:700}
-.plate-lookup-input input{width:100%;border:1px solid var(--line,#cbd5e1);padding:9px 10px;border-radius:10px;background:var(--surface,#fff);color:var(--ink,#16324c);font-size:13px;outline-offset:2px}
-.plate-lookup small{color:var(--text-muted,#64748b);font-size:11px;line-height:1.4}
+.plate-lookup-input input{width:100%;border:1px solid var(--line,#cbd5e1);padding:9px 10px;border-radius:10px;background:var(--surface,#fff);color:var(--text);font-size:13px;outline-offset:2px}
+.plate-lookup small{color:var(--text-soft);font-size:11px;line-height:1.4}
 .plate-lookup button{border:1px solid var(--line,rgba(140,160,184,.3));padding:10px;text-align:left;border-radius:10px;background:var(--surface-2,rgba(134,170,200,.1));cursor:pointer;display:flex;flex-direction:column;gap:4px}
-.plate-lookup button span,.plate-lookup-result{font-size:11px;color:var(--text-muted,#64748b)}
-.plate-lookup button strong{color:var(--ink,#16324c);font-size:12px}
+.plate-lookup button span,.plate-lookup-result{font-size:11px;color:var(--text-soft)}
+.plate-lookup button strong{color:var(--text);font-size:12px}
 @media(max-width:760px){.verified-metric-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.verified-metric{padding:9px}.verified-metric strong{font-size:14px}.verified-panel{padding:11px}.plate-lookup{padding:10px}}
 
 /* V1.0.0 — release/accessibility, PWA state and diagnostic surfaces */
@@ -707,3 +707,135 @@ button:focus-visible, a:focus-visible { outline: 3px solid #66b4ff; outline-offs
 @media(max-width:550px){.vw-status-grid{grid-template-columns:1fr}.vw-system-banner{width:calc(100% - 24px)}.vw-install-card,.vw-status-card{padding:16px}}
 
 .vw-status-main .vw-error-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+
+
+/* V1.0.1 — Mobile Map First + High Contrast Information System
+   In mobile map mode selecting a polygon NEVER opens a blocking info sheet.
+   Details open only after the explicit action and fill the viewport. */
+.gis-mobile-selection-bar,.gis-mobile-modal-header,.gis-mobile-modal-action{display:none}
+/* Unified accessible statistics across light/dark themes. No hard-coded dark text on dark surfaces. */
+.verified-panel{color:var(--text);background:var(--surface);border-color:var(--line)}
+.verified-panel-head{color:var(--text);font-size:14px;font-weight:800;letter-spacing:-.1px}
+.verified-panel-head svg,.verified-plate>span svg{color:var(--blue)}
+.verified-metric{background:var(--surface-2);border-color:var(--line);padding:14px;gap:7px}
+.verified-metric>span{color:var(--text-soft);font-weight:700;font-size:12px}
+.verified-metric>span svg{color:var(--blue);flex:none}
+.verified-metric strong{color:var(--text);font-size:clamp(17px,1.5vw,22px);font-weight:850;letter-spacing:-.35px;line-height:1.3}
+.verified-metric small,.verified-plate small,.verified-muted{color:var(--text-soft);font-size:12px;line-height:1.55}
+.verified-density{color:var(--text);align-items:center;font-size:12px}
+.verified-density strong{color:var(--text);font-size:14px;font-weight:850;text-align:right}
+.verified-plate{margin-top:15px;gap:10px}
+.verified-plate>span{color:var(--text);font-size:14px;font-weight:800}
+.verified-plates{gap:8px}
+.verified-plate-chip{min-width:46px;background:color-mix(in srgb,var(--blue) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--blue) 32%,var(--line));color:var(--text);font-size:18px;font-weight:850;letter-spacing:.01em;border-radius:10px;padding:9px 12px}
+.verified-sources summary,.verified-comparison summary{color:var(--text);font-weight:780;font-size:12px}
+.verified-sources a{color:var(--text)}
+.verified-sources a small,.verified-comparison-list small,.verified-comparison-list span{color:var(--text-soft)}
+.verified-unavailable{color:var(--text-soft);background:var(--surface-2)}
+.verified-group{min-width:0}
+.gis-info-stat small{color:var(--text-soft);font-size:12px}
+.gis-info-stat strong{color:var(--text);font-weight:800}
+.gis-info-stat p{color:var(--text-soft)}
+:root[data-theme="dark"] .verified-panel{
+  background:#15243a;border-color:#334a67;
+}
+:root[data-theme="dark"] .verified-metric{
+  background:#1e334e;border-color:#3a5170;
+}
+:root[data-theme="dark"] .verified-metric strong,:root[data-theme="dark"] .verified-density strong,
+:root[data-theme="dark"] .verified-plate-chip{color:#f3f8ff}
+:root[data-theme="dark"] .verified-metric>span,:root[data-theme="dark"] .verified-metric small,
+:root[data-theme="dark"] .verified-plate small,:root[data-theme="dark"] .verified-muted{color:#c4d2e4}
+:root[data-theme="dark"] .verified-plate-chip{
+  background:#29466a;border-color:#56749e;
+}
+.gis-mobile-view-detail:focus-visible,.gis-mobile-selection-clear:focus-visible,
+.gis-mobile-modal-header button:focus-visible,.gis-mobile-modal-action button:focus-visible{
+  outline:3px solid var(--blue);outline-offset:3px;
+}
+@media(max-width:680px){
+  /* The map can be explored without a bottom sheet covering the chosen province. */
+  .gis-workbench{overflow:visible}
+  .gis-layout{min-height:0}
+  .gis-map-column{background:var(--surface);display:flex;flex-direction:column;min-width:0}
+  .gis-map-shell{height:clamp(410px,62dvh,650px)}
+  .commune-workbench .gis-map-shell{height:clamp(410px,62dvh,650px)}
+  .gis-map-top{max-width:calc(100% - 67px)}
+  .gis-map-top>span{font-size:11px;font-weight:750}
+  .gis-mobile-selection-bar{display:flex;align-items:center;gap:10px;background:var(--surface);color:var(--text);padding:11px 12px;border-top:1px solid var(--line);box-shadow:0 -4px 20px #061c3020;min-height:80px}
+  .gis-mobile-selected-copy{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+  .gis-mobile-selected-copy>span{color:var(--text-soft);font-size:10px;font-weight:800;letter-spacing:.7px}
+  .gis-mobile-selected-copy>strong{color:var(--text);font-size:14px;font-weight:820;line-height:1.3;overflow-wrap:anywhere}
+  .gis-mobile-view-detail{display:inline-flex;gap:7px;justify-content:center;align-items:center;white-space:nowrap;min-height:45px;padding:0 13px;background:var(--blue);color:#fff;border:1px solid var(--blue);border-radius:12px;font-size:12px;font-weight:850;cursor:pointer}
+  .gis-mobile-selection-clear{width:39px;height:43px;display:grid;place-items:center;flex:none;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);color:var(--text-soft);cursor:pointer}
+  /* Remove V1.0.0's fixed bottom sheet entirely unless details are requested. */
+  .gis-info-panel.has-selection:not(.gis-detail-open),
+  .commune-workbench .gis-info-panel.has-selection:not(.gis-detail-open){display:none!important}
+  .gis-info-panel.gis-detail-open,.commune-workbench .gis-info-panel.gis-detail-open{
+    display:flex!important;flex-direction:column;position:fixed;z-index:300;inset:0;
+    width:100vw;max-height:none;height:100dvh;overflow-x:hidden;overflow-y:auto;
+    overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    border:0;border-radius:0;padding:0 0 calc(25px + env(safe-area-inset-bottom,0px));
+    color:var(--text);background:var(--bg);box-shadow:none;
+  }
+  .gis-detail-open .gis-mobile-modal-header{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    position:sticky;top:0;z-index:2;
+    padding:calc(12px + env(safe-area-inset-top,0px)) 16px 15px;
+    min-height:88px;background:var(--surface);border-bottom:1px solid var(--line);
+  }
+  .gis-mobile-modal-header>div{min-width:0;display:flex;flex-direction:column;gap:5px}
+  .gis-mobile-modal-header span{font-size:10px;color:var(--blue);font-weight:800;letter-spacing:1.05px}
+  .gis-mobile-modal-header h2{margin:0;color:var(--text);font-size:clamp(20px,6vw,25px);line-height:1.2;letter-spacing:-.65px;overflow-wrap:anywhere}
+  .gis-mobile-modal-header button{width:44px;height:44px;flex:none;display:grid;place-items:center;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:13px;cursor:pointer}
+  .gis-mobile-modal-action{display:block;padding:16px 16px 2px}
+  .gis-mobile-modal-action button{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:52px;padding:12px 14px;background:var(--blue);color:#fff;border:1px solid var(--blue);border-radius:13px;font-size:14px;font-weight:820;cursor:pointer}
+  .gis-mobile-modal-action button svg:last-child{margin-left:auto}
+  .gis-detail-open .gis-info-top,.gis-detail-open .gis-mobile-detail-grip{display:none}
+  .gis-detail-open .gis-info-name{padding:16px 18px 12px}
+  .gis-detail-open .gis-info-accent{display:none}
+  .gis-detail-open .gis-info-name h3{display:none}
+  .gis-detail-open .gis-info-name p{margin:0;font-size:13px;color:var(--text-soft)}
+  .gis-detail-open .gis-info-stat{padding:15px 18px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .gis-detail-open .gis-info-stat small{font-size:12px}
+  .gis-detail-open .gis-info-stat strong{font-size:17px}
+  .gis-detail-open .gis-info-stat p{font-size:12px;line-height:1.65}
+  .gis-detail-open .verified-group{padding:2px 12px}
+  .gis-detail-open .verified-panel{margin:12px 0;padding:16px}
+  .gis-detail-open .verified-metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .gis-detail-open .verified-metric{padding:12px}
+  .gis-detail-open .verified-metric strong{font-size:clamp(15px,4.1vw,19px)}
+  .gis-detail-open .verified-metric small{font-size:11px}
+  .gis-detail-open .verified-plate-chip{font-size:17px;min-width:46px}
+  .gis-detail-open .gis-history-switch{padding:12px 16px}
+  .gis-detail-open .gis-history-switch button{font-size:13px;min-height:47px}
+  .gis-detail-open .gis-info-share{padding:12px 18px}
+  .gis-detail-open .gis-info-share button{min-height:42px;font-size:12px}
+  .gis-detail-open .gis-source-note{display:flex;padding:16px 18px}
+  .gis-detail-open .gis-info-link{margin:12px 18px 16px;font-size:13px;min-height:44px}
+  .gis-detail-open .ward-relation-list button{font-size:12px}
+  .gis-detail-open .gis-history-members>button strong{font-size:12px}
+  .gis-detail-open .gis-history-members>button small{font-size:11px}
+  /* A mobile dialog must be higher than the fixed bottom tab bar, app header and banners. */
+  .gis-mobile-scrim{z-index:85}
+  .gis-region-panel.gis-list-open{z-index:86}
+}
+@media(max-width:370px){
+  .gis-mobile-selected-copy>strong{font-size:12px}
+  .gis-mobile-view-detail{padding:0 10px;font-size:11px}
+  .gis-detail-open .verified-metric-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .gis-mobile-selection-bar,.gis-mobile-modal-header,.verified-metric{transition:none!important}
+}
+
+/* V1.0.1: comfortable touch targets on narrow viewports */
+@media(max-width:680px){
+  .gis-map-actions button{width:44px;height:44px;border-radius:12px}
+  .gis-mobile-list-trigger{min-height:44px;font-size:12px;padding:11px 13px}
+  .gis-toolbar-controls .period-toggle button{min-height:44px;font-size:12px}
+  .gis-mobile-list-close{width:40px;height:40px}
+  .gis-mobile-selected-copy>span{line-height:1.2}
+}
+
+@media(max-width:680px){.gis-detail-open .gis-desktop-commune-action{display:none}}

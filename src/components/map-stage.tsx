@@ -84,7 +84,7 @@ function applyHighlight(map: MapLibreMap, selectedCodes: string[]) {
 export function MapStage({ compact = false }: { compact?: boolean }) {
   const { period } = useAtlas();
   return <Link href="/ban-do" className={`map-stage gis-preview ${compact ? "map-stage-compact" : ""}`}>
-    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V1.0.0</span></div>
+    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V1.0.1</span></div>
     <div className="gis-preview-art" aria-hidden="true"><span className="gis-preview-grid"/><MapPinned size={72} strokeWidth={1.15}/><div className="gis-preview-orbit"/></div>
     <div className="gis-preview-copy"><span className="map-stage-eyebrow">BẢN ĐỒ TƯƠNG TÁC</span><h3>Khám phá từng vùng đất.</h3>
       <p>Chọn tỉnh, đổi thời kỳ để xem các tỉnh tiền thân trực tiếp trên bản đồ.</p>
@@ -110,6 +110,10 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
   const [error, setError] = useState("");
   const [requestId, setRequestId] = useState(0);
   const [listOpen, setListOpen] = useState(false);
+  // A tap on a province is for exploring its polygon. Details are opt-in on mobile.
+  const [detailOpen, setDetailOpen] = useState(false);
+  const detailCloseRef = useRef<HTMLButtonElement>(null);
+  const detailTriggerRef = useRef<HTMLButtonElement>(null);
   const [mapReady, setMapReady] = useState(false);
   const [showNames, setShowNames] = useState(true);
   const showNamesRef = useRef(true);
@@ -117,10 +121,43 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
 
   const select = useCallback((code: string | null) => {
     selectProvince(code);
+    setDetailOpen(false);
     if (code) setListOpen(false);
   }, [selectProvince]);
   // Event listeners installed once must always call the latest selection handler.
   useEffect(() => { chooseRef.current = select; }, [select]);
+
+  const closeDetails = useCallback(() => {
+    setDetailOpen(false);
+    window.requestAnimationFrame(() => detailTriggerRef.current?.focus());
+  }, []);
+  useEffect(() => {
+    if (!detailOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const frame = requestAnimationFrame(() => detailCloseRef.current?.focus());
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeDetails();
+      if (event.key !== "Tab") return;
+      const dialog = detailCloseRef.current?.closest<HTMLElement>("[role=dialog]");
+      const elements = Array.from(dialog?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), [tabindex="0"]') ?? []).filter(node => node.getClientRects().length > 0);
+      if (!elements.length) return;
+      const first = elements[0]; const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [detailOpen, closeDetails]);
+  useEffect(() => {
+    // A period transition changes the meaning of the selected administrative code.
+    const frame = requestAnimationFrame(() => setDetailOpen(false));
+    return () => cancelAnimationFrame(frame);
+  }, [period]);
 
   const focusFeatures = useCallback((features: RegionFeature[]) => {
     if (!features.length || !mapRef.current) return;
@@ -333,11 +370,20 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
           {grouped && !loading && <div className="gis-history-hint"><GitMerge size={15}/> {groupRows.length} tỉnh/thành tiền thân đang được chọn</div>}
           <div className="gis-map-credits">GIS tham khảo · Không thay thế bản đồ pháp lý</div>
         </div>
+        {active && <div className="gis-mobile-selection-bar" role="region" aria-label="Địa phương đang chọn">
+          <div className="gis-mobile-selected-copy"><span>ĐÃ CHỌN TRÊN BẢN ĐỒ</span><strong>{grouped ? `${groupRows.length} tỉnh/thành tiền thân` : active.name}</strong></div>
+          <button type="button" ref={detailTriggerRef} className="gis-mobile-view-detail" onClick={() => setDetailOpen(true)}><Info size={17}/> Xem chi tiết</button>
+          <button type="button" className="gis-mobile-selection-clear" onClick={() => select(null)} aria-label="Bỏ chọn địa phương"><X size={17}/></button>
+        </div>}
       </div>
       {listOpen && <button type="button" className="gis-mobile-scrim" aria-label="Đóng danh sách tỉnh/thành" onClick={() => setListOpen(false)}/>}
-      <aside className={`gis-info-panel ${active ? "has-selection" : ""}`} aria-live="polite">
+      <aside className={`gis-info-panel ${active ? "has-selection" : ""} ${detailOpen ? "gis-detail-open" : ""}`} aria-live="polite"
+        role={detailOpen && active ? "dialog" : undefined} aria-modal={detailOpen && active ? true : undefined}
+        aria-label={detailOpen && active ? `Chi tiết ${active.name}` : undefined}>
         {active ? <>
-          <div className="gis-mobile-detail-grip" aria-hidden="true"/>
+          <div className="gis-mobile-modal-header"><div><span>CHI TIẾT ĐỊA PHƯƠNG</span><h2>{grouped ? `${groupRows.length} tỉnh/thành tiền thân` : active.name}</h2></div>
+            <button ref={detailCloseRef} type="button" aria-label="Đóng chi tiết, trở lại bản đồ" onClick={closeDetails}><X size={21}/></button></div>
+          {onExploreCommunes && <div className="gis-mobile-modal-action"><button type="button" onClick={() => { setDetailOpen(false); onExploreCommunes(); }}><Layers3 size={18}/> {period === "current" ? "Xem xã/phường trên bản đồ" : "Tra cứu xã/phường cũ"} <ChevronRight size={18}/></button></div>}
           <div className="gis-info-top"><span><Info size={16}/> {grouped ? "NHÓM TỈNH TIỀN THÂN" : "ĐỊA PHƯƠNG ĐÃ CHỌN"}</span><button type="button" title="Bỏ chọn" aria-label="Bỏ chọn" onClick={() => select(null)}><X size={18}/></button></div>
           <div className="gis-info-name"><span className="gis-info-accent"/><h3>{grouped ? `${groupRows.length} tỉnh/thành trước sáp nhập` : active.name}</h3><p>{PERIODS[period].label}</p></div>
           {grouped ? <div className="gis-history-members" aria-label="Các tỉnh thành tiền thân">
@@ -354,7 +400,7 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
           <div className="gis-history-switch"><button type="button" onClick={() => changePeriod(period === "before" ? "current" : "before")}><GitMerge size={15}/>{period === "current" ? "Xem các tỉnh/thành tiền thân" : "Xem địa phương hiện tại"}</button></div>
           <div className="verified-group">{grouped ? groupRows.map((row) => <div key={row.code}><h4>{row.name}</h4><VerifiedStatisticsPanel period={period} provinceCode={row.code} dense/></div>) : <VerifiedStatisticsPanel period={period} provinceCode={active.code} dense/>}</div>
           <div className="gis-info-share"><button type="button" onClick={() => { void shareSelection(); }}><Share2 size={15}/> Chia sẻ bản đồ</button>{shareStatus && <span role="status"><Check size={13}/>{shareStatus}</span>}</div>
-          {onExploreCommunes && period === "current" && <div className="gis-history-switch"><button type="button" onClick={onExploreCommunes}><Layers3 size={15}/> Xem xã/phường trực tiếp trên bản đồ</button></div>}
+          {onExploreCommunes && <div className="gis-history-switch gis-desktop-commune-action"><button type="button" onClick={onExploreCommunes}><Layers3 size={15}/> {period === "current" ? "Xem xã/phường trực tiếp trên bản đồ" : "Tra cứu xã/phường cũ"}</button></div>}
           <Link href={provinceHref("/tinh-thanh", period, active.code)} className="gis-info-link">Tra cứu đơn vị cấp xã <ArrowUpRight size={15}/></Link>
         </> : <div className="gis-info-idle"><div className="gis-info-visual"><MapPinned size={34}/></div><h3>Khám phá một địa phương</h3><p>Chọn tỉnh/thành, sau đó chuyển thời kỳ để xem những vùng trước và sau sáp nhập.</p><span><Info size={15}/> Vùng ngoài được làm tối khi chọn.</span></div>}
         {dataset && <div className="gis-source-note"><Database size={15}/><div><strong>Nguồn địa giới tham khảo</strong><p>{dataset.metadata.source.includes("pispace") ? "Natural Earth / PiSpace Maps" : dataset.metadata.source.includes("GeoVN") ? "GeoVN / Vietnamese Provinces Database" : "Nguồn GeoJSON công khai"}</p><p>Đã ghép {dataset.metadata.matchedCount}/{dataset.metadata.expected} tỉnh/thành. {dataset.metadata.matchedCount < dataset.metadata.expected ? "Một số vùng cần đối chiếu." : "Tên GIS đã đối chiếu danh mục."}</p></div></div>}

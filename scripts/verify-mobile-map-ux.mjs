@@ -1,0 +1,32 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const province = read('src/components/map-stage.tsx');
+const commune = read('src/components/commune-explorer.tsx');
+const styles = read('src/app/globals.css');
+const verified = read('src/components/verified-statistics-panel.tsx');
+const pkg = JSON.parse(read('package.json'));
+assert.equal(pkg.version, '1.0.1');
+for (const [label, module] of [['province', province], ['commune', commune]]) {
+  assert.match(module, /\[detailOpen, setDetailOpen\]/, `${label}: missing explicit modal state`);
+  assert.match(module, /gis-mobile-selection-bar/, `${label}: missing map-first action bar`);
+  assert.match(module, /gis-mobile-view-detail/, `${label}: missing user requested open action`);
+  assert.match(module, /setDetailOpen\(true\)/, `${label}: details must be opt-in`);
+  assert.match(module, /gis-mobile-modal-header/, `${label}: fullscreen header`);
+  assert.match(module, /aria-modal=/, `${label}: accessibility`);
+  assert.match(module, /document\.body\.style\.overflow = "hidden"/, `${label}: scroll lock`);
+  assert.match(module, /event\.key === "Escape"/, `${label}: Escape to close`);
+  assert.match(module, /first\.focus\(\)/, `${label}: keyboard focus trap`);
+}
+assert.match(province, /Xem xã\/phường trên bản đồ/, 'province modal CTA missing');
+assert.match(province, /onExploreCommunes\(\)/, 'province CTA must lead to the commune map');
+assert.match(styles, /\.gis-info-panel\.has-selection:not\(\.gis-detail-open\)/, 'auto-open sheet must be hidden on mobile');
+assert.match(styles, /\.commune-workbench \.gis-info-panel\.has-selection:not\(\.gis-detail-open\)/);
+assert.match(styles, /position:fixed;z-index:300;inset:0/, 'fullscreen dialog not implemented');
+assert.match(styles, /safe-area-inset-top/, 'mobile safe area support missing');
+assert.match(styles, /color:var\(--text\)/, 'high contrast must use theme tokens');
+assert.ok(!styles.includes('color:var(--ink,#16324c)'), 'old unthemed dark text still present');
+assert.ok(!styles.includes('color:var(--text-muted,#64748b)'), 'old unthemed muted text still present');
+assert.match(styles, /:root\[data-theme="dark"\] \.verified-plate-chip/, 'missing dark-mode vehicle plate contrast');
+assert.match(verified, /verified-plate-chip/, 'vehicle plates component lost');
+console.log('PASS mobile UX: map-first province and commune selection, explicit fullscreen details, focus/scroll handling, accessible dark-mode metrics and plate styling.');

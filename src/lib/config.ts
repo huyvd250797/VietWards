@@ -3,8 +3,8 @@ export const APP = {
   title: "VietWards — Bản đồ hành chính Việt Nam",
   description:
     "Khám phá địa giới hành chính Việt Nam và hành trình thay đổi trước, sau ngày 01/07/2025.",
-  version: "1.0.0",
-  releaseName: "Public Release",
+  version: "1.0.1",
+  releaseName: "Mobile Map UX & Contrast Polish",
 } as const;
 
 export const PERIODS = {

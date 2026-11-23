@@ -1,6 +1,14 @@
-# VietWards V1.0.0 — Public Release
+# VietWards V1.0.1 — Mobile Map UX & Contrast Polish
 
-**VietWards** is a responsive Vietnamese educational administrative geography PWA. Built on Next.js App Router, React 19, TypeScript, MapLibre GL JS, and `vn-local-divisions`. Users open the deployed Vercel URL directly: **no localhost, login, external database, or SQL migration is required.**
+**VietWards** is a responsive Vietnamese educational administrative geography PWA. Built on Next.js App Router, React 19, TypeScript, MapLibre GL JS and `vn-local-divisions`. Deployed on Vercel, the app requires no localhost or login for end users.
+
+## What's new in V1.0.1
+
+- Selecting a province or commune on mobile **only highlights the geographic area**; the information sheet no longer covers the map.
+- An explicit **Xem chi tiết** action opens a **full-screen details modal** with the locality name in its sticky header, a close button, accessible focus handling, and iOS safe-area spacing.
+- The province modal includes **Xem xã/phường trên bản đồ**, or **Tra cứu xã/phường cũ** for the historical period.
+- Area, population, density, source information, and vehicle plate codes use contrast-safe dark/light theme tokens and enlarged numerals.
+- The existing PC layout, PWA, GIS services and provenance metadata remain intact; this release changes UI/UX, not the underlying administrative statistics.
 
 ## Features preserved from V0.9.0
 
@@ -10,7 +18,7 @@
 - Provincial **area, population (with reference date/type), density, and license plate prefixes**, with primary-source references; 97 province statistics entries across two snapshots.
 - `/hoc-dia-ly`: guided learning, two-province map comparison (defaults to Đồng Nai and TP. Hồ Chí Minh), interactive map/plate quiz, and data transparency.
 
-## What's new in V1.0.0
+## Previous V1.0.0 release scope
 
 1. **Public release metadata:** version 1.0.0 across the app, PWA and source; ten roadmap milestones corrected (V0.8.0 no longer mislabeled V0.9.0). The historic commune GIS part of V0.7.0 is explicitly **partial**, not complete.
 2. **System/data diagnostics:** `/trang-thai` and `/api/health` show the actual count of province catalogs and statistical entries, historical verified geometry coverage, data snapshot dates, and current limitations. Users may manually check external provincial GIS readiness; this is not a legal accuracy certification.
@@ -39,6 +47,7 @@ npm run check:verified
 npm run check:education
 npm run check:qa
 npm run check:release
+npm run check:uiux
 npm run typecheck
 npm run lint
 npm run build
@@ -55,4 +64,4 @@ npm run test:e2e
 - Provincial population and area reference years vary. Merged 2025 provinces use administrative-scale populations; unchanged ones use 2024 statistical-average values. No live 2026 census values are inferred. Commune area and population are not comprehensively verified.
 - A healthy `/api/health` does **not** test external GIS by default and is not evidence of successful Vercel production build, security review, or independent legal validation.
 
-See `docs/RELEASE-V1.0.0.md`, `docs/QA-REPORT-V1.0.0.md`, `docs/VERIFIED-STATISTICS-PROVENANCE.md`, and `THIRD_PARTY_NOTICES.md`.
+See `docs/RELEASE-V1.0.1.md`, `docs/QA-REPORT-V1.0.1.md`, `docs/RELEASE-V1.0.0.md`, `docs/QA-REPORT-V1.0.0.md`, `docs/VERIFIED-STATISTICS-PROVENANCE.md`, and `THIRD_PARTY_NOTICES.md`.

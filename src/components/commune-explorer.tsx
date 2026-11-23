@@ -81,6 +81,9 @@ export function CommuneMapWorkbench({
   const [relationError, setRelationError] = useState("");
   const [legacyOutline, setLegacyOutline] = useState(false);
   const [listOpen, setListOpen] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
+  const detailCloseRef = useRef<HTMLButtonElement>(null);
+  const detailTriggerRef = useRef<HTMLButtonElement>(null);
   const [retry, setRetry] = useState(0);
   const [shareStatus, setShareStatus] = useState("");
   const [showLabels, setShowLabels] = useState(true);
@@ -91,6 +94,32 @@ export function CommuneMapWorkbench({
   const shown = useMemo(() => filterCommunes(rows, query, kind).filter((ward) =>
     !districtCode || (period === "before" && ward.districtCode === districtCode)), [rows, query, kind, districtCode, period]);
   const selected = rows.find((row) => row.code === selectedWardCode) ?? null;
+  const closeDetails = useCallback(() => {
+    setDetailOpen(false);
+    window.requestAnimationFrame(() => detailTriggerRef.current?.focus());
+  }, []);
+  useEffect(() => {
+    if (!detailOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const frame = requestAnimationFrame(() => detailCloseRef.current?.focus());
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeDetails();
+      if (event.key !== "Tab") return;
+      const dialog = detailCloseRef.current?.closest<HTMLElement>("[role=dialog]");
+      const elements = Array.from(dialog?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), [tabindex="0"]') ?? []).filter(node => node.getClientRects().length > 0);
+      if (!elements.length) return;
+      const first = elements[0]; const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("keydown", onKeyDown); document.body.style.overflow = previousOverflow; };
+  }, [detailOpen, closeDetails]);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setDetailOpen(false));
+    return () => cancelAnimationFrame(frame);
+  }, [period, provinceCode, selectedWardCode]);
   const matchedCodes = useMemo(() => new Set(dataset?.features.filter((feature) => feature.properties.matched).map((feature) => feature.properties.code) ?? []), [dataset]);
   const mapped = !!selected && matchedCodes.has(selected.code);
   const focused = useCallback((features: CommuneFeature[], duration = 450) => {
@@ -241,7 +270,7 @@ export function CommuneMapWorkbench({
     return () => { controller.abort(); cancelAnimationFrame(frame); };
   }, [period, selectedWardCode, selected?.code]);
 
-  const choose = (code: string | null) => { onSelectWard(code); if (code) setListOpen(false); };
+  const choose = (code: string | null) => { setDetailOpen(false); onSelectWard(code); if (code) setListOpen(false); };
   const reset = () => {
     choose(null);
     if (dataset) focused(dataset.features.filter((f) => f.properties.matched));
@@ -314,10 +343,18 @@ export function CommuneMapWorkbench({
         {!gisLoading && gisError && <div className={`gis-map-status gis-map-error ${period === "before" ? "legacy-map-warning" : ""}`} role="alert"><ShieldAlert size={28}/><strong>{period === "before" ? "GIS cấp xã cũ chưa xác minh" : "Chưa có bản đồ cấp xã"}</strong><small>{gisError}{legacyOutline ? " Đang hiển thị ranh giới cấp tỉnh cũ, KHÔNG phải ranh giới xã." : ""}</small><button type="button" onClick={() => setRetry((n) => n + 1)}><RotateCcw size={15}/> Thử tải lại</button></div>}
         {!gisLoading && !gisError && !selectedWardCode && <div className="gis-map-hint"><MapPin size={16}/> Chạm vào xã/phường để xem địa giới</div>}
         <div className="gis-map-credits">{period === "before" ? "Mốc 30/06/2025 · GIS cấp xã chỉ hiển thị khi được kiểm chứng" : "GIS tham khảo · Không thay thế bản đồ pháp lý"}</div>
-      </div></div>
+      </div>
+      {selected && <div className="gis-mobile-selection-bar" role="region" aria-label="Đơn vị hành chính đang chọn">
+        <div className="gis-mobile-selected-copy"><span>ĐÃ CHỌN TRÊN BẢN ĐỒ</span><strong>{selected.name}</strong></div>
+        <button type="button" ref={detailTriggerRef} className="gis-mobile-view-detail" onClick={() => setDetailOpen(true)}><Info size={17}/> Xem chi tiết</button>
+        <button type="button" className="gis-mobile-selection-clear" onClick={() => onSelectWard(null)} aria-label="Bỏ chọn xã phường"><X size={17}/></button>
+      </div>}
+      </div>
       {listOpen && <button type="button" className="gis-mobile-scrim" aria-label="Đóng danh sách xã phường" onClick={() => setListOpen(false)}/>}
-      <aside className={`gis-info-panel ${selected ? "has-selection" : ""}`} aria-live="polite">
-        {selected ? <><div className="gis-mobile-detail-grip" aria-hidden="true"/>
+      <aside className={`gis-info-panel ${selected ? "has-selection" : ""} ${detailOpen ? "gis-detail-open" : ""}`} aria-live="polite"
+        role={detailOpen && selected ? "dialog" : undefined} aria-modal={detailOpen && selected ? true : undefined}
+        aria-label={detailOpen && selected ? `Chi tiết ${selected.name}` : undefined}>
+        {selected ? <><div className="gis-mobile-modal-header"><div><span>CHI TIẾT XÃ/PHƯỜNG</span><h2>{selected.name}</h2></div><button ref={detailCloseRef} type="button" aria-label="Đóng chi tiết, trở lại bản đồ" onClick={closeDetails}><X size={21}/></button></div>
           <div className="gis-info-top"><span><Info size={16}/> ĐƠN VỊ HÀNH CHÍNH CẤP XÃ</span><button type="button" title="Bỏ chọn" aria-label="Bỏ chọn xã phường" onClick={() => choose(null)}><X size={18}/></button></div>
           <div className="gis-info-name"><span className="gis-info-accent"/><h3>{selected.name}</h3><p>{province.name}{period === "before" && selected.districtName ? ` · ${selected.districtName}` : ""}</p></div>
           <div className="gis-info-stat"><small>Mã hành chính</small><strong>{selected.code}</strong></div>

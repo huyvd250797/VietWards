@@ -64,3 +64,5 @@ Nguồn phải lưu URL cụ thể, ngày công bố, ngày truy xuất, kỳ gi
 ## Scope guard V0.1.0
 
 Không thêm GIS thật, danh sách tên địa phương chưa xác minh, dân số/diện tích cụ thể hoặc tra biển số vào mã V0.1.0. Có thể dùng con số mốc 34/63 như metadata về hai thời kỳ, kèm nhãn mốc tham chiếu. Các route mục tiêu chỉ dựng nền tảng và ghi rõ chức năng dự kiến.
+
+**Bản vá V1.0.1:** Mobile Map UX & Contrast Polish — chọn tỉnh/xã trên bản đồ không bị modal che, xem chi tiết chủ động ở modal toàn màn hình; cải thiện độ tương phản chữ Dark Mode. Giữ nguyên 10 mốc roadmap, không đánh dấu GIS xã cũ đã hoàn thành.
