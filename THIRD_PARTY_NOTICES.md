@@ -39,3 +39,11 @@ Legal sources linked in `src/lib/admin-sources.ts` take precedence if there is a
 **thongnv99/vietnam-interactive-map** (https://github.com/thongnv99/vietnam-interactive-map): fallback publicly hosted 63-province GeoJSON; repository states MIT but attribution and original GIS source should be checked separately before redistribution.
 
 No third-party GIS geometry is bundled into the distributed ZIP in this release; the server retrieves the source files when needed. If permission to rehost the GIS is not established, disable the corresponding source rather than claiming legal authorization.
+
+## VietWards V0.6.0 — Commune / Ward boundary layer
+
+- Community GIS viewer source: https://github.com/truongdinh018/GeoVN (`data/wards/{provinceCode}.geojson`).
+- Upstream: https://github.com/thanglequoc/vietnamese-provinces-database, derived from the Bando.com.vn administrative reference map (collected March 13, 2026).
+- The dataset repository is open source, but underlying cartographic/source-data licensing must be checked separately before production redistribution or commercial use.
+- VietWards does not bundle these raw GIS polygons into the ZIP. The Next.js gateway requests an individual province's GeoJSON when needed and records the source in response metadata.
+- These geometries are **reference material, not legally certified boundary coordinates**. Matched administrative codes do not by themselves validate geometry precision.

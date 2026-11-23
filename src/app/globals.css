@@ -1,4 +1,4 @@
-/* VietWards Design System v0.5.0 — educational GIS, accessible and responsive */
+/* VietWards Design System v0.6.0 — educational GIS, accessible and responsive */
 :root {
   color-scheme: light;
   --bg: #f5f8fd;
@@ -582,3 +582,29 @@ button:focus-visible, a:focus-visible { outline: 3px solid #66b4ff; outline-offs
 .gis-history-members button:focus-visible,.gis-history-switch button:focus-visible,.history-actions button:focus-visible,.history-actions a:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 @media(max-width:760px){.gis-history-hint{bottom:56px;font-size:10px}.gis-info-panel.has-selection .gis-history-members{padding:8px 12px}.gis-info-panel.has-selection .gis-history-switch{padding:8px 12px}}
 @media(prefers-reduced-motion:reduce){.gis-history-members button,.gis-history-switch button{transition:none!important}}
+
+/* V0.6.0 — two-level interactive commune exploration */
+.map-level-switch{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 13px;padding:9px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.map-level-switch>button{display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:1px solid var(--line);background:var(--surface-2);color:var(--text-soft);font-size:12px;font-weight:780;padding:10px 13px;min-height:39px;border-radius:10px}
+.map-level-switch>button.active{background:var(--blue-light);border-color:color-mix(in srgb,var(--blue) 38%,var(--line));color:var(--blue)}
+.map-level-switch>button:disabled{opacity:.48;cursor:not-allowed}
+.map-level-switch>span{font-size:11px;color:var(--text-soft);margin-left:auto}
+.commune-toolbar-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.commune-back{border:1px solid var(--line);background:var(--surface);color:var(--text);display:inline-flex;align-items:center;gap:7px;min-height:39px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:12px;font-weight:750}
+.commune-back:hover{color:var(--blue);border-color:var(--blue)}
+.commune-province-select{display:flex;flex-direction:column;gap:4px;min-width:175px;color:var(--text-soft);font-size:10px;font-weight:730}
+.commune-province-select select{min-height:38px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:6px 9px;max-width:270px;font-weight:720}
+.commune-notice{font-size:11px;color:#92400e;background:#fff4d7;border:1px solid #ebc881;border-radius:9px;margin:8px 12px;padding:9px;line-height:1.6}
+.commune-workbench .gis-toolbar{gap:12px}
+.commune-workbench .gis-region-list{scrollbar-gutter:stable}
+.commune-workbench .gis-info-panel .gis-info-stat strong{overflow-wrap:anywhere}
+.map-level-switch button:focus-visible,.commune-back:focus-visible,.commune-province-select select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+@media(max-width:760px){
+  .map-level-switch{gap:6px;padding:7px}.map-level-switch>button{padding:9px 10px;font-size:11px;flex:1;justify-content:center}
+  .map-level-switch>span{width:100%;margin-left:4px;font-size:10px}
+  .commune-toolbar-actions{width:100%;justify-content:space-between;align-items:center}
+  .commune-province-select{flex:1;min-width:135px}.commune-province-select select{max-width:100%;width:100%}
+  .commune-workbench .gis-map-shell{min-height:435px}
+  .commune-workbench .gis-info-panel.has-selection{bottom:calc(78px + env(safe-area-inset-bottom,0px));max-height:42dvh}
+}
+@media(prefers-reduced-motion:reduce){.map-level-switch button,.commune-back{transition:none!important}}

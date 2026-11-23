@@ -178,13 +178,13 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
     <AppContext.Provider value={{ period, ready, selectedProvinceCode, historicalSelection, changePeriod, selectProvince, navigateProvince }}>
       <div className="app-frame">
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.5.0</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.6.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
-            <div className="progress-caption"><span>Tiến độ dự án</span><strong>5 / 10</strong></div>
+            <div className="progress-caption"><span>Tiến độ dự án</span><strong>6 / 10</strong></div>
             <div className="progress-track"><div className="progress-fill"/></div>
-            <p>Đã hỗ trợ tách/gộp địa giới theo thời kỳ. Tiếp theo: khám phá cấp xã.</p>
+            <p>Đã có GIS cấp xã hiện hành và bản đồ lịch sử cấp tỉnh. Tiếp theo: địa giới cấp xã cũ.</p>
             <Link href="/gioi-thieu">Xem lộ trình <ArrowUpRight size={14}/></Link>
           </div>
           <div className="sidebar-foot"><CircleHelp size={15}/> Dữ liệu có kiểm chứng · V{APP.version}</div>
@@ -199,7 +199,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V0.5</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V0.6</span></button>
               <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -221,7 +221,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             <div className="mobile-drawer" role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={() => setMobileMenuOpen(false)}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Historical Merge Viewer</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Commune & Ward Explorer</div>
             </div>
           </div>
         )}

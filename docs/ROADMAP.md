@@ -33,6 +33,10 @@ Xây dựng ứng dụng giáo dục địa lý hành chính Việt Nam, dùng �
 | V0.9.0 | Educational Experience & QA | Tương tác so sánh, hướng dẫn học tập, kiểm toán dữ liệu, accessibility, mobile và hiệu suất |
 | V1.0.0 | VietWards Public Release | Phát hành hoàn thiện, giám sát lỗi, quy trình cập nhật dữ liệu, caching, PWA và Vercel ổn định |
 
+## Tiến độ hiện tại
+
+Đã triển khai tới **V0.6.0 — Commune & Ward Explorer**. Bản đồ cấp xã hiện hành có tìm kiếm, lựa chọn và polygon tải theo từng tỉnh; nguồn GIS tham khảo chưa được nghiệm thu pháp lý. V0.7.0 tiếp tục GIS cấp xã trước sáp nhập.
+
 ## Mốc sử dụng được
 
 V0.5.0: bản đồ cấp tỉnh hai thời kỳ với cơ chế tách/gộp là mốc MVP có tương tác GIS thực.

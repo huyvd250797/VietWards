@@ -120,6 +120,7 @@ export function ProvinceExplorer({ previous, current }: { previous: ProvinceRow[
           <span className="data-verified"><ShieldCheck size={16}/> Có nguồn</span>
         </div>
         <div className="data-map-cta"><Link href={provinceHref("/ban-do", period, selected?.code)}><MapPin size={16}/> Xem {selected?.name} trên bản đồ <ExternalLink size={14}/></Link><p>Mở đúng tỉnh/thành và thời kỳ, tự động zoom và làm nổi địa giới khi có dữ liệu GIS đã đối chiếu.</p></div>
+        {period === "current" && <div className="data-map-cta"><Link href={`/ban-do?period=current&province=${selected.code}&level=commune`}><Layers3 size={16}/> Xem xã/phường trên bản đồ <ExternalLink size={14}/></Link><p>Đồng bộ mã tỉnh; chỉ tải ranh giới cấp xã tương ứng và cho phép chọn từng vùng.</p></div>}
         <div className="data-selected-metrics"><div><small>Đơn vị cấp xã</small><strong>{count(selected?.communeCount ?? 0)}</strong></div><div><small>{period === "before" ? "Quận / huyện / thị xã" : "Thời điểm tham chiếu"}</small><strong>{period === "before" ? count(selected?.districtCount ?? 0) : "2026"}</strong></div></div>
         <div className="data-merge-info"><GitMerge size={18}/><div><strong>{period === "before" ? "Đơn vị hành chính sau sáp nhập" : "Các tỉnh/thành tiền thân"}</strong>
           {period === "before" ? <p>{selected?.successor?.name ?? "Cần xác minh quan hệ kế thừa của địa phương này"}</p> : <div className="data-chips">{selected?.formerProvinces?.map((p) => <span key={p.code}>{p.name} · {p.code}</span>)}</div>}

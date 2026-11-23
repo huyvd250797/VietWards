@@ -1,3 +1,35 @@
+# VietWards V0.6.0 — Commune & Ward Explorer
+
+Bản này nâng cấp V0.5.0 từ chính source ZIP đã gửi; giữ nguyên bản đồ tỉnh 34/63 và lịch sử sáp nhập.
+
+**Mới:** tại `/ban-do`, chọn tỉnh hiện hành rồi chuyển sang **Cấp xã/phường** để xem xã, phường, đặc khu trên bản đồ, highlight vùng, lớp phủ 57%, tìm không dấu/mã 5 số, lọc loại đơn vị, tải GIS theo từng tỉnh, mobile bottom sheet và liên kết trực tiếp. Ví dụ `/ban-do?period=current&province=75&level=commune&ward=25195`. Chế độ cấp xã trước sáp nhập thuộc V0.7.0.
+
+**Lưu ý dữ liệu:** danh mục hành chính theo mã từ V0.2.0. GIS cấp xã từ GeoVN, **tham khảo không phải ranh giới pháp lý**; API kiểm tra mã/đếm polygon và báo thiếu. GIS không khả dụng thì danh sách vẫn tra cứu được. Không tạo ranh giới giả. Không cần SQL migration.
+
+**Tài liệu triển khai:** [V0.6.0 release](docs/RELEASE-V0.6.0.md), [QA report](docs/QA-REPORT-V0.6.0.md), [Nguồn bên thứ ba](THIRD_PARTY_NOTICES.md).
+
+## Triển khai Vercel
+
+Đưa nội dung ZIP vào root GitHub repository (có `package.json`), import Vercel (Next.js, Node 22.x) và Deploy. Không cần sử dụng localhost hoặc database. Phụ thuộc dịch vụ GIS bên ngoài khi xem bản đồ.
+
+## Kiểm thử
+
+```bash
+npm install
+npm run check:structure
+npm run check:data
+npm run check:province
+npm run check:history
+npm run check:communes
+npm run typecheck
+npm run lint
+npm run build
+```
+
+---
+
+## Lịch sử & hướng dẫn các bản trước
+
 # VietWards V0.5.0 — Historical Merge Viewer
 
 **VietWards** là ứng dụng web giáo dục về địa giới hành chính Việt Nam, triển khai trên Vercel, sử dụng trực tiếp trên PC/mobile không cần đăng nhập hoặc chạy localhost.

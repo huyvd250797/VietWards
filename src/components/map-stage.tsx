@@ -83,7 +83,7 @@ function applyHighlight(map: MapLibreMap, selectedCodes: string[]) {
 export function MapStage({ compact = false }: { compact?: boolean }) {
   const { period } = useAtlas();
   return <Link href="/ban-do" className={`map-stage gis-preview ${compact ? "map-stage-compact" : ""}`}>
-    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V0.5.0</span></div>
+    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V0.6.0</span></div>
     <div className="gis-preview-art" aria-hidden="true"><span className="gis-preview-grid"/><MapPinned size={72} strokeWidth={1.15}/><div className="gis-preview-orbit"/></div>
     <div className="gis-preview-copy"><span className="map-stage-eyebrow">BẢN ĐỒ TƯƠNG TÁC</span><h3>Khám phá từng vùng đất.</h3>
       <p>Chọn tỉnh, đổi thời kỳ để xem các tỉnh tiền thân trực tiếp trên bản đồ.</p>
@@ -93,7 +93,7 @@ export function MapStage({ compact = false }: { compact?: boolean }) {
   </Link>;
 }
 
-export function MapWorkbench({ previous, current, historyMode = false }: { previous: ProvinceRow[]; current: ProvinceRow[]; historyMode?: boolean }) {
+export function MapWorkbench({ previous, current, historyMode = false, onExploreCommunes }: { previous: ProvinceRow[]; current: ProvinceRow[]; historyMode?: boolean; onExploreCommunes?: () => void }) {
   const { period, ready, historicalSelection, selectedProvinceCode: selected, selectProvince, changePeriod } = useAtlas();
   const provinces = period === "before" ? previous : current;
   const activeCodes = historicalSelection.selectedProvinceCodes;
@@ -352,6 +352,7 @@ export function MapWorkbench({ previous, current, historyMode = false }: { previ
           <div className="gis-history-switch"><button type="button" onClick={() => changePeriod(period === "before" ? "current" : "before")}><GitMerge size={15}/>{period === "current" ? "Xem các tỉnh/thành tiền thân" : "Xem địa phương hiện tại"}</button></div>
           <div className="gis-info-stat"><small>Diện tích · dân số · biển số</small><p>Số liệu có nguồn và kỳ thống kê bổ sung ở V0.8.0.</p></div>
           <div className="gis-info-share"><button type="button" onClick={() => { void shareSelection(); }}><Share2 size={15}/> Chia sẻ bản đồ</button>{shareStatus && <span role="status"><Check size={13}/>{shareStatus}</span>}</div>
+          {onExploreCommunes && period === "current" && <div className="gis-history-switch"><button type="button" onClick={onExploreCommunes}><Layers3 size={15}/> Xem xã/phường trực tiếp trên bản đồ</button></div>}
           <Link href={provinceHref("/tinh-thanh", period, active.code)} className="gis-info-link">Tra cứu đơn vị cấp xã <ArrowUpRight size={15}/></Link>
         </> : <div className="gis-info-idle"><div className="gis-info-visual"><MapPinned size={34}/></div><h3>Khám phá một địa phương</h3><p>Chọn tỉnh/thành, sau đó chuyển thời kỳ để xem những vùng trước và sau sáp nhập.</p><span><Info size={15}/> Vùng ngoài được làm tối khi chọn.</span></div>}
         {dataset && <div className="gis-source-note"><Database size={15}/><div><strong>Nguồn địa giới tham khảo</strong><p>{dataset.metadata.source.includes("pispace") ? "Natural Earth / PiSpace Maps" : dataset.metadata.source.includes("GeoVN") ? "GeoVN / Vietnamese Provinces Database" : "Nguồn GeoJSON công khai"}</p><p>Đã ghép {dataset.metadata.matchedCount}/{dataset.metadata.expected} tỉnh/thành. {dataset.metadata.matchedCount < dataset.metadata.expected ? "Một số vùng cần đối chiếu." : "Tên GIS đã đối chiếu danh mục."}</p></div></div>}
