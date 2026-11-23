@@ -11,7 +11,7 @@ const required = [
   "src/app/api/communes/route.ts", "src/app/api/commune-boundaries/route.ts", "scripts/verify-commune-explorer.mjs",
   "src/app/hoc-dia-ly/page.tsx", "src/components/educational-explorer.tsx", "src/components/educational-map.tsx", "src/lib/education-model.ts", "src/lib/education-server.ts", "src/app/educational.css", "src/app/api/ward-relations/route.ts", "src/lib/legacy-geometry.ts", "src/components/legacy-atlas-explorer.tsx", "public/data/legacy/manifest.json",
   "public/sw.js", "public/offline.html", "public/icons/icon-192.png", "public/icons/icon-512.png",
-  "public/icons/icon-maskable-512.png", "README.md", "docs/ROADMAP.md"
+  "public/icons/icon-maskable-512.png", "README.md", "docs/ROADMAP.md", "docs/RELEASE-V1.0.0.md", "docs/QA-REPORT-V1.0.0.md", "src/app/api/health/route.ts", "src/app/trang-thai/page.tsx", "src/components/status-dashboard.tsx", "src/components/pwa-lifecycle.tsx", "src/app/error.tsx", "src/app/global-error.tsx", "src/app/not-found.tsx", "src/app/loading.tsx", "scripts/verify-public-release.mjs"
 ];
 const missing = required.filter((entry) => !fs.existsSync(path.join(root, entry)));
 if (missing.length) {
@@ -19,5 +19,5 @@ if (missing.length) {
   process.exit(1);
 }
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-if (packageJson.version !== "0.9.0") throw new Error("Incorrect release version");
+if (packageJson.version !== "1.0.0") throw new Error("Incorrect release version");
 console.log(`OK: ${required.length} required files, release ${packageJson.version}`);

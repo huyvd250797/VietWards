@@ -1,30 +1,36 @@
-# VietWards V0.9.0 — Educational Experience & QA
+# VietWards V1.0.0 — Public Release
 
-VietWards is a Vietnamese educational geography PWA built with **Next.js App Router, React 19, TypeScript, MapLibre GL JS** and a canonical administrative database. Deploy the source directly to Vercel from GitHub; visitors need no user accounts or local servers.
+**VietWards** is a responsive Vietnamese educational administrative geography PWA. Built on Next.js App Router, React 19, TypeScript, MapLibre GL JS, and `vn-local-divisions`. Users open the deployed Vercel URL directly: **no localhost, login, external database, or SQL migration is required.**
 
-## What's new in V0.9.0
+## Features preserved from V0.9.0
 
-Open **Học địa lý** (`/hoc-dia-ly`) in the desktop sidebar or mobile bottom navigation:
+- Two administrative snapshots: **63 provinces before 01/07/2025; 34 provinces now**, searchable by code or Vietnamese names.
+- Interactive provincial GIS, highlighted selected region and dimmed others, 1/2/3-province historic split/merge, responsive province list, and shareable URLs.
+- Current commune/ward GIS requested **only for the selected province**, plus the historical three-level province/district/commune catalog, with partial-transfer and source-provenance warnings.
+- Provincial **area, population (with reference date/type), density, and license plate prefixes**, with primary-source references; 97 province statistics entries across two snapshots.
+- `/hoc-dia-ly`: guided learning, two-province map comparison (defaults to Đồng Nai and TP. Hồ Chí Minh), interactive map/plate quiz, and data transparency.
 
-- **So sánh**: two province selectors synchronized with a two-color MapLibre map, darkened other provinces, fit-to-bounds camera, a side-by-side statistical table and provenance links. Defaults to **Đồng Nai (75)** versus **TP. Hồ Chí Minh (79)**. Share the comparison with `?period=current&tab=compare&a=75&b=79`. Directly compare *population, area and density differences only if the source type, reference period and relevant reference dates are compatible*; mismatches remain visible without fabricated delta.
-- **Khám phá**: guided five-step learning flow through location, area, population, vehicle registration prefixes and pre-merger provinces, with source links and map/history navigation.
-- **Thử thách**: deterministic, source-linked multiple-choice quizzes and click-the-province map questions; alternative button answers work when GIS/WebGL is unavailable. Record the best result in browser storage per historical period, without a login.
-- **Kiểm chứng**: live data coverage counts for 34/63 provinces and 97 provincial statistical records, with explicit warnings about uncertified third-party GIS and the unavailable pre-2025 commune geometry.
-- **QA**: data comparison and plate-prefix invariants, educational question tests, provenance/quality gate tests, plus a Playwright browser smoke suite for desktop and mobile (uses **synthetic GIS fixtures for UI behavior tests only**, not to assert legal boundary accuracy).
+## What's new in V1.0.0
 
-V0.9.0 builds on all existing V0.8.0 features: national province GIS for current and pre-2025 periods; administrative search, historical relationships, current commune GIS loaded per province; legacy three-level catalog and conversion; 97 sourced province statistic records and vehicle registration prefixes.
+1. **Public release metadata:** version 1.0.0 across the app, PWA and source; ten roadmap milestones corrected (V0.8.0 no longer mislabeled V0.9.0). The historic commune GIS part of V0.7.0 is explicitly **partial**, not complete.
+2. **System/data diagnostics:** `/trang-thai` and `/api/health` show the actual count of province catalogs and statistical entries, historical verified geometry coverage, data snapshot dates, and current limitations. Users may manually check external provincial GIS readiness; this is not a legal accuracy certification.
+3. **Reliable PWA lifecycle:** safe versioned offline fallback, app-owned cache cleanup only, offline connection warning, and user-confirmed worker update (no abrupt session reload). Basic install guidance in About for Safari iOS and supported desktop/Android browsers.
+4. **Recovery UX:** custom route error recovery, loading, friendly 404, focusable skip-to-content link, status link in app navigation/footer, and mobile-friendly diagnostics.
+5. **Release quality gates:** independent `npm run check:release` verifying version, roadmap, provenance limitations and PWA contracts; additional Playwright status/mobile/404 smoke tests; CI includes public-release gate.
 
-## Run and deploy
+## Deploy on Vercel
 
-1. Push all source files in this ZIP to GitHub (repository root). Node.js **22.x**.
-2. Import the repo in [Vercel](https://vercel.com/new) and keep the autodetected **Next.js** framework. No database or environment variables are required for basic functionality.
-3. On Vercel, verify build logs and open `/hoc-dia-ly?tab=compare&a=75&b=79` on a desktop and mobile device. MapLibre geometry is loaded from documented external sources through application API routes; those sources must be reachable.
-4. For development (optional): `npm install && npm run dev`. **End users never need localhost.**
+1. Push the **contents** of this ZIP into the root of the VietWards GitHub repository.
+2. Import the repository in Vercel, framework **Next.js**, Node.js **22.x**. Leave the default root directory and build (`npm run build`).
+3. After deployment, verify `/`, `/ban-do`, `/tinh-thanh`, `/lich-su`, `/hoc-dia-ly`, `/gioi-thieu` and `/trang-thai`. Then run manual GIS checks from `/trang-thai`, plus real-world touch interactions on PC and mobile.
+4. Verify the CI workflow (`.github/workflows/ci.yml`) and Vercel build logs before considering the release production-accepted. No account, DB, SQL migration, or environment variables are required for the app's documented core functionality.
 
-## Quality checks
+### Quality checks
 
-```sh
+```bash
+npm install
 npm run check:structure
+npm run check:data
 npm run check:province
 npm run check:history
 npm run check:communes
@@ -32,21 +38,21 @@ npm run check:legacy
 npm run check:verified
 npm run check:education
 npm run check:qa
+npm run check:release
 npm run typecheck
 npm run lint
 npm run build
+npx playwright install chromium
 npm run test:e2e
 ```
 
-Playwright browser tests require `npx playwright install chromium`; the GitHub CI `browser-smoke` job installs the browser. Playwright tests mock GIS responses using synthetic regions to test UI only; verify **live GIS** with `npm run check:gis:online` and real-browser inspection separately. The last command relies on upstream connectivity.
+`npm run check:gis:online` verifies live upstream GIS separately; run it only where internet is available. The tests use synthetic fixture geometries solely to test UI interactions, **not to establish geographical accuracy**.
 
-## Release limitations and provenance
+## Read before publication
 
-- **GIS polygons before July 2025 at commune level:** **0/63 provinces** verified and packaged. V0.7.0's strict provenance gateway remains; missing regions are not invented. Do not describe national legacy commune GIS as complete.
-- **Current GIS:** third-party cartographic reference, not certified legal boundary geometry. Check third-party licensing and rights to redistribute before publishing.
-- **Population:** 23 merged provinces use **2025 administrative-scale population**, 11 unchanged ones use **2024 statistical-average population**, and 63 legacy provinces use **2024 statistical averages**. These must be interpreted by their own reference periods, not as live 2026 estimates.
-- **Area:** see each province's source reference date; don't replace published values with polygon-computed values.
-- **Communes:** no comprehensive sourced per-commune population/area dataset is bundled; this information remains unavailable rather than estimated.
-- **Production QA:** browser, build and live GIS runtime must be confirmed by CI/Vercel; passing code structure and pure logic checks alone does **not** certify runtime or GIS accuracy.
+- **Legacy commune GIS: 0/63 provincial datasets with verified polygon provenance bundled.** The catalog and succession relationships exist but interactive historical commune polygons cannot be claimed complete. The app never draws fictitious boundaries to hide this gap.
+- **Current and legacy provincial GIS** and current commune GIS come from external third-party sources; availability, geographic accuracy, and reuse rights need independent review. Do not present them as legally certified cadastral boundaries.
+- Provincial population and area reference years vary. Merged 2025 provinces use administrative-scale populations; unchanged ones use 2024 statistical-average values. No live 2026 census values are inferred. Commune area and population are not comprehensively verified.
+- A healthy `/api/health` does **not** test external GIS by default and is not evidence of successful Vercel production build, security review, or independent legal validation.
 
-See `docs/RELEASE-V0.9.0.md`, `docs/QA-REPORT-V0.9.0.md`, `docs/VERIFIED-STATISTICS-PROVENANCE.md`, and `THIRD_PARTY_NOTICES.md` for detailed notes. No SQL migration is required.
+See `docs/RELEASE-V1.0.0.md`, `docs/QA-REPORT-V1.0.0.md`, `docs/VERIFIED-STATISTICS-PROVENANCE.md`, and `THIRD_PARTY_NOTICES.md`.

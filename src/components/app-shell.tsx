@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  BookOpenText, GraduationCap, ChevronDown, Compass, Globe2, History, Layers3, Map,
+  BookOpenText, GraduationCap, ChevronDown, Compass, Globe2, History, Layers3, Map, Activity,
   Menu, Moon, Search, Sun, X, ArrowUpRight, CircleHelp
 } from "lucide-react";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { APP, PERIODS, type Period } from "@/lib/config";
+import { PwaLifecycle } from "./pwa-lifecycle";
 import { provinceHref } from "@/lib/province-search";
 import {
   emptyHistoricalSelection, historicHref, selectionFromParams, singleSelection,
@@ -27,12 +28,6 @@ export function useAtlas() {
   const value = useContext(AppContext);
   if (!value) throw new Error("useAtlas must be used within AppShell");
   return value;
-}
-
-function registerServiceWorker() {
-  void navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {
-    // Offline mode is a progressive enhancement; do not interrupt the app.
-  });
 }
 
 const primaryNav = [
@@ -113,14 +108,6 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
     return () => { window.cancelAnimationFrame(frame); window.removeEventListener("popstate", onPopState); };
   }, [pathname, links]);
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-      window.addEventListener("load", registerServiceWorker, { once: true });
-      // In client transitions, load may have fired already.
-      if (document.readyState === "complete") registerServiceWorker();
-      return () => window.removeEventListener("load", registerServiceWorker);
-    }
-  }, []);
 
   const updateAddress = useCallback((state: HistoricalSelection) => {
     try { localStorage.setItem("vietwards-period", state.period); } catch { /* restricted */ }
@@ -153,7 +140,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
     try { localStorage.setItem("vietwards-theme", nextTheme); } catch { /* no storage */ }
   }
 
-  const currentNav = [...primaryNav, { href: "/gioi-thieu", label: "Giới thiệu", icon: BookOpenText }]
+  const currentNav = [...primaryNav, { href: "/gioi-thieu", label: "Giới thiệu", icon: BookOpenText }, { href: "/trang-thai", label: "Trạng thái", icon: Activity }]
     .find((item) => item.href === pathname);
 
   const renderNav = (closeOnClick = false) => (
@@ -171,6 +158,9 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
         <Link href="/gioi-thieu" className={`nav-item ${pathname === "/gioi-thieu" ? "active" : ""}`} aria-current={pathname === "/gioi-thieu" ? "page" : undefined} onClick={closeOnClick ? () => setMobileMenuOpen(false) : undefined}>
           <BookOpenText size={19} strokeWidth={1.9}/><span>Giới thiệu & roadmap</span>
         </Link>
+        <Link href="/trang-thai" className={`nav-item ${pathname === "/trang-thai" ? "active" : ""}`} aria-current={pathname === "/trang-thai" ? "page" : undefined} onClick={closeOnClick ? () => setMobileMenuOpen(false) : undefined}>
+          <Activity size={19} strokeWidth={1.9}/><span>Trạng thái dữ liệu & hệ thống</span>
+        </Link>
       </nav>
     </>
   );
@@ -178,14 +168,15 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
   return (
     <AppContext.Provider value={{ period, ready, selectedProvinceCode, historicalSelection, changePeriod, selectProvince, navigateProvince }}>
       <div className="app-frame">
+        <a href="#main-content" className="vw-skip-link">Bỏ qua điều hướng, đến nội dung chính</a>
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">BETA 0.9.0</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">V1.0.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
-            <div className="progress-caption"><span>Tiến độ dự án</span><strong>9 / 10</strong></div>
+            <div className="progress-caption"><span>Tiến độ dự án</span><strong>10 / 10</strong></div>
             <div className="progress-track"><div className="progress-fill"/></div>
-            <p>Học địa lý, so sánh hai tỉnh và quiz. GIS cấp xã cũ chưa hoàn thành, dữ liệu cần tiếp tục kiểm chứng.</p>
+            <p>Đã hoàn thiện 10 giai đoạn phát triển. GIS xã/phường cũ chưa có nguồn xác minh toàn quốc; xem trạng thái dữ liệu.</p>
             <Link href="/gioi-thieu">Xem lộ trình <ArrowUpRight size={14}/></Link>
           </div>
           <div className="sidebar-foot"><CircleHelp size={15}/> Dữ liệu có kiểm chứng · V{APP.version}</div>
@@ -200,7 +191,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V0.9</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V1.0</span></button>
               <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -208,8 +199,9 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             </div>
           </header>
           <main className="page-container" id="main-content">{children}</main>
-          <footer className="app-footer"><span>© 2026 VietWards. Xây dựng để học và khám phá địa lý Việt Nam.</span><span>V{APP.version} · {APP.releaseName}</span></footer>
+          <footer className="app-footer"><span>© 2026 VietWards. Xây dựng để học và khám phá địa lý Việt Nam. <Link href="/trang-thai">Trạng thái & giới hạn dữ liệu</Link></span><span>V{APP.version} · {APP.releaseName}</span></footer>
         </div>
+        <PwaLifecycle/>
         <nav className="bottom-nav" aria-label="Điều hướng nhanh trên điện thoại">
           {primaryNav.map(({ href, label, icon: Icon }) => (
             <Link key={href} href={href} className={`bottom-nav-item ${pathname === href ? "active" : ""}`} aria-current={pathname === href ? "page" : undefined}>
@@ -222,7 +214,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             <div className="mobile-drawer" role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={() => setMobileMenuOpen(false)}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Educational Experience & QA</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Public Release</div>
             </div>
           </div>
         )}

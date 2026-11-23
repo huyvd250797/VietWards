@@ -32,6 +32,8 @@ jobs:
         run: npm run check:education
       - name: Quality and release gates
         run: npm run check:qa
+      - name: Public Release integrity and PWA contracts
+        run: npm run check:release
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check
