@@ -10,6 +10,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { APP, PERIODS, type Period } from "@/lib/config";
 import { PwaLifecycle } from "./pwa-lifecycle";
 import { provinceHref } from "@/lib/province-search";
+import { useOverlayScrollLock } from "@/lib/overlay-scroll-lock";
 import {
   emptyHistoricalSelection, historicHref, selectionFromParams, singleSelection,
   switchHistoricalPeriod, validateHistoricalSelection, type HistoricalLink, type HistoricalSelection,
@@ -71,6 +72,43 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
   const initialized = useRef(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [compactHeader, setCompactHeader] = useState(false);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
+  const menuDialogRef = useRef<HTMLDivElement>(null);
+  useOverlayScrollLock(mobileMenuOpen);
+
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setCompactHeader(window.scrollY > 76);
+      });
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => { window.removeEventListener("scroll", update); cancelAnimationFrame(frame); };
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+    requestAnimationFrame(() => menuTriggerRef.current?.focus({ preventScroll: true }));
+  }, []);
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const frame = requestAnimationFrame(() => menuDialogRef.current?.querySelector<HTMLElement>('button[aria-label="Đóng menu"]')?.focus({ preventScroll: true }));
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { event.preventDefault(); closeMobileMenu(); return; }
+      if (event.key !== "Tab") return;
+      const nodes = Array.from(menuDialogRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href]') ?? []);
+      if (!nodes.length) return;
+      if (event.shiftKey && document.activeElement === nodes[0]) { event.preventDefault(); nodes[nodes.length - 1].focus(); }
+      else if (!event.shiftKey && document.activeElement === nodes[nodes.length - 1]) { event.preventDefault(); nodes[0].focus(); }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("keydown", onKeyDown); };
+  }, [mobileMenuOpen, closeMobileMenu]);
 
   // Query parameters take precedence over previously saved period. Native history
   // updates are supported, including direct links and browser back/forward.
@@ -170,7 +208,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
       <div className="app-frame">
         <a href="#main-content" className="vw-skip-link">Bỏ qua điều hướng, đến nội dung chính</a>
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">V1.0.2</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">V1.0.3</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
@@ -183,15 +221,15 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
         </aside>
 
         <div className="main-area">
-          <header className="topbar">
+          <header className={`topbar ${compactHeader ? "topbar-condensed" : ""}`}>
             <div className="topbar-left">
-              <button className="icon-button mobile-menu-button" type="button" aria-label="Mở menu" onClick={() => setMobileMenuOpen(true)}><Menu size={21}/></button>
+              <button className="icon-button mobile-menu-button" ref={menuTriggerRef} type="button" aria-label="Mở menu" onClick={() => setMobileMenuOpen(true)}><Menu size={21}/></button>
               <span className="topbar-mobile-logo"><Logo compact/></span>
               <span className="topbar-breadcrumb desktop-only">VietWards <span>/</span> <strong>{currentNav?.label || "Khám phá"}</strong></span>
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V1.0.2</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V1.0.3</span></button>
               <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -210,11 +248,11 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
           ))}
         </nav>
         {mobileMenuOpen && (
-          <div className="mobile-menu-overlay" role="presentation" onClick={() => setMobileMenuOpen(false)}>
-            <div className="mobile-drawer" role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
-              <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={() => setMobileMenuOpen(false)}><X size={21}/></button></div>
+          <div className="mobile-menu-overlay" role="presentation" onClick={closeMobileMenu}>
+            <div className="mobile-drawer" ref={menuDialogRef} role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+              <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={closeMobileMenu}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Immersive Map & Challenge</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Mobile UX Stabilization</div>
             </div>
           </div>
         )}

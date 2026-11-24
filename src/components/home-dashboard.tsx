@@ -17,7 +17,7 @@ export function HomeDashboard() {
   const { period } = useAtlas();
   return (
     <div className="home-page">
-      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V1.0.2</b></div></div>
+      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V1.0.3</b></div></div>
       <section className="home-hero" aria-labelledby="hero-heading">
         <div className="hero-text">
           <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETWARDS · GEOGRAPHIC KNOWLEDGE</span>

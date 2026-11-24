@@ -14,6 +14,7 @@ import { historicHref } from "@/lib/historical-selection";
 import { provinceHref, searchProvinces, type ProvinceTypeFilter } from "@/lib/province-search";
 import { LicensePlateLookup, VerifiedStatisticsPanel } from "./verified-statistics-panel";
 import { useMapFullscreen } from "@/lib/use-map-fullscreen";
+import { useOverlayScrollLock } from "@/lib/overlay-scroll-lock";
 
 type RegionProperties = {
   code: string; name: string; kind: string; matched: boolean; tone: number;
@@ -85,7 +86,7 @@ function applyHighlight(map: MapLibreMap, selectedCodes: string[]) {
 export function MapStage({ compact = false }: { compact?: boolean }) {
   const { period } = useAtlas();
   return <Link href="/ban-do" className={`map-stage gis-preview ${compact ? "map-stage-compact" : ""}`}>
-    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V1.0.2</span></div>
+    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V1.0.3</span></div>
     <div className="gis-preview-art" aria-hidden="true"><span className="gis-preview-grid"/><MapPinned size={72} strokeWidth={1.15}/><div className="gis-preview-orbit"/></div>
     <div className="gis-preview-copy"><span className="map-stage-eyebrow">BẢN ĐỒ TƯƠNG TÁC</span><h3>Khám phá từng vùng đất.</h3>
       <p>Chọn tỉnh, đổi thời kỳ để xem các tỉnh tiền thân trực tiếp trên bản đồ.</p>
@@ -114,6 +115,8 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
   const [listOpen, setListOpen] = useState(false);
   // A tap on a province is for exploring its polygon. Details are opt-in on mobile.
   const [detailOpen, setDetailOpen] = useState(false);
+  useOverlayScrollLock(detailOpen);
+  useOverlayScrollLock(listOpen);
   const detailCloseRef = useRef<HTMLButtonElement>(null);
   const detailTriggerRef = useRef<HTMLButtonElement>(null);
   const [mapReady, setMapReady] = useState(false);
@@ -131,13 +134,11 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
 
   const closeDetails = useCallback(() => {
     setDetailOpen(false);
-    window.requestAnimationFrame(() => detailTriggerRef.current?.focus());
+    window.requestAnimationFrame(() => detailTriggerRef.current?.focus({ preventScroll: true }));
   }, []);
   useEffect(() => {
     if (!detailOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const frame = requestAnimationFrame(() => detailCloseRef.current?.focus());
+    const frame = requestAnimationFrame(() => detailCloseRef.current?.focus({ preventScroll: true }));
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") closeDetails();
       if (event.key !== "Tab") return;
@@ -152,7 +153,6 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
     };
   }, [detailOpen, closeDetails]);
   useEffect(() => {

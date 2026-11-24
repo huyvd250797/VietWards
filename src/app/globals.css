@@ -909,3 +909,114 @@ button,a,input,select,textarea{touch-action:manipulation}
     border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 48px #0005;overflow:hidden}
   .gis-workbench:has(.gis-map-column.is-map-fullscreen) .gis-region-panel.gis-list-open .gis-region-list{max-height:none;min-height:0}
 }
+
+/* ===============================================================
+ * V1.0.3 — Mobile UX Stabilization (iOS Safari and standalone PWA)
+ * =============================================================== */
+:root { --vw-bottom-nav-space: calc(66px + env(safe-area-inset-bottom, 0px)); }
+html { scroll-padding-top: 75px; }
+html.vw-overlay-scroll-locked { overscroll-behavior: none; }
+.gis-map-column.is-map-fullscreen { height: var(--vw-visual-height, 100dvh)!important; }
+.gis-info-panel.gis-detail-open { height: var(--vw-visual-height, 100dvh)!important; }
+@media(max-width:850px){
+  .topbar {
+    height: 62px; min-height: 62px; padding-left:max(12px,env(safe-area-inset-left,0px));
+    padding-right:max(12px,env(safe-area-inset-right,0px));
+    transition:height .18s ease,min-height .18s ease;
+  }
+  .topbar.topbar-condensed{height:52px;min-height:52px;}
+  .topbar .icon-button{width:44px;height:44px;flex-shrink:0;}
+  .topbar-mobile-logo .brand-mark{width:36px;height:36px;border-radius:11px;}
+  .topbar.topbar-condensed .brand-mark{height:31px;width:31px;border-radius:9px;}
+  .topbar .brand-copy strong{font-size:19px;letter-spacing:-.7px;}
+  .topbar.topbar-condensed .brand-copy strong{font-size:17px;}
+  .topbar.topbar-condensed .brand-copy small{display:none;}
+  .topbar-left{gap:9px;min-width:0;}
+  .topbar-right{gap:7px;}
+  .main-area{min-height:100dvh;}
+  .page-container{padding-bottom:calc(var(--vw-bottom-nav-space) + 14px);}
+  .bottom-nav{
+    padding:7px max(8px,env(safe-area-inset-right,0px)) calc(7px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));
+    min-height:var(--vw-bottom-nav-space);
+  }
+  .bottom-nav-item{min-height:48px;}
+  .mobile-menu-overlay{overscroll-behavior:contain;}
+  .mobile-drawer{
+    min-height:0;height:var(--vw-visual-height,100dvh);max-height:100dvh;
+    overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    padding:calc(18px + env(safe-area-inset-top,0px)) 18px calc(20px + env(safe-area-inset-bottom,0px));
+  }
+  .mobile-drawer-top{margin-bottom:8px;}
+}
+@media(max-width:680px){
+  /* Map-first: collapse redundant page heading, preserve contextual period switch. */
+  .vw-map-page{gap:10px;}
+  .vw-map-page > .page-header{padding:0;gap:0;}
+  .vw-map-page > .page-header .eyebrow,
+  .vw-map-page > .page-header p,
+  .vw-map-page > .page-header .phase-badge{display:none;}
+  .vw-map-page > .page-header h1{margin:0 0 2px;font-size:17px;line-height:1.3;letter-spacing:-.3px;}
+  .vw-map-page .gis-toolbar{padding:11px 12px 12px;gap:8px;}
+  .vw-map-page .gis-toolbar-copy .gis-overline,
+  .vw-map-page .gis-toolbar-copy p{display:none;}
+  .vw-map-page .gis-toolbar-copy h2{font-size:14px;margin:0;line-height:1.35;letter-spacing:-.2px;}
+  .vw-map-page .gis-toolbar-controls .period-toggle button{font-size:12px;min-height:46px;white-space:normal;line-height:1.25;}
+  .vw-map-page .gis-map-shell{height:clamp(420px,65dvh,680px);}
+  .vw-map-page .commune-workbench .gis-map-shell{height:clamp(420px,65dvh,680px);}
+  .gis-map-shell{touch-action:pan-x pan-y;overscroll-behavior:contain;}
+  .gis-mobile-list-trigger{min-height:46px;}
+  .gis-region-panel.gis-list-open{
+    bottom:calc(10px + env(safe-area-inset-bottom,0px));
+    max-height:min(80dvh,780px);overflow:hidden;
+  }
+  .gis-region-panel.gis-list-open .gis-region-list{overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+  .gis-mobile-scrim{touch-action:none;}
+  .gis-map-column.is-map-fullscreen .gis-map-shell,
+  .vw-map-page .gis-map-column.is-map-fullscreen .gis-map-shell,
+  .vw-map-page .commune-workbench .gis-map-column.is-map-fullscreen .gis-map-shell{height:auto!important;flex:1 1 auto!important;}
+  .gis-map-column.is-map-fullscreen .gis-map-fullscreen-head{
+    padding-top:calc(11px + env(safe-area-inset-top,0px));
+    min-height:calc(59px + env(safe-area-inset-top,0px));
+  }
+  .gis-map-column.is-map-fullscreen .gis-map-top{
+    top:calc(67px + env(safe-area-inset-top,0px));max-width:calc(100% - 120px);
+  }
+  .gis-map-column.is-map-fullscreen .gis-map-actions{top:calc(67px + env(safe-area-inset-top,0px));}
+  .gis-map-column.is-map-fullscreen>.gis-mobile-selection-bar{
+    padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));
+    min-height:calc(82px + env(safe-area-inset-bottom,0px));
+  }
+  .gis-mobile-selection-bar{gap:7px;min-height:72px;}
+  .gis-mobile-view-detail{min-width:112px;min-height:48px;}
+  .gis-mobile-selection-clear{width:44px;height:44px;}
+  .gis-mobile-selected-copy{min-width:0;}
+  .gis-mobile-selected-copy>strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .gis-detail-open .gis-mobile-modal-header{
+    padding-top:calc(10px + env(safe-area-inset-top,0px));
+    padding-left:max(15px,env(safe-area-inset-left,0px));
+    padding-right:max(15px,env(safe-area-inset-right,0px));
+    min-height:calc(71px + env(safe-area-inset-top,0px));
+  }
+  .gis-detail-open .gis-mobile-modal-header h2{font-size:clamp(18px,5.2vw,24px);}
+  .gis-info-panel.gis-detail-open,.commune-workbench .gis-info-panel.gis-detail-open{
+    bottom:auto;max-height:none;
+    height:var(--vw-visual-height,100dvh)!important;
+    padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));
+    overscroll-behavior:contain;
+  }
+  .gis-mobile-modal-action button{min-height:52px;}
+  .gis-workbench:has(.gis-map-column.is-map-fullscreen) .gis-region-panel.gis-list-open{
+    bottom:calc(12px + env(safe-area-inset-bottom,0px));
+    max-height:calc(var(--vw-visual-height,100dvh) - 90px - env(safe-area-inset-top,0px));
+  }
+  .vw-system-banner{bottom:calc(var(--vw-bottom-nav-space) + 12px);max-width:calc(100vw - 24px);}
+}
+@media(max-width:360px){
+  .vw-map-page .gis-toolbar-controls .period-toggle button{font-size:11px;}
+  .gis-map-column .gis-map-actions button{width:42px;height:42px;}
+  .gis-mobile-view-detail{min-width:103px;padding:0 9px;}
+  .gis-mobile-selected-copy>strong{font-size:12px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .topbar{transition:none!important;}
+}

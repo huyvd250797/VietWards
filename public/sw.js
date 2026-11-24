@@ -1,8 +1,8 @@
-/* VietWards V1.0.2 — explicit update hand-off, offline fallback only.
+/* VietWards V1.0.3 — explicit update hand-off, offline fallback only.
  * Administrative responses are always network-driven; avoid stale legal data.
  */
 const CACHE_PREFIX = "vietwards-shell-";
-const CACHE_NAME = `${CACHE_PREFIX}v1.0.2`;
+const CACHE_NAME = `${CACHE_PREFIX}v1.0.3`;
 const PRE_CACHE = ["/offline.html", "/icons/icon-192.png", "/icons/icon-512.png"];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRE_CACHE)));

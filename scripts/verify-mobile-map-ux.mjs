@@ -6,7 +6,7 @@ const commune = read('src/components/commune-explorer.tsx');
 const styles = read('src/app/globals.css');
 const verified = read('src/components/verified-statistics-panel.tsx');
 const pkg = JSON.parse(read('package.json'));
-assert.equal(pkg.version, '1.0.2');
+assert.equal(pkg.version, '1.0.3');
 for (const [label, module] of [['province', province], ['commune', commune]]) {
   assert.match(module, /\[detailOpen, setDetailOpen\]/, `${label}: missing explicit modal state`);
   assert.match(module, /gis-mobile-selection-bar/, `${label}: missing map-first action bar`);
@@ -14,7 +14,7 @@ for (const [label, module] of [['province', province], ['commune', commune]]) {
   assert.match(module, /setDetailOpen\(true\)/, `${label}: details must be opt-in`);
   assert.match(module, /gis-mobile-modal-header/, `${label}: fullscreen header`);
   assert.match(module, /aria-modal=/, `${label}: accessibility`);
-  assert.match(module, /document\.body\.style\.overflow = "hidden"/, `${label}: scroll lock`);
+  assert.match(module, /useOverlayScrollLock\(detailOpen\)/, `${label}: shared iOS scroll lock`);
   assert.match(module, /event\.key === "Escape"/, `${label}: Escape to close`);
   assert.match(module, /first\.focus\(\)/, `${label}: keyboard focus trap`);
 }

@@ -8,6 +8,7 @@ import { filterCommunes, type CommuneKindFilter } from "@/lib/commune-search";
 import { VerifiedStatisticsPanel } from "./verified-statistics-panel";
 import { useAtlas } from "./app-shell";
 import { useMapFullscreen } from "@/lib/use-map-fullscreen";
+import { useOverlayScrollLock } from "@/lib/overlay-scroll-lock";
 
 const L = { source: "vw-communes", fill: "vw-communes-fill", dim: "vw-communes-dim", line: "vw-communes-line", labels: "vw-communes-labels" };
 const PALETTE = ["#99cadc", "#b4d4e2", "#87becb", "#9dcbd0", "#bddbe8"];
@@ -84,6 +85,8 @@ export function CommuneMapWorkbench({
   const [legacyOutline, setLegacyOutline] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
+  useOverlayScrollLock(detailOpen);
+  useOverlayScrollLock(listOpen);
   const detailCloseRef = useRef<HTMLButtonElement>(null);
   const detailTriggerRef = useRef<HTMLButtonElement>(null);
   const [retry, setRetry] = useState(0);
@@ -98,13 +101,11 @@ export function CommuneMapWorkbench({
   const selected = rows.find((row) => row.code === selectedWardCode) ?? null;
   const closeDetails = useCallback(() => {
     setDetailOpen(false);
-    window.requestAnimationFrame(() => detailTriggerRef.current?.focus());
+    window.requestAnimationFrame(() => detailTriggerRef.current?.focus({ preventScroll: true }));
   }, []);
   useEffect(() => {
     if (!detailOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const frame = requestAnimationFrame(() => detailCloseRef.current?.focus());
+    const frame = requestAnimationFrame(() => detailCloseRef.current?.focus({ preventScroll: true }));
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") closeDetails();
       if (event.key !== "Tab") return;
@@ -116,7 +117,7 @@ export function CommuneMapWorkbench({
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     };
     window.addEventListener("keydown", onKeyDown);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener("keydown", onKeyDown); document.body.style.overflow = previousOverflow; };
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("keydown", onKeyDown); };
   }, [detailOpen, closeDetails]);
   useEffect(() => {
     const frame = requestAnimationFrame(() => setDetailOpen(false));
