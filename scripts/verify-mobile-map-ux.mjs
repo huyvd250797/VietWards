@@ -6,7 +6,7 @@ const commune = read('src/components/commune-explorer.tsx');
 const styles = read('src/app/globals.css');
 const verified = read('src/components/verified-statistics-panel.tsx');
 const pkg = JSON.parse(read('package.json'));
-assert.equal(pkg.version, '1.1.0');
+assert.equal(pkg.version, '1.1.1');
 for (const [label, module] of [['province', province], ['commune', commune]]) {
   assert.match(module, /\[detailOpen, setDetailOpen\]/, `${label}: missing explicit modal state`);
   assert.match(module, /gis-mobile-selection-bar/, `${label}: missing map-first action bar`);

@@ -17,7 +17,7 @@ export function HomeDashboard() {
   const { period } = useAtlas();
   return (
     <div className="home-page">
-      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V1.1.0</b></div></div>
+      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V1.1.1</b></div></div>
       <section className="home-hero" aria-labelledby="hero-heading">
         <div className="hero-text">
           <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETWARDS · GEOGRAPHIC KNOWLEDGE</span>
@@ -67,7 +67,7 @@ export function HomeDashboard() {
 
       <div className="section-heading"><div><span className="eyebrow">CẬP NHẬT PHÁT TRIỂN</span><h2>Các mốc phát triển đã triển khai</h2></div><Link href="/gioi-thieu" className="section-link">Toàn bộ roadmap <ArrowUpRight size={17}/></Link></div>
       <div className="milestone-strip">
-        {ROADMAP.slice(6, 10).map(({ version, name, detail, status }, index) => <div className="milestone" key={version}><div className={`milestone-index ${status === "done" || status === "current" ? "now" : ""}`}>{status === "done" || status === "current" ? <Check size={16}/> : `0${index + 4}`}</div><div><div className="milestone-version">V{version} {status === "current" && <span>PHIÊN BẢN HIỆN TẠI</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
+        {ROADMAP.slice(6, 10).map(({ version, name, detail, status }, index) => <div className="milestone" key={version}><div className={`milestone-index ${status === "done" ? "now" : ""}`}>{status === "done" ? <Check size={16}/> : `0${index + 4}`}</div><div><div className="milestone-version">V{version} {status === "partial" && <span>GIS LỊCH SỬ CHƯA ĐẦY ĐỦ</span>}</div><h3>{name}</h3><p>{detail}</p></div></div>)}
       </div>
       <div className="home-bottom-note"><BookOpenText size={18}/><span>VietWards được xây dựng với nguyên tắc: <strong>nội dung có nguồn, ranh giới có kiểm chứng, mốc thời gian rõ ràng.</strong></span></div>
     </div>

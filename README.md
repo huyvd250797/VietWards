@@ -1,3 +1,5 @@
+> **VietWards V1.1.1 — Roadmap Typecheck Hotfix**. Sửa lỗi deploy `TS2367` ở các mốc roadmap nền tảng; không thay đổi chức năng. Xem `docs/RELEASE-V1.1.1.md` và `docs/QA-REPORT-V1.1.1.md`.
+
 > **VietWards V1.1.0 — Unified Design System 2.0.** Cấu trúc token: `src/app/design-tokens.css`; các override giao diện: `src/app/design-system.css`; tài liệu: `docs/DESIGN-SYSTEM-V2.0.md`.
 
 # VietWards V1.0.1 — Mobile Map UX & Contrast Polish

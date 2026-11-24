@@ -42,6 +42,8 @@ jobs:
         run: npm run check:mobile-stability
       - name: V1.1.0 Design System contracts and contrast
         run: npm run check:design-system
+      - name: V1.1.1 Roadmap Typecheck Hotfix Contracts
+        run: npm run check:hotfix
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

@@ -3,8 +3,8 @@ export const APP = {
   title: "VietWards — Bản đồ hành chính Việt Nam",
   description:
     "Khám phá địa giới hành chính Việt Nam và hành trình thay đổi trước, sau ngày 01/07/2025.",
-  version: "1.1.0",
-  releaseName: "Unified Design System 2.0",
+  version: "1.1.1",
+  releaseName: "Roadmap Typecheck Hotfix",
 } as const;
 
 export const PERIODS = {
@@ -42,7 +42,7 @@ export const ROADMAP = [
 
 /** Roadmap nâng cấp UX chốt ngày 24/11/2026, độc lập roadmap nền tảng V0.x → V1.0.0. */
 export const UX_ROADMAP = [
-  { version: "1.1.0", name: "Mobile UX Stabilization", detail: "Header gọn, scroll ổn định, fullscreen, modal và safe-area iPhone", status: "done" },
+  { version: "1.0.3", name: "Mobile UX Stabilization", detail: "Header gọn, scroll ổn định, fullscreen, modal và safe-area iPhone", status: "done" },
   { version: "1.1.0", name: "Unified Design System 2.0", detail: "Màu semantic, chữ, card, icon và Light/Dark Mode", status: "current" },
   { version: "1.2.0", name: "Immersive Map Experience 2.0", detail: "Toolbar, zoom, highlight và bản đồ toàn màn hình", status: "planned" },
   { version: "1.3.0", name: "Province & Ward UX 2.0", detail: "Tìm kiếm, chọn địa phương, chi tiết tỉnh và xã", status: "planned" },
