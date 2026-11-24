@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 import { useAtlas, PeriodToggle } from "./app-shell";
-import { PERIODS } from "@/lib/config";
+import { APP, PERIODS } from "@/lib/config";
 import type { ProvinceRow } from "@/lib/admin-data";
 import { historicHref } from "@/lib/historical-selection";
 import { provinceHref, searchProvinces, type ProvinceTypeFilter } from "@/lib/province-search";
@@ -86,7 +86,7 @@ function applyHighlight(map: MapLibreMap, selectedCodes: string[]) {
 export function MapStage({ compact = false }: { compact?: boolean }) {
   const { period } = useAtlas();
   return <Link href="/ban-do" className={`map-stage gis-preview ${compact ? "map-stage-compact" : ""}`}>
-    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V1.1.2</span></div>
+    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V{APP.version}</span></div>
     <div className="gis-preview-art" aria-hidden="true"><span className="gis-preview-grid"/><MapPinned size={72} strokeWidth={1.15}/><div className="gis-preview-orbit"/></div>
     <div className="gis-preview-copy"><span className="map-stage-eyebrow">BẢN ĐỒ TƯƠNG TÁC</span><h3>Khám phá từng vùng đất.</h3>
       <p>Chọn tỉnh, đổi thời kỳ để xem các tỉnh tiền thân trực tiếp trên bản đồ.</p>
@@ -358,6 +358,15 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
           <div ref={containerRef} className="gis-map-canvas" role="application" aria-label={`Bản đồ ${PERIODS[period].provinceCount} tỉnh/thành Việt Nam`}/>
           <div className="gis-map-fullscreen-head"><strong>{active?.name ?? "Bản đồ Việt Nam"}</strong><button type="button" aria-label="Thoát bản đồ toàn màn hình" onClick={() => setFullscreen(false)}><Minimize2 size={19}/> Thu gọn</button></div>
           <div className="gis-map-top"><span><Compass size={15}/> {PERIODS[period].label}</span><span>{mapReady ? `${dataset?.metadata.matchedCount ?? 0}/${provinces.length} vùng đối chiếu` : "Đang chuẩn bị"}</span></div>
+          <div className="gis-map-immersive-bar" role="group" aria-label="Tác vụ nhanh trên bản đồ">
+            <button type="button" className={listOpen ? "active" : ""} aria-pressed={listOpen} onClick={() => setListOpen((value) => !value)}><Search size={15}/> {listOpen ? "Ẩn danh sách" : "Danh sách"}</button>
+            <button type="button" className={showNames ? "active" : ""} aria-pressed={showNames} disabled={!mapReady} onClick={() => {
+              const next = !showNames; showNamesRef.current = next; setShowNames(next); mapRef.current?.setLayoutProperty(LAYER_LABEL, "visibility", next ? "visible" : "none");
+            }}><Layers3 size={15}/> {showNames ? "Đang hiện nhãn" : "Đang ẩn nhãn"}</button>
+            <button type="button" disabled={!mapReady} onClick={reset}><Focus size={15}/> Toàn Việt Nam</button>
+            {active && <button type="button" className="accent" onClick={() => setDetailOpen(true)}><Info size={15}/> Xem chi tiết</button>}
+            {active && onExploreCommunes && <button type="button" className="accent-secondary" onClick={() => { setDetailOpen(false); onExploreCommunes(); }}><Layers3 size={15}/> Xã/phường</button>}
+          </div>
           <div className="gis-map-actions" aria-label="Điều khiển bản đồ">
             <button type="button" title={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-label={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-pressed={fullscreen} onClick={() => { setListOpen(false); setFullscreen(value => !value); }}>{fullscreen ? <Minimize2 size={19}/> : <Maximize2 size={19}/>}</button>
             <button type="button" title="Phóng to" aria-label="Phóng to" disabled={!mapReady} onClick={() => mapRef.current?.zoomIn({ duration: 240 })}><Plus size={19}/></button>

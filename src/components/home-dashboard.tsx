@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, BookOpenText, Check, Clock3, Database, Globe2, Layers3, Map, MapPinned, GraduationCap, Sparkles, TrendingUp } from "lucide-react";
 import { MapStage } from "./map-stage";
 import { PeriodToggle, useAtlas } from "./app-shell";
-import { PERIODS, ROADMAP } from "@/lib/config";
+import { APP, PERIODS, ROADMAP } from "@/lib/config";
 
 const quickLinks = [
   { href: "/hoc-dia-ly?tab=compare&a=75&b=79", icon: GraduationCap, title: "Học & so sánh địa lý", description: "So sánh hai tỉnh bằng bản đồ, thống kê và thử thách", tone: "blue" },
@@ -17,7 +17,7 @@ export function HomeDashboard() {
   const { period } = useAtlas();
   return (
     <div className="home-page">
-      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V1.1.2</b></div></div>
+      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V{APP.version}</b></div></div>
       <section className="home-hero" aria-labelledby="hero-heading">
         <div className="hero-text">
           <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETWARDS · GEOGRAPHIC KNOWLEDGE</span>

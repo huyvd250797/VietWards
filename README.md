@@ -1,3 +1,5 @@
+> **VietWards V1.2.0 — Immersive Map Experience 2.0.** Nâng cấp logo app bằng ảnh thương hiệu mới, cải thiện trải nghiệm bản đồ với quick actions, toàn màn hình và các điều khiển trực quan hơn trên mobile. Xem `docs/RELEASE-V1.2.0.md` và `docs/QA-REPORT-V1.2.0.md`.
+
 > **VietWards V1.1.2 — Roadmap Status Type Safety Fix**. Sửa TS2367 dòng 38 ở UX roadmap bằng typed state mapping, rà soát trạng thái hai roadmap và bổ sung CI regression tests. Xem `docs/RELEASE-V1.1.2.md` và `docs/QA-REPORT-V1.1.2.md`.
 
 > **VietWards V1.1.1 — Roadmap Typecheck Hotfix**. Sửa lỗi deploy `TS2367` ở các mốc roadmap nền tảng; không thay đổi chức năng. Xem `docs/RELEASE-V1.1.1.md` và `docs/QA-REPORT-V1.1.1.md`.

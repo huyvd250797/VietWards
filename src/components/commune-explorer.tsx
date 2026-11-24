@@ -336,6 +336,12 @@ export function CommuneMapWorkbench({
         <div ref={mapContainer} className="gis-map-canvas" role="application" aria-label={`Bản đồ ranh giới cấp xã ${province.name}`}/>
         <div className="gis-map-fullscreen-head"><strong>{selected?.name ?? province.name}</strong><button type="button" aria-label="Thoát bản đồ toàn màn hình" onClick={() => setFullscreen(false)}><Minimize2 size={19}/> Thu gọn</button></div>
         <div className="gis-map-top"><span><Compass size={15}/> {province.name}</span><span>{dataset ? `${dataset.metadata.matchedCount}/${rows.length || dataset.metadata.expected} vùng GIS` : period === "before" ? "GIS lịch sử chưa xác minh" : "Cấp xã hiện hành"}</span></div>
+        <div className="gis-map-immersive-bar" role="group" aria-label="Tác vụ nhanh bản đồ cấp xã">
+          <button type="button" className={listOpen ? "active" : ""} aria-pressed={listOpen} onClick={() => setListOpen((value) => !value)}><Search size={15}/> {listOpen ? "Ẩn danh sách" : "Danh sách"}</button>
+          <button type="button" className={showLabels ? "active" : ""} aria-pressed={showLabels} disabled={!mapReady} onClick={() => { const next = !showLabels; setShowLabels(next); labelRef.current = next; mapRef.current?.setLayoutProperty(L.labels, "visibility", next ? "visible" : "none"); }}><Layers3 size={15}/> {showLabels ? "Đang hiện nhãn" : "Đang ẩn nhãn"}</button>
+          <button type="button" disabled={!dataset} onClick={reset}><Focus size={15}/> Xem toàn tỉnh</button>
+          {selected && <button type="button" className="accent" onClick={() => setDetailOpen(true)}><Info size={15}/> Xem chi tiết</button>}
+        </div>
         <div className="gis-map-actions" aria-label="Điều khiển bản đồ cấp xã">
           <button type="button" title={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-label={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-pressed={fullscreen} onClick={() => { setListOpen(false); setFullscreen(value => !value); }}>{fullscreen ? <Minimize2 size={19}/> : <Maximize2 size={19}/>}</button>
           <button type="button" aria-label="Phóng to" title="Phóng to" disabled={!mapReady} onClick={() => mapRef.current?.zoomIn({ duration: 220 })}><Plus size={19}/></button>

@@ -986,3 +986,26 @@ html.vw-overlay-scroll-locked { overscroll-behavior: none; }
 @media(prefers-reduced-motion:reduce){
   .topbar{transition:none!important;}
 }
+
+/* V1.2.0 — Immersive Map Experience 2.0 */
+.brand-mark{position:relative;overflow:hidden;background:transparent;box-shadow:none;border:1px solid rgba(21,94,239,.12)}
+.brand-mark-image{object-fit:cover;border-radius:inherit}
+.banner-mark-logo{position:relative;overflow:hidden;background:transparent;box-shadow:0 10px 24px rgba(23,91,176,.18)}
+.about-logo-image{object-fit:cover;border-radius:inherit}
+.phase-badge{max-width:min(100%,360px);white-space:normal;text-align:right;line-height:1.4}
+
+.gis-map-immersive-bar{position:absolute;z-index:2;top:60px;left:14px;right:76px;display:flex;gap:8px;flex-wrap:wrap;pointer-events:none}
+.gis-map-immersive-bar button{pointer-events:auto;display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(24,84,121,.14);background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-radius:999px;padding:8px 12px;color:#1f587c;font-size:11px;font-weight:760;box-shadow:0 10px 24px rgba(14,55,85,.08)}
+.gis-map-immersive-bar button:hover:not(:disabled){background:#eef7ff;color:#1249b5}
+.gis-map-immersive-bar button.active,.gis-map-immersive-bar button[aria-pressed="true"]{background:#e7f0ff;border-color:#93b8f0;color:#1249b5}
+.gis-map-immersive-bar button.accent{background:linear-gradient(135deg,#155eef,#4a8cf5);color:#fff;border-color:transparent}
+.gis-map-immersive-bar button.accent-secondary{background:linear-gradient(135deg,#0f8e8e,#23b9a5);color:#fff;border-color:transparent}
+.gis-map-immersive-bar button:disabled{opacity:.55;cursor:not-allowed}
+.gis-map-column.is-map-fullscreen .gis-map-immersive-bar{top:calc(122px + env(safe-area-inset-top,0px));left:18px;right:86px}
+
+@media(max-width:680px){
+  .gis-map-immersive-bar{top:54px;left:10px;right:58px;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding-bottom:2px}
+  .gis-map-immersive-bar::-webkit-scrollbar{display:none}
+  .gis-map-immersive-bar button{padding:7px 10px;font-size:10px;white-space:nowrap}
+  .gis-map-column.is-map-fullscreen .gis-map-immersive-bar{top:calc(108px + env(safe-area-inset-top,0px));left:12px;right:64px}
+}

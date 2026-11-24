@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  BookOpenText, GraduationCap, ChevronDown, Compass, Globe2, History, Layers3, Map, Activity,
+  BookOpenText, GraduationCap, ChevronDown, Compass, History, Layers3, Map, Activity,
   Menu, Moon, Search, Sun, X, ArrowUpRight, CircleHelp
 } from "lucide-react";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -42,7 +43,7 @@ const primaryNav = [
 function Logo({ compact = false }: { compact?: boolean }) {
   return (
     <Link className={`brand ${compact ? "brand-compact" : ""}`} href="/" aria-label="VietWards - Trang tổng quan">
-      <span className="brand-mark" aria-hidden="true"><Globe2 size={23} strokeWidth={2.1}/></span>
+      <span className="brand-mark" aria-hidden="true"><Image src={APP.brandMarkPath} alt="" fill sizes="48px" className="brand-mark-image" /></span>
       <span className="brand-copy"><strong>VietWards<span className="brand-dot">.</span></strong><small>KHÁM PHÁ VIỆT NAM</small></span>
     </Link>
   );
@@ -208,7 +209,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
       <div className="app-frame">
         <a href="#main-content" className="vw-skip-link">Bỏ qua điều hướng, đến nội dung chính</a>
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">V1.1.2</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">V{APP.version}</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
@@ -229,7 +230,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V1.1.2</span></button>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V{APP.version}</span></button>
               <button className="icon-button vw-icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
@@ -252,7 +253,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
             <div className="mobile-drawer" ref={menuDialogRef} role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
               <div className="mobile-drawer-top"><Logo/><button className="icon-button vw-icon-button" aria-label="Đóng menu" type="button" onClick={closeMobileMenu}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Unified Design System 2.0</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · {APP.releaseName}</div>
             </div>
           </div>
         )}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { APP } from "@/lib/config";
 import { ArrowLeft, ArrowUpRight, type LucideIcon } from "lucide-react";
 
 export function PageHeader({ eyebrow, title, description, icon: Icon }: { eyebrow: string; title: string; description: string; icon?: LucideIcon }) {
@@ -8,7 +9,7 @@ export function PageHeader({ eyebrow, title, description, icon: Icon }: { eyebro
       <h1>{title}</h1>
       <p>{description}</p>
     </div>
-    <span className="phase-badge">V1.1.2 · UNIFIED DESIGN SYSTEM 2.0</span>
+    <span className="phase-badge">V{APP.version} · {APP.releaseName.toUpperCase()}</span>
   </div>;
 }
 

@@ -3,8 +3,10 @@ export const APP = {
   title: "VietWards — Bản đồ hành chính Việt Nam",
   description:
     "Khám phá địa giới hành chính Việt Nam và hành trình thay đổi trước, sau ngày 01/07/2025.",
-  version: "1.1.2",
-  releaseName: "Roadmap Status Type Safety Fix",
+  version: "1.2.0",
+  releaseName: "Immersive Map Experience 2.0",
+  logoPath: "/icons/app-logo-512.png",
+  brandMarkPath: "/icons/brand-mark.png",
 } as const;
 
 export const PERIODS = {
@@ -54,8 +56,8 @@ export const ROADMAP = [
 /** Roadmap nâng cấp UX chốt ngày 24/11/2026, độc lập roadmap nền tảng V0.x → V1.0.0. */
 export const UX_ROADMAP = [
   { version: "1.0.3", name: "Mobile UX Stabilization", detail: "Header gọn, scroll ổn định, fullscreen, modal và safe-area iPhone", status: "done" },
-  { version: "1.1.0", name: "Unified Design System 2.0", detail: "Màu semantic, chữ, card, icon và Light/Dark Mode", status: "current" },
-  { version: "1.2.0", name: "Immersive Map Experience 2.0", detail: "Toolbar, zoom, highlight và bản đồ toàn màn hình", status: "planned" },
+  { version: "1.1.0", name: "Unified Design System 2.0", detail: "Màu semantic, chữ, card, icon và Light/Dark Mode", status: "done" },
+  { version: "1.2.0", name: "Immersive Map Experience 2.0", detail: "Toolbar nhập vai, quick actions, fullscreen và tối ưu thao tác bản đồ", status: "current" },
   { version: "1.3.0", name: "Province & Ward UX 2.0", detail: "Tìm kiếm, chọn địa phương, chi tiết tỉnh và xã", status: "planned" },
   { version: "1.4.0", name: "Navigation & Discovery Redesign", detail: "Tổng quan, điều hướng và hành trình khám phá", status: "planned" },
   { version: "1.5.0", name: "Historical Comparison Experience", detail: "So sánh địa giới và tương tác chuyển thời kỳ", status: "planned" },
