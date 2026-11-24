@@ -839,3 +839,73 @@ button:focus-visible, a:focus-visible { outline: 3px solid #66b4ff; outline-offs
 }
 
 @media(max-width:680px){.gis-detail-open .gis-desktop-commune-action{display:none}}
+
+/* VietWards V1.0.2 — native-like PWA map interaction, safe-area fullscreen */
+html,body{width:100%;max-width:100%;overflow-x:clip;-webkit-text-size-adjust:100%}
+button,a,input,select,textarea{touch-action:manipulation}
+.gis-map-canvas,.commune-workbench .gis-map-canvas{touch-action:none}
+.gis-map-fullscreen-head{display:none}
+.gis-map-actions button[aria-pressed="true"]{color:#155eef;background:#e5efff;border-color:#81adee}
+@media(max-width:680px){
+  /* Avoid iOS focus-zoom when tapping form fields while PWA is standalone. */
+  input,select,textarea,.gis-search input,.edu-select-card select,.edu-tour-select select{font-size:16px!important}
+  .gis-map-column{position:relative}
+  /* CTA stays over the map viewport, not below it: no scrolling to see Details. */
+  .gis-map-column>.gis-mobile-selection-bar{position:absolute;z-index:7;bottom:0;left:0;right:0;width:100%;min-height:74px;box-sizing:border-box;
+    background:color-mix(in srgb,var(--surface) 97%,transparent);backdrop-filter:blur(17px);border:1px solid var(--line);border-radius:13px 13px 0 0;
+    box-shadow:0 -8px 24px #071a2c25;padding:10px max(12px,env(safe-area-inset-right,0px)) 10px max(12px,env(safe-area-inset-left,0px));}
+  .gis-map-column:has(>.gis-mobile-selection-bar) .gis-mobile-list-trigger{bottom:93px}
+  .gis-map-column:has(>.gis-mobile-selection-bar) .gis-map-credits{bottom:91px}
+  .gis-map-column:has(>.gis-mobile-selection-bar) .gis-map-hint{bottom:111px}
+  .gis-mobile-view-detail{min-height:48px;font-size:13px;padding:0 15px}
+  .gis-map-actions{gap:7px}
+  .gis-map-actions button{width:44px;height:44px;border-radius:13px}
+}
+/* Fixed overlay works on iOS standalone PWA where browser Fullscreen API may not exist. */
+.gis-map-column.is-map-fullscreen{position:fixed!important;inset:0!important;z-index:180!important;width:100vw!important;height:100dvh!important;
+  display:flex!important;flex-direction:column!important;background:#102a3b!important;border:0!important;border-radius:0!important;overflow:hidden!important}
+.gis-map-column.is-map-fullscreen .gis-map-shell,
+.commune-workbench .gis-map-column.is-map-fullscreen .gis-map-shell{position:relative!important;flex:1 1 auto!important;min-height:0!important;height:auto!important;width:100%!important}
+.gis-map-column.is-map-fullscreen .gis-map-canvas{position:absolute!important;inset:0!important;touch-action:none!important}
+.gis-map-column.is-map-fullscreen .gis-map-fullscreen-head{display:flex;position:absolute;z-index:7;top:0;left:0;right:0;align-items:center;justify-content:space-between;
+  gap:8px;padding:calc(12px + env(safe-area-inset-top,0px)) calc(12px + env(safe-area-inset-right,0px)) 12px calc(12px + env(safe-area-inset-left,0px));
+  background:linear-gradient(180deg,rgba(9,28,43,.94),rgba(9,28,43,.74));color:#fff;min-height:65px;box-sizing:border-box;}
+.gis-map-fullscreen-head strong{font-size:14px;max-width:67%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gis-map-fullscreen-head button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:98px;
+  background:#eef5fa;color:#173f56;border:1px solid #aac9da;border-radius:11px;font-size:12px;font-weight:800;cursor:pointer}
+.gis-map-column.is-map-fullscreen .gis-map-top{top:calc(75px + env(safe-area-inset-top,0px));left:12px;max-width:calc(100% - 95px)}
+.gis-map-column.is-map-fullscreen .gis-map-actions{top:calc(75px + env(safe-area-inset-top,0px));right:max(11px,env(safe-area-inset-right,0px))}
+.gis-map-column.is-map-fullscreen .gis-map-actions button{width:44px;height:44px}
+.gis-map-column.is-map-fullscreen .gis-mobile-list-trigger{display:flex;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:12px;min-height:47px;font-size:13px;z-index:8}
+.gis-map-column.is-map-fullscreen .gis-map-credits{bottom:calc(8px + env(safe-area-inset-bottom,0px));right:5px;z-index:3}
+.gis-map-column.is-map-fullscreen .gis-map-hint{bottom:calc(75px + env(safe-area-inset-bottom,0px));z-index:4}
+.gis-map-column.is-map-fullscreen>.gis-mobile-selection-bar{display:flex;z-index:9;position:absolute;bottom:0;left:0;right:0;
+  padding:12px max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));
+  min-height:calc(83px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--surface) 98%,transparent);color:var(--text);border-top:1px solid var(--line);box-shadow:0 -9px 24px #0003}
+.gis-map-column.is-map-fullscreen:has(>.gis-mobile-selection-bar) .gis-mobile-list-trigger{bottom:calc(101px + env(safe-area-inset-bottom,0px))}
+.gis-map-column.is-map-fullscreen:has(>.gis-mobile-selection-bar) .gis-map-credits{bottom:calc(98px + env(safe-area-inset-bottom,0px))}
+.gis-map-column.is-map-fullscreen:has(>.gis-mobile-selection-bar) .gis-map-hint{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+.gis-map-column.is-map-fullscreen .gis-mobile-selection-clear{flex:none}
+.gis-map-column.is-map-fullscreen .gis-mobile-selected-copy strong{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.gis-map-column.is-map-fullscreen~.gis-region-panel{z-index:181}
+@media(min-width:681px){
+  .gis-map-column.is-map-fullscreen .gis-map-actions{top:calc(80px + env(safe-area-inset-top,0px))}
+  .gis-map-column.is-map-fullscreen .gis-mobile-selection-bar{display:flex;position:absolute;bottom:16px;left:50%;right:auto;transform:translateX(-50%);
+    border-radius:14px;width:min(640px,90vw);padding:14px;gap:14px;box-shadow:0 5px 30px #0004}
+  .gis-map-column.is-map-fullscreen .gis-mobile-view-detail{background:var(--blue);color:white;padding:13px;border:0;border-radius:11px}
+  .gis-map-column.is-map-fullscreen .gis-mobile-selection-clear{padding:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);border-radius:11px}
+}
+.gis-map-column.is-map-fullscreen .gis-map-actions button:focus-visible,
+.gis-map-fullscreen-head button:focus-visible{outline:3px solid #69e2e1;outline-offset:3px}
+/* Province/ward picker must stack ABOVE fullscreen map, never remain behind it. */
+@media(max-width:680px){
+  .gis-workbench:has(.gis-map-column.is-map-fullscreen) .gis-mobile-scrim{z-index:190}
+  .gis-workbench:has(.gis-map-column.is-map-fullscreen) .gis-region-panel.gis-list-open{z-index:191}
+}
+@media(min-width:681px){
+  .gis-workbench:has(.gis-map-column.is-map-fullscreen) .gis-mobile-scrim{display:block;z-index:190}
+  .gis-workbench:has(.gis-map-column.is-map-fullscreen) .gis-region-panel.gis-list-open{display:flex;position:fixed;z-index:191;
+    top:calc(80px + env(safe-area-inset-top,0px));bottom:20px;left:20px;right:auto;width:min(400px,85vw);max-height:none;
+    border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 48px #0005;overflow:hidden}
+  .gis-workbench:has(.gis-map-column.is-map-fullscreen) .gis-region-panel.gis-list-open .gis-region-list{max-height:none;min-height:0}
+}

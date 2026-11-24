@@ -30,13 +30,21 @@ test('Đồng Nai vs TP. Hồ Chí Minh: map, stats and source reference',async 
   await expect(page.getByText('Khác loại dân số hoặc kỳ tham chiếu')).toBeVisible();
 });
 
-test('Quiz 93: right answer is Đồng Nai for current period',async ({page})=>{
+test('Random exam picker, score and achievements work on mobile',async ({page})=>{
+  await page.setViewportSize({width:390,height:844});
   await page.goto('/hoc-dia-ly?period=current&tab=quiz');
-  await expect(page.getByText('Biển số xe 93 thuộc địa phương nào')).toBeVisible();
-  await page.locator('.edu-quiz-answers button').filter({hasText:'Đồng Nai'}).click();
-  await expect(page.getByText('Chính xác!',{exact:true})).toBeVisible();
-  await page.getByRole('button',{name:'Câu tiếp theo'}).click();
-  await expect(page.getByText('Thành phố Đồng Nai hiện tại được hình thành')).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Chọn độ dài đề thử thách'})).toBeVisible();
+  await page.getByRole('button',{name:/20 câu hỏi/}).click();
+  await page.getByRole('button',{name:/Tạo đề ngẫu nhiên · 20 câu/}).click();
+  await expect(page.locator('.edu-quiz-progress')).toContainText('Câu 1/20');
+  for(let i=0;i<20;i++){
+    await page.locator('.edu-quiz-answers button').first().click();
+    await page.getByRole('button',{name:i===19?'Xem kết quả & huân chương':'Câu tiếp theo'}).click();
+  }
+  await expect(page.locator('.edu-quiz-final-score')).toContainText('/20 câu đúng');
+  await expect(page.locator('.edu-quiz-achievements')).toBeVisible();
+  await page.getByRole('button',{name:/Ra đề khác/}).click();
+  await expect(page.locator('.edu-quiz-progress')).toContainText('Câu 1/20');
 });
 
 test('Mobile learning navigation and missing historical GIS disclosure',async ({page})=>{

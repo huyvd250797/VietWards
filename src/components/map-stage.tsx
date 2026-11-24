@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowUpRight, Check, ChevronRight, Compass, Database, Focus, GitMerge, Info, Layers3,
-  LoaderCircle, MapPinned, Minus, Plus, RotateCcw, Search, Share2, ShieldAlert, X,
+  LoaderCircle, MapPinned, Maximize2, Minimize2, Minus, Plus, RotateCcw, Search, Share2, ShieldAlert, X,
 } from "lucide-react";
 import Link from "next/link";
 import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
@@ -13,6 +13,7 @@ import type { ProvinceRow } from "@/lib/admin-data";
 import { historicHref } from "@/lib/historical-selection";
 import { provinceHref, searchProvinces, type ProvinceTypeFilter } from "@/lib/province-search";
 import { LicensePlateLookup, VerifiedStatisticsPanel } from "./verified-statistics-panel";
+import { useMapFullscreen } from "@/lib/use-map-fullscreen";
 
 type RegionProperties = {
   code: string; name: string; kind: string; matched: boolean; tone: number;
@@ -84,7 +85,7 @@ function applyHighlight(map: MapLibreMap, selectedCodes: string[]) {
 export function MapStage({ compact = false }: { compact?: boolean }) {
   const { period } = useAtlas();
   return <Link href="/ban-do" className={`map-stage gis-preview ${compact ? "map-stage-compact" : ""}`}>
-    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V1.0.1</span></div>
+    <div className="map-stage-top"><div className="map-stage-label"><span className="live-dot"/> KHÁM PHÁ BẢN ĐỒ</div><span className="map-stage-tag">GIS · V1.0.2</span></div>
     <div className="gis-preview-art" aria-hidden="true"><span className="gis-preview-grid"/><MapPinned size={72} strokeWidth={1.15}/><div className="gis-preview-orbit"/></div>
     <div className="gis-preview-copy"><span className="map-stage-eyebrow">BẢN ĐỒ TƯƠNG TÁC</span><h3>Khám phá từng vùng đất.</h3>
       <p>Chọn tỉnh, đổi thời kỳ để xem các tỉnh tiền thân trực tiếp trên bản đồ.</p>
@@ -100,6 +101,7 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
   const activeCodes = historicalSelection.selectedProvinceCodes;
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const { fullscreen, setFullscreen } = useMapFullscreen(mapRef, containerRef);
   const chooseRef = useRef<(code: string | null) => void>(() => {});
   const [dataset, setDataset] = useState<RegionDataset | null>(null);
   const [query, setQuery] = useState("");
@@ -162,7 +164,7 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
   const focusFeatures = useCallback((features: RegionFeature[]) => {
     if (!features.length || !mapRef.current) return;
     mapRef.current.fitBounds(boundsFor(features), {
-      padding: window.innerWidth < 800 ? 42 : { top: 56, bottom: 56, left: 70, right: 70 },
+      padding: window.innerWidth < 800 ? { top: 65, bottom: 142, left: 28, right: 28 } : { top: 56, bottom: 56, left: 70, right: 70 },
       maxZoom: 9.6,
       duration: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 550,
     });
@@ -351,11 +353,13 @@ export function MapWorkbench({ previous, current, historyMode = false, onExplore
         <LicensePlateLookup period={period} onSelectProvince={select}/>
         <div className="gis-list-count">Hiển thị {shown.length}/{provinces.length} tỉnh/thành · {matchedCodes.size} vùng GIS đối chiếu</div>
       </aside>
-      <div className="gis-map-column">
+      <div className={`gis-map-column ${fullscreen ? "is-map-fullscreen" : ""}`}>
         <div className="gis-map-shell">
           <div ref={containerRef} className="gis-map-canvas" role="application" aria-label={`Bản đồ ${PERIODS[period].provinceCount} tỉnh/thành Việt Nam`}/>
+          <div className="gis-map-fullscreen-head"><strong>{active?.name ?? "Bản đồ Việt Nam"}</strong><button type="button" aria-label="Thoát bản đồ toàn màn hình" onClick={() => setFullscreen(false)}><Minimize2 size={19}/> Thu gọn</button></div>
           <div className="gis-map-top"><span><Compass size={15}/> {PERIODS[period].label}</span><span>{mapReady ? `${dataset?.metadata.matchedCount ?? 0}/${provinces.length} vùng đối chiếu` : "Đang chuẩn bị"}</span></div>
           <div className="gis-map-actions" aria-label="Điều khiển bản đồ">
+            <button type="button" title={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-label={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-pressed={fullscreen} onClick={() => { setListOpen(false); setFullscreen(value => !value); }}>{fullscreen ? <Minimize2 size={19}/> : <Maximize2 size={19}/>}</button>
             <button type="button" title="Phóng to" aria-label="Phóng to" disabled={!mapReady} onClick={() => mapRef.current?.zoomIn({ duration: 240 })}><Plus size={19}/></button>
             <button type="button" title="Thu nhỏ" aria-label="Thu nhỏ" disabled={!mapReady} onClick={() => mapRef.current?.zoomOut({ duration: 240 })}><Minus size={19}/></button>
             <button type="button" title="Xem toàn Việt Nam" aria-label="Đặt lại bản đồ" disabled={!mapReady} onClick={reset}><Focus size={18}/></button>

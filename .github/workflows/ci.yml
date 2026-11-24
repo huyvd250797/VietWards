@@ -36,6 +36,8 @@ jobs:
         run: npm run check:release
       - name: Mobile Map UX & Dark Contrast
         run: npm run check:uiux
+      - name: Randomized Geography Challenge invariants
+        run: npm run check:challenge
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

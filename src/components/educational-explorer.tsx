@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, CheckCircle2, ChevronRight, CircleHelp, ClipboardCheck, Compass, Database, GitCompareArrows, GitMerge, GraduationCap, Map, RotateCcw, Ruler, ShieldAlert, Trophy, Users, type LucideIcon } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, CheckCircle2, ChevronRight, CircleHelp, ClipboardCheck, Compass, Database, GitCompareArrows, GitMerge, GraduationCap, Map, RotateCcw, Ruler, ShieldAlert, Trophy, Users, Award, Gem, Medal, Sparkles, type LucideIcon } from "lucide-react";
 import { useAtlas, PeriodToggle } from "./app-shell";
 import { EducationalMap } from "./educational-map";
-import { areaComparison, densityComparison, generateQuestions, populationComparison, validateEducationalCatalog,
-  type LearningCatalog, type LearningProvince, type LearningSource } from "@/lib/education-model";
+import { areaComparison, densityComparison, generateQuizBank, createQuizExam, evaluateQuiz, populationComparison, validateEducationalCatalog,
+  type LearningCatalog, type LearningProvince, type LearningSource, type QuizQuestion, type QuizLength, type QuizResult, type MedalLevel } from "@/lib/education-model";
 
 const fmt=(n:number)=>new Intl.NumberFormat("vi-VN",{maximumFractionDigits:2}).format(n);
 const fmtPeople=(n:number)=>new Intl.NumberFormat("vi-VN",{maximumFractionDigits:0}).format(n);
@@ -35,19 +35,26 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
   const [focusedSlot,setFocusedSlot]=useState<"a"|"b">("a");
   const [tourCode,setTourCode]=useState("75");
   const [tourStep,setTourStep]=useState(0);
+  const [quizLength,setQuizLength]=useState<QuizLength>(10);
+  const [exam,setExam]=useState<QuizQuestion[]>([]);
+  const previousExamIds=useRef<string[]>([]);
   const [quizIndex,setQuizIndex]=useState(0);
   const [quizAnswer,setQuizAnswer]=useState<string|null>(null);
   const [quizScore,setQuizScore]=useState(0);
-  const [bestScore,setBestScore]=useState<number|null>(null);
+  const [quizResult,setQuizResult]=useState<QuizResult|null>(null);
+  const [quizError,setQuizError]=useState("");
+  const [quizHistory,setQuizHistory]=useState<QuizResult[]>([]);
+  const [quizAnswers,setQuizAnswers]=useState<Array<{question:QuizQuestion;chosen:string;correct:boolean}>>([]);
+  const [showReview,setShowReview]=useState(false);
   const [initialized,setInitialized]=useState(false);
-  const questions=useMemo(()=>generateQuestions(catalog,period),[catalog,period]);
+  const bank=useMemo(()=>generateQuizBank(catalog,period),[catalog,period]);
   const selectedA=rows.find(p=>p.code===aCode)??rows[0];
   const selectedB=rows.find(p=>p.code===bCode)??rows.find(p=>p.code!==selectedA?.code)??rows[0];
   const tour=rows.find(p=>p.code===tourCode)??rows[0];
   const coverage=useMemo(()=>validateEducationalCatalog(catalog),[catalog]);
-  const question=questions[quizIndex];
+  const question=exam[quizIndex];
   const correct=quizAnswer!==null&&question?.answer===quizAnswer;
-  const completed=quizIndex>=questions.length;
+  const completed=!!quizResult;
   const distinctProvinces=!!selectedA&&!!selectedB&&selectedA.code!==selectedB.code;
   const comparisonArea=distinctProvinces?areaComparison(selectedA,selectedB):null;
   const comparisonPopulation=distinctProvinces?populationComparison(selectedA,selectedB):null;
@@ -77,28 +84,57 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
     window.history.replaceState(window.history.state,"",url.pathname+url.search);
   },[initialized,period,tab,selectedA?.code,selectedB?.code]);
   useEffect(()=>{
-    const frame=requestAnimationFrame(()=>{setQuizIndex(0);setQuizAnswer(null);setQuizScore(0);setTourStep(0);});
-    const frameBest=requestAnimationFrame(()=>{
-      try { const n=localStorage.getItem(`vietwards-quiz-best-v090-${period}`);const parsed=n===null?null:Number(n);setBestScore(parsed!==null&&Number.isFinite(parsed)?parsed:null); }catch{setBestScore(null);}
+    const frame=requestAnimationFrame(()=>{
+      setExam([]);setQuizIndex(0);setQuizAnswer(null);setQuizScore(0);setQuizResult(null);setQuizAnswers([]);setQuizError("");setShowReview(false);
+      previousExamIds.current=[];
+      try {
+        const raw=localStorage.getItem("vietwards-quiz-achievements-v102");
+        const records=raw ? JSON.parse(raw) as QuizResult[] : [];
+        setQuizHistory(Array.isArray(records)?records.filter((r)=>r && [10,20,30].includes(r.length) && r.correct<=r.length).slice(0,50):[]);
+      } catch {setQuizHistory([]);}
     });
-    return ()=>{cancelAnimationFrame(frame);cancelAnimationFrame(frameBest);};
+    return ()=>cancelAnimationFrame(frame);
   },[period]);
+
+  const startExam=()=>{
+    try {
+      const next=createQuizExam(bank,quizLength,previousExamIds.current);
+      previousExamIds.current=next.map(q=>q.id);
+      setExam(next);setQuizIndex(0);setQuizAnswer(null);setQuizScore(0);
+      setQuizResult(null);setQuizAnswers([]);setQuizError("");setShowReview(false);
+    }catch(error){setQuizError(error instanceof Error?error.message:"Không thể tạo đề thi.");}
+  };
 
   const selectMap=useCallback((code:string)=>{
     if(focusedSlot==="a")setACode(code);else setBCode(code);
   },[focusedSlot]);
   const advanceQuiz=()=>{
-    if(!question||quizAnswer===null)return;
-    const nextScore=quizScore+(quizAnswer===question.answer?1:0);
+    if(!question||quizAnswer===null||quizResult)return;
+    const isCorrect=quizAnswer===question.answer;
+    const nextScore=quizScore+(isCorrect?1:0);
     setQuizScore(nextScore);
+    setQuizAnswers(prev=>[...prev,{question,chosen:quizAnswer,correct:isCorrect}]);
     setQuizAnswer(null);
-    setQuizIndex(i=>i+1);
-    if(quizIndex+1===questions.length&&nextScore>(bestScore??-1)){
-      setBestScore(nextScore);
-      try{localStorage.setItem(`vietwards-quiz-best-v090-${period}`,String(nextScore));}catch{/*private mode*/}
-    }
+    if(quizIndex+1===exam.length){
+      const result=evaluateQuiz(period,quizLength,nextScore);
+      setQuizResult(result);
+      setQuizIndex(exam.length);
+      const nextHistory=[result,...quizHistory].slice(0,50);
+      setQuizHistory(nextHistory);
+      try{localStorage.setItem("vietwards-quiz-achievements-v102",JSON.stringify(nextHistory));}catch{/* Storage can be unavailable in private browsing. */}
+    }else setQuizIndex(i=>i+1);
   };
-  const restartQuiz=()=>{setQuizIndex(0);setQuizAnswer(null);setQuizScore(0);};
+  const bestOfLength=quizHistory.filter(r=>r.period===period && r.length===quizLength)
+    .sort((a,b)=>b.correct-a.correct)[0]??null;
+  const medalInfo:Record<MedalLevel,{label:string;icon:LucideIcon;detail:string}>={
+    none:{label:"Chưa đạt huân chương",icon:Compass,detail:"Trả lời đúng ít nhất 60% để nhận huân chương Đồng."},
+    bronze:{label:"Huân chương Đồng",icon:Medal,detail:"Đạt từ 60% câu đúng."},
+    silver:{label:"Huân chương Bạc",icon:Medal,detail:"Đạt từ 80% câu đúng."},
+    gold:{label:"Huân chương Vàng",icon:Award,detail:"Đạt từ 90% câu đúng."},
+    diamond:{label:"Huân chương Kim cương",icon:Gem,detail:"Trả lời đúng tất cả câu hỏi."},
+  };
+  const finishMedal=quizResult?medalInfo[quizResult.medal]:null;
+  const MedalIcon=finishMedal?.icon??Trophy;
 
   return <div className="edu-root">
     <div className="edu-main-toolbar"><div><span className="edu-overline"><GraduationCap size={15}/> LEARN VIETNAM</span><h2>Học qua bản đồ, không chỉ qua con số.</h2><p>Kiến thức từ danh mục hành chính có nguồn và ranh giới GIS tham khảo. Không yêu cầu tài khoản.</p></div><PeriodToggle/></div>
@@ -162,16 +198,34 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
       </div>
     </section>}
 
-    {tab==="quiz"&&<section className="edu-section" aria-label="Trò chơi kiểm tra kiến thức">
-      <div className="edu-section-head"><div><span className="edu-overline">GEOGRAPHY CHALLENGE</span><h2>Thử thách địa lý</h2><p>Đáp án được tạo từ mã biển số, diện tích, quan hệ sáp nhập và ranh giới GIS tham khảo.</p></div><span className="edu-data-chip"><Trophy size={14}/> Kỷ lục: {bestScore===null?"Chưa có":`${bestScore}/${questions.length}`}</span></div>
-      {questions.length===0?<p className="edu-note">Không đủ dữ liệu xác minh để tạo câu hỏi.</p>:completed?<div className="edu-quiz-finish"><Trophy size={38}/><h3>Kết thúc lượt học</h3><strong>{quizScore}/{questions.length} câu đúng</strong><p>Kết quả chỉ lưu cục bộ trên thiết bị. Không cần tài khoản.</p><button type="button" className="edu-primary-button" onClick={restartQuiz}><RotateCcw size={16}/> Làm lại</button></div>:question&&<div className="edu-quiz-card">
-        <div className="edu-quiz-progress"><span>Câu {quizIndex+1}/{questions.length}</span><span>{quizScore} điểm đã ghi nhận</span></div><div className="edu-progress"><span style={{width:`${(quizIndex/questions.length)*100}%`}}/></div>
+    {tab==="quiz"&&<section className="edu-section edu-challenge" aria-label="Trò chơi kiểm tra kiến thức">
+      <div className="edu-section-head"><div><span className="edu-overline"><Sparkles size={15}/> GEOGRAPHY CHALLENGE</span><h2>Thử thách địa lý</h2><p>Ngân hàng {bank.length} câu dựa trên danh mục địa giới, diện tích, dân số cùng kỳ, biển số và lịch sử sáp nhập. Mỗi lần tạo đề sẽ chọn ngẫu nhiên, không lặp câu trong đề.</p></div><span className="edu-data-chip"><Trophy size={14}/> {quizHistory.filter(r=>r.period===period).length} lượt hoàn thành</span></div>
+      {!exam.length?<div className="edu-quiz-setup">
+        <div className="edu-quiz-intro"><div className="edu-quiz-intro-icon"><GraduationCap size={29}/></div><div><h3>Chọn độ dài đề thử thách</h3><p>Đề tự tạo từ kiến thức của thời kỳ đang xem. Mỗi câu đúng được 1 điểm, chỉ tính huân chương khi hoàn thành toàn bộ đề.</p></div></div>
+        <div className="edu-exam-lengths" role="group" aria-label="Số câu hỏi trong đề">
+          {([10,20,30] as QuizLength[]).map(length=><button type="button" key={length} className={quizLength===length?"active":""} aria-pressed={quizLength===length} onClick={()=>setQuizLength(length)} disabled={bank.length<length}><strong>{length}</strong><span>câu hỏi</span>{quizLength===length&&<CheckCircle2 size={17}/>}</button>)}
+        </div>
+        <div className="edu-medal-guide" aria-label="Quy tắc nhận huân chương"><h4><Medal size={18}/> Cách tính huân chương</h4><div><span>Đồng · ≥60%</span><span>Bạc · ≥80%</span><span>Vàng · ≥90%</span><span>Kim cương · 100%</span></div><small>Dưới 60% không nhận huân chương. Thành tích của đề 10, 20 và 30 câu được ghi riêng trên thiết bị.</small></div>
+        {bestOfLength&&<div className="edu-personal-best"><Trophy size={18}/><span>Thành tích tốt nhất ({quizLength} câu): <strong>{bestOfLength.correct}/{quizLength} · {medalInfo[bestOfLength.medal].label}</strong></span></div>}
+        {quizError&&<div className="edu-quiz-error" role="alert"><ShieldAlert size={17}/>{quizError}</div>}
+        <button className="edu-primary-button edu-start-exam" type="button" disabled={bank.length<quizLength} onClick={startExam}><Sparkles size={18}/> Tạo đề ngẫu nhiên · {quizLength} câu <ArrowRight size={17}/></button>
+      </div>:completed&&quizResult?<div className={`edu-quiz-finish edu-medal-${quizResult.medal}`}>
+        <div className="edu-medal-emblem"><MedalIcon size={42} strokeWidth={1.8}/></div>
+        <span className="edu-overline">HOÀN THÀNH THỬ THÁCH {quizResult.length} CÂU</span>
+        <h3>{finishMedal?.label}</h3><strong className="edu-quiz-final-score">{quizResult.correct}/{quizResult.length} câu đúng · {quizResult.percentage}%</strong>
+        <p>{finishMedal?.detail} Thành tích được lưu trên thiết bị này, không cần tài khoản.</p>
+        <div className="edu-quiz-finish-actions"><button type="button" className="edu-primary-button" onClick={startExam}><RotateCcw size={16}/> Ra đề khác</button><button type="button" onClick={()=>{setExam([]);setQuizResult(null);setQuizIndex(0);}}><ArrowLeft size={16}/> Đổi số câu</button><button type="button" onClick={()=>setShowReview(v=>!v)}><ClipboardCheck size={16}/>{showReview?"Ẩn đáp án":"Xem bài làm"}</button></div>
+        {showReview&&<div className="edu-quiz-review" aria-label="Xem lại đáp án đã chọn">{quizAnswers.map(({question:q,chosen,correct:hit},i)=><div key={q.id}><strong className={hit?"right":"wrong"}>{i+1}. {hit?"Đúng":"Sai"} — {q.title}</strong><span>Bạn chọn: {q.options.find(o=>o.value===chosen)?.label??chosen}</span>{!hit&&<span>Đáp án đúng: {q.options.find(o=>o.value===q.answer)?.label??q.answer}</span>}<small>{q.explanation}</small></div>)}</div>}
+      </div>:question&&<div className="edu-quiz-card">
+        <div className="edu-quiz-progress"><span>Câu {quizIndex+1}/{exam.length}</span><span>{quizScore} câu đã trả lời đúng</span></div><div className="edu-progress"><span style={{width:`${(quizIndex/exam.length)*100}%`}}/></div>
+        <div className="edu-quiz-type">{({plate:"Biển số xe",history:"Lịch sử sáp nhập",area:"Diện tích",map:"Vị trí địa lý",population:"Dân số",communes:"Địa giới cấp xã"} as const)[question.category]}</div>
         <h3>{question.title}</h3>
-        {question.mode==="map"&&<div className="edu-quiz-map"><EducationalMap period={period} selectedCodes={quizAnswer!==null?[question.answer]:[]} quiz onSelect={code=>{if(quizAnswer===null)setQuizAnswer(code);}}/><small>Chạm một vùng để trả lời, hoặc dùng các lựa chọn bên dưới nếu không thao tác được bản đồ.</small></div>}
+        {question.mode==="map"&&<div className="edu-quiz-map"><EducationalMap period={period} selectedCodes={quizAnswer!==null?[question.answer]:[]} quiz onSelect={code=>{if(quizAnswer===null)setQuizAnswer(code);}}/><small>Chạm vùng bản đồ để trả lời, hoặc chọn đáp án bên dưới nếu không thao tác được GIS.</small></div>}
         <div className="edu-quiz-answers" role="group" aria-label="Chọn câu trả lời">{question.options.map(option=><button type="button" key={option.value} disabled={quizAnswer!==null} className={quizAnswer!==null&&option.value===question.answer?"correct":quizAnswer===option.value?"incorrect":""} onClick={()=>setQuizAnswer(option.value)}><span>{option.label}</span>{quizAnswer!==null&&option.value===question.answer&&<CheckCircle2 size={17}/>}</button>)}</div>
         {quizAnswer!==null&&<div role="status" className={`edu-quiz-result ${correct?"right":"wrong"}`}><strong>{correct?"Chính xác!":"Chưa chính xác."}</strong> {question.explanation}<div className="edu-quiz-sources">{question.sourceIds.map(id=><SourceReference key={id} sourceId={id} sources={sources}/>)}</div></div>}
-        <div className="edu-quiz-next"><button className="edu-primary-button" type="button" disabled={quizAnswer===null} onClick={advanceQuiz}>{quizIndex===questions.length-1?"Xem kết quả":"Câu tiếp theo"} <ArrowRight size={16}/></button></div>
+        <div className="edu-quiz-next"><button className="edu-primary-button" type="button" disabled={quizAnswer===null} onClick={advanceQuiz}>{quizIndex===exam.length-1?"Xem kết quả & huân chương":"Câu tiếp theo"} <ArrowRight size={16}/></button></div>
       </div>}
+      {quizHistory.some(r=>r.period===period)&&<div className="edu-quiz-achievements"><h3><Trophy size={19}/> Thành tích gần đây</h3><div>{quizHistory.filter(r=>r.period===period).slice(0,6).map((r,i)=>{const Icon=medalInfo[r.medal].icon;return <div key={`${r.completedAt}-${i}`}><Icon size={19}/><strong>{r.correct}/{r.length} câu</strong><span>{medalInfo[r.medal].label}</span><small>{new Date(r.completedAt).toLocaleDateString("vi-VN")}</small></div>;})}</div></div>}
     </section>}
 
     {tab==="quality"&&<section className="edu-section" aria-label="Trạng thái kiểm chứng dữ liệu">

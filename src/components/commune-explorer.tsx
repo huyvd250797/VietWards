@@ -1,12 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Check, ChevronRight, Compass, Database, Focus, Info, Layers3, LoaderCircle, MapPin, Minus, Plus, RotateCcw, Search, Share2, ShieldAlert, X } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Compass, Database, Focus, Info, Layers3, LoaderCircle, MapPin, Maximize2, Minimize2, Minus, Plus, RotateCcw, Search, Share2, ShieldAlert, X } from "lucide-react";
 import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 import type { ProvinceRow, UnitRow } from "@/lib/admin-data";
 import { filterCommunes, type CommuneKindFilter } from "@/lib/commune-search";
 import { VerifiedStatisticsPanel } from "./verified-statistics-panel";
 import { useAtlas } from "./app-shell";
+import { useMapFullscreen } from "@/lib/use-map-fullscreen";
 
 const L = { source: "vw-communes", fill: "vw-communes-fill", dim: "vw-communes-dim", line: "vw-communes-line", labels: "vw-communes-labels" };
 const PALETTE = ["#99cadc", "#b4d4e2", "#87becb", "#9dcbd0", "#bddbe8"];
@@ -64,6 +65,7 @@ export function CommuneMapWorkbench({
   const provinceCode = province.code;
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const { fullscreen, setFullscreen } = useMapFullscreen(mapRef, mapContainer);
   const chooseRef = useRef(onSelectWard);
   const listRef = useRef<HTMLDivElement>(null);
   const lastFocused = useRef<string | null>(null);
@@ -329,10 +331,12 @@ export function CommuneMapWorkbench({
         </div>
         <div className="gis-list-count">Hiển thị {shown.length}/{rows.length} đơn vị · {matchedCodes.size} vùng có GIS {period === "before" ? "lịch sử" : "hiện hành"}</div>
       </aside>
-      <div className="gis-map-column"><div className="gis-map-shell">
+      <div className={`gis-map-column ${fullscreen ? "is-map-fullscreen" : ""}`}><div className="gis-map-shell">
         <div ref={mapContainer} className="gis-map-canvas" role="application" aria-label={`Bản đồ ranh giới cấp xã ${province.name}`}/>
+        <div className="gis-map-fullscreen-head"><strong>{selected?.name ?? province.name}</strong><button type="button" aria-label="Thoát bản đồ toàn màn hình" onClick={() => setFullscreen(false)}><Minimize2 size={19}/> Thu gọn</button></div>
         <div className="gis-map-top"><span><Compass size={15}/> {province.name}</span><span>{dataset ? `${dataset.metadata.matchedCount}/${rows.length || dataset.metadata.expected} vùng GIS` : period === "before" ? "GIS lịch sử chưa xác minh" : "Cấp xã hiện hành"}</span></div>
         <div className="gis-map-actions" aria-label="Điều khiển bản đồ cấp xã">
+          <button type="button" title={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-label={fullscreen ? "Thoát toàn màn hình" : "Mở bản đồ toàn màn hình"} aria-pressed={fullscreen} onClick={() => { setListOpen(false); setFullscreen(value => !value); }}>{fullscreen ? <Minimize2 size={19}/> : <Maximize2 size={19}/>}</button>
           <button type="button" aria-label="Phóng to" title="Phóng to" disabled={!mapReady} onClick={() => mapRef.current?.zoomIn({ duration: 220 })}><Plus size={19}/></button>
           <button type="button" aria-label="Thu nhỏ" title="Thu nhỏ" disabled={!mapReady} onClick={() => mapRef.current?.zoomOut({ duration: 220 })}><Minus size={19}/></button>
           <button type="button" aria-label="Xem toàn tỉnh" title="Xem toàn tỉnh" disabled={!dataset} onClick={reset}><Focus size={18}/></button>

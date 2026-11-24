@@ -65,3 +65,9 @@ npm run test:e2e
 - A healthy `/api/health` does **not** test external GIS by default and is not evidence of successful Vercel production build, security review, or independent legal validation.
 
 See `docs/RELEASE-V1.0.1.md`, `docs/QA-REPORT-V1.0.1.md`, `docs/RELEASE-V1.0.0.md`, `docs/QA-REPORT-V1.0.0.md`, `docs/VERIFIED-STATISTICS-PROVENANCE.md`, and `THIRD_PARTY_NOTICES.md`.
+
+## VietWards V1.0.2 — Immersive Map & Geography Challenge
+
+- Mobile/PWA: chặn zoom toàn giao diện (giữ zoom MapLibre), mở bản đồ fullscreen ở cả cấp tỉnh/xã, thanh **Xem chi tiết** nằm ngay trong bản đồ. Fullscreen phù hợp PWA iPhone và safe area, danh sách chọn địa phương luôn nổi đúng lớp.
+- Học địa lý: ngân hàng câu hỏi sinh từ dữ liệu thực, đề ngẫu nhiên **10/20/30 câu**, không lặp trong một đề, chấm theo % đúng, **Đồng/Bạc/Vàng/Kim cương**, thành tích lưu localStorage và xem lại bài làm.
+- QA: `npm run check:challenge` cùng các kiểm thử cũ. Xem `docs/RELEASE-V1.0.2.md` và `docs/QA-REPORT-V1.0.2.md` để biết giới hạn dữ liệu và trạng thái kiểm thử.

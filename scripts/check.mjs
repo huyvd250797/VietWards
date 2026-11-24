@@ -19,5 +19,5 @@ if (missing.length) {
   process.exit(1);
 }
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-if (packageJson.version !== "1.0.1") throw new Error("Incorrect release version");
+if (packageJson.version !== "1.0.2") throw new Error("Incorrect release version");
 console.log(`OK: ${required.length} required files, release ${packageJson.version}`);
