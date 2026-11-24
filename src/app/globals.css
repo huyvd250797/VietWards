@@ -1,39 +1,5 @@
+/* VietWards legacy layout rules; shared semantics in design-tokens.css and design-system.css. */
 /* VietWards Design System v0.6.0 — educational GIS, accessible and responsive */
-:root {
-  color-scheme: light;
-  --bg: #f5f8fd;
-  --surface: #ffffff;
-  --surface-2: #f8faff;
-  --surface-3: #eff4fc;
-  --text: #14243f;
-  --text-soft: #596b86;
-  --text-faint: #8190a8;
-  --line: #e4ebf4;
-  --blue: #155eef;
-  --blue-dark: #0b42bd;
-  --blue-light: #eaf1ff;
-  --mint: #18a893;
-  --shadow: 0 4px 24px rgba(26, 50, 88, .045);
-  --shadow-lg: 0 18px 64px rgba(22, 51, 95, .095);
-  --radius: 20px;
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #0b1425;
-  --surface: #111f34;
-  --surface-2: #15263e;
-  --surface-3: #20334f;
-  --text: #e8f1ff;
-  --text-soft: #a1b2cb;
-  --text-faint: #71849f;
-  --line: #263850;
-  --blue: #6d9bff;
-  --blue-dark: #a1bcff;
-  --blue-light: #223d65;
-  --mint: #48d5c2;
-  --shadow: 0 4px 24px rgba(0, 0, 0, .10);
-  --shadow-lg: 0 18px 64px rgba(0, 0, 0, .20);
-}
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; line-height: 1.5; font-size: 14px; -webkit-font-smoothing: antialiased; }

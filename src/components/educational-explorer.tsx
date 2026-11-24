@@ -142,7 +142,7 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
       {TABS.map(([key,label,Icon])=><button key={key} type="button" aria-pressed={tab===key} className={tab===key?"active":""} onClick={()=>setTab(key)}><Icon size={17}/>{label}</button>)}
     </div>
 
-    {tab==="compare"&&<section className="edu-section" aria-label="So sánh tỉnh thành">
+    {tab==="compare"&&<section className="edu-section vw-card" aria-label="So sánh tỉnh thành">
       <div className="edu-section-head"><div><span className="edu-overline">TWO-PROVINCE COMPARISON</span><h2>So sánh hai địa phương</h2><p>Chọn hai tỉnh/thành để tô sáng đồng thời trên bản đồ và đối chiếu số liệu.</p></div><span className="edu-data-chip">{period==="current"?"34 tỉnh hiện tại":"63 tỉnh trước sáp nhập"}</span></div>
       <div className="edu-select-grid">
         {([{slot:"a",province:selectedA,value:aCode,change:setACode,label:"Địa phương A"},{slot:"b",province:selectedB,value:bCode,change:setBCode,label:"Địa phương B"}] as const).map(item=><div key={item.slot} className={`edu-select-card edu-slot-${item.slot} ${focusedSlot===item.slot?"focused":""}`}>
@@ -179,7 +179,7 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
       <div className="edu-history-line"><GitMerge size={18}/><div><strong>Khám phá địa giới trước và sau sáp nhập</strong><p>{selectedA?.name}: {selectedA?.predecessors?.length?selectedA.predecessors.map(p=>p.name).join(" + "):"Không có quan hệ tiền thân được ghi nhận ở thời kỳ này."}</p><p>{selectedB?.name}: {selectedB?.predecessors?.length?selectedB.predecessors.map(p=>p.name).join(" + "):"Không có quan hệ tiền thân được ghi nhận ở thời kỳ này."}</p></div><Link href={`/lich-su?period=${period}&province=${selectedA?.code??"75"}`}>Xem bản đồ lịch sử <ArrowUpRight size={16}/></Link></div>
     </section>}
 
-    {tab==="discover"&&<section className="edu-section" aria-label="Lộ trình khám phá kiến thức">
+    {tab==="discover"&&<section className="edu-section vw-card" aria-label="Lộ trình khám phá kiến thức">
       <div className="edu-section-head"><div><span className="edu-overline">GUIDED GEOGRAPHY</span><h2>Khám phá một tỉnh qua 5 bước</h2><p>Vị trí, diện tích, dân số, biển số xe và lịch sử hình thành, từng bước rõ nguồn.</p></div></div>
       <label className="edu-tour-select">Chọn địa phương<select value={tour?.code??""} onChange={event=>{setTourCode(event.target.value);setTourStep(0);}}>{rows.map(p=><option key={p.code} value={p.code}>{p.name}</option>)}</select></label>
       <div className="edu-stepper" role="group" aria-label="Các bước khám phá">{["Vị trí","Diện tích","Dân số","Biển số","Lịch sử"].map((label,i)=><button key={label} type="button" aria-pressed={tourStep===i} className={tourStep===i?"active":""} onClick={()=>setTourStep(i)}><span>{i+1}</span>{label}</button>)}</div>
@@ -187,11 +187,11 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
         <div className="edu-tour-main">
           <span className="edu-overline">BƯỚC {tourStep+1}/5</span>
           <h3>{tour?.name}</h3>
-          {tourStep===0&&<><p>{tour?.kind} · Mã hành chính {tour?.code}. Chọn nút dưới để mở bản đồ, quan sát ranh giới và các tỉnh/thành lân cận.</p><Link className="edu-primary-button" href={`/ban-do?period=${period}&province=${tour?.code}`}><Map size={16}/> Xem địa phương trên bản đồ <ArrowUpRight size={16}/></Link></>}
+          {tourStep===0&&<><p>{tour?.kind} · Mã hành chính {tour?.code}. Chọn nút dưới để mở bản đồ, quan sát ranh giới và các tỉnh/thành lân cận.</p><Link className="edu-primary-button vw-button vw-button-primary" href={`/ban-do?period=${period}&province=${tour?.code}`}><Map size={16}/> Xem địa phương trên bản đồ <ArrowUpRight size={16}/></Link></>}
           {tourStep===1&&<DataMetric label="Diện tích tự nhiên" value={tour?.area?`${fmt(tour.area.value)} km²`:"Chưa xác minh"} footnote={tour?.area?`Ngày tham chiếu: ${tour.area.referenceDate}`:"Không nội suy từ GIS"} sourceId={tour?.area?.sourceId} sources={sources} icon={Ruler}/>}
           {tourStep===2&&<DataMetric label="Dân số" value={tour?.population?`${fmtPeople(tour.population.value)} người`:"Chưa xác minh"} footnote={tour?.population?`${populationName(tour.population.kind)} · kỳ ${tour.population.referencePeriod}`:"Không phân bổ dân số từ tỉnh khác"} sourceId={tour?.population?.sourceId} sources={sources} icon={Users}/>}
           {tourStep===3&&<><div className="edu-plate-set">{tour?.plates.map(p=><span key={p}>{p}</span>)}</div><p>Ký hiệu biển số xe của tỉnh/thành; không dùng mã biển số để suy ra địa chỉ chủ xe.</p><SourceReference sourceId={tour?.plateSourceId} sources={sources}/></>}
-          {tourStep===4&&<>{tour?.predecessors.length?<><p>Địa phương này có các tỉnh/thành tiền thân ghi nhận trong dữ liệu hành chính:</p><div className="edu-predecessors">{tour.predecessors.map(p=><span key={p.code}>{p.name} · {p.code}</span>)}</div></>:<p>Không có quan hệ sáp nhập cấp tỉnh được ghi nhận trong thời kỳ đang xem.</p>}<Link className="edu-primary-button" href={`/lich-su?period=${period}&province=${tour?.code}`}><GitMerge size={16}/> Xem lịch sử trên bản đồ</Link></>}
+          {tourStep===4&&<>{tour?.predecessors.length?<><p>Địa phương này có các tỉnh/thành tiền thân ghi nhận trong dữ liệu hành chính:</p><div className="edu-predecessors">{tour.predecessors.map(p=><span key={p.code}>{p.name} · {p.code}</span>)}</div></>:<p>Không có quan hệ sáp nhập cấp tỉnh được ghi nhận trong thời kỳ đang xem.</p>}<Link className="edu-primary-button vw-button vw-button-primary" href={`/lich-su?period=${period}&province=${tour?.code}`}><GitMerge size={16}/> Xem lịch sử trên bản đồ</Link></>}
           <div className="edu-tour-buttons"><button type="button" disabled={tourStep===0} onClick={()=>setTourStep(v=>Math.max(0,v-1))}><ArrowLeft size={15}/> Trước</button><button type="button" onClick={()=>setTourStep(v=>(v+1)%5)}> {tourStep===4?"Học lại":"Tiếp theo"} <ArrowRight size={15}/></button></div>
         </div>
         <div className="edu-tour-aside"><div><Compass size={21}/><strong>Học theo cách của bạn</strong><p>Dữ liệu được trích từ VietWards, có mốc tham chiếu và liên kết nguồn. Bạn cũng có thể chuyển thời kỳ để xem kiến thức trước sáp nhập.</p></div><Link href="/ban-do">Khám phá trực tiếp trên bản đồ <ChevronRight size={15}/></Link></div>
@@ -201,7 +201,7 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
     {tab==="quiz"&&<section className="edu-section edu-challenge" aria-label="Trò chơi kiểm tra kiến thức">
       <div className="edu-section-head"><div><span className="edu-overline"><Sparkles size={15}/> GEOGRAPHY CHALLENGE</span><h2>Thử thách địa lý</h2><p>Ngân hàng {bank.length} câu dựa trên danh mục địa giới, diện tích, dân số cùng kỳ, biển số và lịch sử sáp nhập. Mỗi lần tạo đề sẽ chọn ngẫu nhiên, không lặp câu trong đề.</p></div><span className="edu-data-chip"><Trophy size={14}/> {quizHistory.filter(r=>r.period===period).length} lượt hoàn thành</span></div>
       {!exam.length?<div className="edu-quiz-setup">
-        <div className="edu-quiz-intro"><div className="edu-quiz-intro-icon"><GraduationCap size={29}/></div><div><h3>Chọn độ dài đề thử thách</h3><p>Đề tự tạo từ kiến thức của thời kỳ đang xem. Mỗi câu đúng được 1 điểm, chỉ tính huân chương khi hoàn thành toàn bộ đề.</p></div></div>
+        <div className="edu-quiz-intro vw-card-subtle"><div className="edu-quiz-intro-icon"><GraduationCap size={29}/></div><div><h3>Chọn độ dài đề thử thách</h3><p>Đề tự tạo từ kiến thức của thời kỳ đang xem. Mỗi câu đúng được 1 điểm, chỉ tính huân chương khi hoàn thành toàn bộ đề.</p></div></div>
         <div className="edu-exam-lengths" role="group" aria-label="Số câu hỏi trong đề">
           {([10,20,30] as QuizLength[]).map(length=><button type="button" key={length} className={quizLength===length?"active":""} aria-pressed={quizLength===length} onClick={()=>setQuizLength(length)} disabled={bank.length<length}><strong>{length}</strong><span>câu hỏi</span>{quizLength===length&&<CheckCircle2 size={17}/>}</button>)}
         </div>
@@ -214,21 +214,21 @@ export function EducationalExplorer({catalog,sources}:{catalog:LearningCatalog;s
         <span className="edu-overline">HOÀN THÀNH THỬ THÁCH {quizResult.length} CÂU</span>
         <h3>{finishMedal?.label}</h3><strong className="edu-quiz-final-score">{quizResult.correct}/{quizResult.length} câu đúng · {quizResult.percentage}%</strong>
         <p>{finishMedal?.detail} Thành tích được lưu trên thiết bị này, không cần tài khoản.</p>
-        <div className="edu-quiz-finish-actions"><button type="button" className="edu-primary-button" onClick={startExam}><RotateCcw size={16}/> Ra đề khác</button><button type="button" onClick={()=>{setExam([]);setQuizResult(null);setQuizIndex(0);}}><ArrowLeft size={16}/> Đổi số câu</button><button type="button" onClick={()=>setShowReview(v=>!v)}><ClipboardCheck size={16}/>{showReview?"Ẩn đáp án":"Xem bài làm"}</button></div>
+        <div className="edu-quiz-finish-actions"><button type="button" className="edu-primary-button vw-button vw-button-primary" onClick={startExam}><RotateCcw size={16}/> Ra đề khác</button><button type="button" onClick={()=>{setExam([]);setQuizResult(null);setQuizIndex(0);}}><ArrowLeft size={16}/> Đổi số câu</button><button type="button" onClick={()=>setShowReview(v=>!v)}><ClipboardCheck size={16}/>{showReview?"Ẩn đáp án":"Xem bài làm"}</button></div>
         {showReview&&<div className="edu-quiz-review" aria-label="Xem lại đáp án đã chọn">{quizAnswers.map(({question:q,chosen,correct:hit},i)=><div key={q.id}><strong className={hit?"right":"wrong"}>{i+1}. {hit?"Đúng":"Sai"} — {q.title}</strong><span>Bạn chọn: {q.options.find(o=>o.value===chosen)?.label??chosen}</span>{!hit&&<span>Đáp án đúng: {q.options.find(o=>o.value===q.answer)?.label??q.answer}</span>}<small>{q.explanation}</small></div>)}</div>}
-      </div>:question&&<div className="edu-quiz-card">
+      </div>:question&&<div className="edu-quiz-card vw-card-subtle">
         <div className="edu-quiz-progress"><span>Câu {quizIndex+1}/{exam.length}</span><span>{quizScore} câu đã trả lời đúng</span></div><div className="edu-progress"><span style={{width:`${(quizIndex/exam.length)*100}%`}}/></div>
         <div className="edu-quiz-type">{({plate:"Biển số xe",history:"Lịch sử sáp nhập",area:"Diện tích",map:"Vị trí địa lý",population:"Dân số",communes:"Địa giới cấp xã"} as const)[question.category]}</div>
         <h3>{question.title}</h3>
         {question.mode==="map"&&<div className="edu-quiz-map"><EducationalMap period={period} selectedCodes={quizAnswer!==null?[question.answer]:[]} quiz onSelect={code=>{if(quizAnswer===null)setQuizAnswer(code);}}/><small>Chạm vùng bản đồ để trả lời, hoặc chọn đáp án bên dưới nếu không thao tác được GIS.</small></div>}
         <div className="edu-quiz-answers" role="group" aria-label="Chọn câu trả lời">{question.options.map(option=><button type="button" key={option.value} disabled={quizAnswer!==null} className={quizAnswer!==null&&option.value===question.answer?"correct":quizAnswer===option.value?"incorrect":""} onClick={()=>setQuizAnswer(option.value)}><span>{option.label}</span>{quizAnswer!==null&&option.value===question.answer&&<CheckCircle2 size={17}/>}</button>)}</div>
         {quizAnswer!==null&&<div role="status" className={`edu-quiz-result ${correct?"right":"wrong"}`}><strong>{correct?"Chính xác!":"Chưa chính xác."}</strong> {question.explanation}<div className="edu-quiz-sources">{question.sourceIds.map(id=><SourceReference key={id} sourceId={id} sources={sources}/>)}</div></div>}
-        <div className="edu-quiz-next"><button className="edu-primary-button" type="button" disabled={quizAnswer===null} onClick={advanceQuiz}>{quizIndex===exam.length-1?"Xem kết quả & huân chương":"Câu tiếp theo"} <ArrowRight size={16}/></button></div>
+        <div className="edu-quiz-next"><button className="edu-primary-button vw-button vw-button-primary" type="button" disabled={quizAnswer===null} onClick={advanceQuiz}>{quizIndex===exam.length-1?"Xem kết quả & huân chương":"Câu tiếp theo"} <ArrowRight size={16}/></button></div>
       </div>}
       {quizHistory.some(r=>r.period===period)&&<div className="edu-quiz-achievements"><h3><Trophy size={19}/> Thành tích gần đây</h3><div>{quizHistory.filter(r=>r.period===period).slice(0,6).map((r,i)=>{const Icon=medalInfo[r.medal].icon;return <div key={`${r.completedAt}-${i}`}><Icon size={19}/><strong>{r.correct}/{r.length} câu</strong><span>{medalInfo[r.medal].label}</span><small>{new Date(r.completedAt).toLocaleDateString("vi-VN")}</small></div>;})}</div></div>}
     </section>}
 
-    {tab==="quality"&&<section className="edu-section" aria-label="Trạng thái kiểm chứng dữ liệu">
+    {tab==="quality"&&<section className="edu-section vw-card" aria-label="Trạng thái kiểm chứng dữ liệu">
       <div className="edu-section-head"><div><span className="edu-overline">DATA TRUST & QUALITY</span><h2>Minh bạch phạm vi dữ liệu</h2><p>Tách kiểm tra danh mục và thống kê khỏi chứng nhận pháp lý ranh giới GIS.</p></div></div>
       <div className="edu-quality-grid">
         <div><strong>{coverage.current}/34</strong><span>Tỉnh/thành hiện hành</span></div>

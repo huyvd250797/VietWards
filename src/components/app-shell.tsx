@@ -208,7 +208,7 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
       <div className="app-frame">
         <a href="#main-content" className="vw-skip-link">Bỏ qua điều hướng, đến nội dung chính</a>
         <aside className="sidebar" aria-label="Thanh điều hướng">
-          <div className="sidebar-top"><Logo/><span className="release-pill">V1.0.3</span></div>
+          <div className="sidebar-top"><Logo/><span className="release-pill">V1.1.0</span></div>
           {renderNav()}
           <div className="sidebar-spacer"/>
           <div className="sidebar-progress">
@@ -223,14 +223,14 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
         <div className="main-area">
           <header className={`topbar ${compactHeader ? "topbar-condensed" : ""}`}>
             <div className="topbar-left">
-              <button className="icon-button mobile-menu-button" ref={menuTriggerRef} type="button" aria-label="Mở menu" onClick={() => setMobileMenuOpen(true)}><Menu size={21}/></button>
+              <button className="icon-button vw-icon-button mobile-menu-button" ref={menuTriggerRef} type="button" aria-label="Mở menu" onClick={() => setMobileMenuOpen(true)}><Menu size={21}/></button>
               <span className="topbar-mobile-logo"><Logo compact/></span>
               <span className="topbar-breadcrumb desktop-only">VietWards <span>/</span> <strong>{currentNav?.label || "Khám phá"}</strong></span>
             </div>
             <div className="topbar-right">
               <div className="topbar-period desktop-only"><PeriodToggle/></div>
-              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V1.0.3</span></button>
-              <button className="icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
+              <button type="button" className="search-trigger desktop-only" title="Mở danh sách tìm kiếm địa phương" onClick={() => router.push(provinceHref("/tinh-thanh", period, selectedProvinceCode))}><Search size={17}/> Tìm tỉnh thành <span>V1.1.0</span></button>
+              <button className="icon-button vw-icon-button theme-button" type="button" aria-label={theme === "light" ? "Bật giao diện tối" : "Bật giao diện sáng"} title={theme === "light" ? "Chế độ tối" : "Chế độ sáng"} onClick={toggleTheme}>
                 {theme === "light" ? <Moon size={19}/> : <Sun size={19}/>}
               </button>
               <span className="topbar-version">v{APP.version}</span>
@@ -250,9 +250,9 @@ export function AppShell({ children, links }: { children: React.ReactNode; links
         {mobileMenuOpen && (
           <div className="mobile-menu-overlay" role="presentation" onClick={closeMobileMenu}>
             <div className="mobile-drawer" ref={menuDialogRef} role="dialog" aria-label="Menu điều hướng" aria-modal="true" onClick={(event) => event.stopPropagation()}>
-              <div className="mobile-drawer-top"><Logo/><button className="icon-button" aria-label="Đóng menu" type="button" onClick={closeMobileMenu}><X size={21}/></button></div>
+              <div className="mobile-drawer-top"><Logo/><button className="icon-button vw-icon-button" aria-label="Đóng menu" type="button" onClick={closeMobileMenu}><X size={21}/></button></div>
               {renderNav(true)}
-              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Mobile UX Stabilization</div>
+              <div className="mobile-drawer-help"><ChevronDown size={16}/> VietWards v{APP.version} · Unified Design System 2.0</div>
             </div>
           </div>
         )}

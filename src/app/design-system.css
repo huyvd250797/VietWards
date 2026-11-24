@@ -1,0 +1,160 @@
+/* VietWards V1.1.0 — Unified Design System 2.0
+ * Cross-screen semantic styling. Keep GIS geographic paint separate from UI chrome.
+ */
+:root { font-synthesis: none; }
+body { background: var(--vw-bg); color: var(--vw-fg); }
+button, input, select, textarea { font: inherit; }
+button, a, select { -webkit-tap-highlight-color: transparent; }
+button { transition: color var(--vw-motion-fast) var(--vw-ease), background-color var(--vw-motion-fast) var(--vw-ease), border-color var(--vw-motion-fast) var(--vw-ease), box-shadow var(--vw-motion-fast) var(--vw-ease); }
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+:where(button, a, input, select, textarea, summary, [tabindex]):focus-visible { outline: 3px solid var(--vw-focus); outline-offset: 3px; }
+::selection { background: var(--vw-accent-tint); color: var(--vw-accent-tint-fg); }
+
+/* Reusable primitives for new features and incremental migration. */
+.vw-card { background: var(--vw-surface); border: 1px solid var(--vw-border); border-radius: var(--vw-radius-lg); box-shadow: var(--vw-shadow-sm); color: var(--vw-fg); }
+.vw-card-subtle { background: var(--vw-surface-subtle); border: 1px solid var(--vw-border); border-radius: var(--vw-radius-md); color: var(--vw-fg); }
+.vw-button { display: inline-flex; justify-content: center; align-items: center; gap: var(--vw-space-2); min-height: 44px; padding: 10px 16px; border: 1px solid var(--vw-border-strong); border-radius: var(--vw-radius-sm); background: var(--vw-surface); color: var(--vw-fg); font-weight: var(--vw-font-semibold); line-height: 1.35; }
+.vw-button:hover:not(:disabled) { background: var(--vw-surface-hover); border-color: var(--vw-accent); }
+.vw-button-primary { background: var(--vw-action); color: var(--vw-on-action); border-color: var(--vw-action); }
+.vw-button-primary:hover:not(:disabled) { background: var(--vw-action-hover); color: var(--vw-on-action); }
+.vw-button-quiet { border-color: transparent; background: transparent; }
+.vw-icon-button { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; border: 1px solid var(--vw-border); border-radius: var(--vw-radius-sm); background: var(--vw-surface); color: var(--vw-fg-secondary); }
+.vw-icon-button:hover:not(:disabled) { color: var(--vw-accent); background: var(--vw-surface-hover); }
+.vw-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: var(--vw-radius-xs); background: var(--vw-accent-tint); color: var(--vw-accent-tint-fg); font-size: var(--vw-text-xs); font-weight: var(--vw-font-semibold); }
+.vw-field { border: 1px solid var(--vw-border-strong); border-radius: var(--vw-radius-sm); background: var(--vw-surface); color: var(--vw-fg); min-height: 44px; padding: 9px 12px; }
+.vw-field::placeholder { color: var(--vw-fg-muted); opacity: 1; }
+.vw-field:focus-visible { border-color: var(--vw-focus); }
+.vw-stat-card { font-variant-numeric: tabular-nums; }
+.vw-stat-card strong { font-weight: var(--vw-font-bold); color: var(--vw-fg); }
+
+/* Navigation and shell consistently use the same surface hierarchy. */
+.sidebar, .topbar, .bottom-nav, .mobile-drawer { background: var(--vw-surface); border-color: var(--vw-border); color: var(--vw-fg); }
+.topbar { box-shadow: var(--vw-shadow-sm); background: color-mix(in srgb, var(--vw-surface) 95%, transparent); }
+.brand-mark { background: linear-gradient(145deg, #1b63e5, #247dc8); color: #fff; box-shadow: 0 5px 16px rgba(22, 93, 206, .18); }
+:root[data-theme="dark"] .brand-mark { background: linear-gradient(145deg, #296de5, #1778b5); }
+.brand-copy strong, .page-header h1, .gis-info-name h3 { color: var(--vw-fg); }
+.brand-copy small, .sidebar-label, .topbar-breadcrumb, .app-footer { color: var(--vw-fg-muted); }
+.release-pill, .phase-badge, .home-release, .edu-data-chip, .map-stage-tag { background: var(--vw-accent-tint); color: var(--vw-accent-tint-fg); border-radius: var(--vw-radius-xs); }
+.nav-item, .bottom-nav-item { color: var(--vw-fg-secondary); }
+.nav-item.active, .bottom-nav-item.active, .nav-item:hover { color: var(--vw-accent-tint-fg); background: var(--vw-accent-tint); }
+.bottom-nav-item.active { color: var(--vw-accent); }
+.icon-button { border-color: var(--vw-border); color: var(--vw-fg-secondary); background: var(--vw-surface); }
+.icon-button:hover { color: var(--vw-accent); border-color: var(--vw-border-strong); background: var(--vw-surface-hover); }
+.period-toggle { background: var(--vw-surface-muted); border-color: var(--vw-border); }
+.period-toggle button { color: var(--vw-fg-secondary); }
+.period-toggle button.selected { color: var(--vw-accent-tint-fg); background: var(--vw-surface); box-shadow: var(--vw-shadow-sm); }
+.period-count { background: var(--vw-accent-tint); color: var(--vw-accent-tint-fg); }
+.mobile-drawer, .mobile-menu-overlay { color: var(--vw-fg); }
+
+/* Common surfaces, inputs, lists, and administrative data tables. */
+.quick-card, .milestone, .stat-period-card, .workbench-panel, .province-preview, .history-data-card,
+.data-columns, .sources-card, .gis-workbench, .vw-status-card, .vw-install-card, .vw-error-panel,
+.edu-section, .edu-main-toolbar { border-color: var(--vw-border); background-color: var(--vw-surface); color: var(--vw-fg); border-radius: var(--vw-radius-lg); box-shadow: var(--vw-shadow-sm); }
+.quick-card:hover { border-color: var(--vw-border-strong); box-shadow: var(--vw-shadow-md); }
+.quick-icon.blue { background: var(--vw-accent-tint); color: var(--vw-accent-tint-fg); }
+.quick-icon.mint { background: var(--vw-success-tint); color: var(--vw-success); }
+.quick-icon.violet { background: var(--vw-surface-muted); color: var(--vw-accent); }
+.data-search, .data-select, .edu-select-card select, .edu-tour-select select { background: var(--vw-surface); color: var(--vw-fg); border-color: var(--vw-border-strong); border-radius: var(--vw-radius-sm); }
+.data-search input::placeholder { color: var(--vw-fg-muted); opacity: 1; }
+.data-province.active, .data-province-filters button.active, .gis-type-filters button.active, .edu-tabs button.active { background: var(--vw-accent-tint); color: var(--vw-accent-tint-fg); border-color: var(--vw-border-strong); }
+.data-province-label small, .data-unit-name small, .data-selected-metrics small, .data-unit-heading p, .source-row span { color: var(--vw-fg-secondary); }
+.data-selected-metrics > div, .data-map-cta, .data-unit.selected, .data-relation, .history-merge-row, .source-row { background: var(--vw-surface-subtle); border-color: var(--vw-border); }
+.data-error { background: var(--vw-danger-tint); color: var(--vw-danger); }
+.data-provenance, .source-note { color: var(--vw-fg-secondary); }
+
+/* Province/commune panel and full-screen detail use one shared contrast scale. */
+.gis-region-panel, .gis-source-note, .gis-underbar { background: var(--vw-surface-subtle); border-color: var(--vw-border); }
+.gis-info-panel, .gis-info-panel.gis-detail-open, .gis-mobile-modal-header, .gis-mobile-selection-bar, .gis-mobile-modal-action { background: var(--vw-surface); color: var(--vw-fg); border-color: var(--vw-border); }
+.gis-info-top>span, .gis-info-link { color: var(--vw-accent-tint-fg); }
+.gis-info-link { background: var(--vw-accent-tint); }
+.gis-info-stat small, .gis-info-stat p, .gis-source-note p { color: var(--vw-fg-secondary); }
+.gis-info-stat strong { color: var(--vw-fg); font-variant-numeric: tabular-nums; }
+.gis-mobile-selection-bar .gis-mobile-view-detail, .gis-mobile-view-detail, .gis-mobile-modal-action button,
+.edu-primary-button, .edu-tour-buttons button:last-child, .vw-system-banner button, .vw-install-card button,
+.vw-status-retry, .vw-error-panel button { background: var(--vw-action); border-color: var(--vw-action); color: var(--vw-on-action); }
+.gis-mobile-selection-bar .gis-mobile-view-detail:hover, .gis-mobile-view-detail:hover, .edu-primary-button:hover,
+.edu-tour-buttons button:last-child:hover { background: var(--vw-action-hover); color: var(--vw-on-action); }
+.gis-mobile-selection-clear, .gis-info-top button { border: 1px solid var(--vw-border); color: var(--vw-fg-secondary); background: var(--vw-surface-subtle); }
+.gis-mobile-selection-clear:hover, .gis-info-top button:hover { border-color: var(--vw-border-strong); color: var(--vw-fg); }
+.gis-map-fullscreen-head { background: var(--vw-surface); color: var(--vw-fg); border-color: var(--vw-border); }
+.gis-map-fullscreen-head button { background: var(--vw-surface-subtle); color: var(--vw-fg); border-color: var(--vw-border-strong); }
+.gis-map-column.is-map-fullscreen > .gis-mobile-selection-bar { background: var(--vw-surface); box-shadow: var(--vw-shadow-lg); }
+/* GIS background is always light: controls have explicit contrasting light surfaces in both themes. */
+.gis-map-actions button, .gis-mobile-list-trigger, .edu-map-tools button { color: #163e58; background: #fff; border-color: #bacfdf; }
+.gis-map-actions button:hover, .edu-map-tools button:hover { background: #e8f2fc; }
+.gis-map-actions button[aria-pressed="true"] { color: #1249b5; background: #e6efff; border-color: #83abe8; }
+
+/* Verified statistics & vehicle plates: no dark fixed ink over dark cards. */
+.verified-panel { background: var(--vw-surface); border-color: var(--vw-border); color: var(--vw-fg); }
+.verified-panel-head, .verified-plate>span { color: var(--vw-fg); }
+.verified-metric, .verified-comparison { background: var(--vw-surface-subtle); border-color: var(--vw-border); }
+.verified-metric>span, .verified-metric small, .verified-plate small, .verified-muted { color: var(--vw-fg-secondary); }
+.verified-metric strong, .verified-density strong { color: var(--vw-fg); font-weight: var(--vw-font-bold); }
+.verified-plate-chip { background: var(--vw-accent-tint); border: 1px solid var(--vw-border-strong); color: var(--vw-accent-tint-fg); border-radius: var(--vw-radius-sm); font-variant-numeric: tabular-nums; }
+.verified-sources summary, .verified-comparison summary { color: var(--vw-fg); }
+.verified-sources a { color: var(--vw-accent); }
+.verified-unavailable { background: var(--vw-surface-muted); color: var(--vw-fg-secondary); }
+.verified-error { background: var(--vw-danger-tint); color: var(--vw-danger); }
+
+/* Learning and assessment share the same focus, contrast, and chip treatment. */
+.edu-main-toolbar { background: linear-gradient(120deg, var(--vw-surface), var(--vw-surface-subtle)); }
+.edu-section, .edu-quiz-card, .edu-quiz-intro, .edu-tour-main, .edu-tour-aside,
+.edu-select-card, .edu-quality-grid>div { border-color: var(--vw-border); color: var(--vw-fg); }
+.edu-select-card, .edu-quiz-card, .edu-quiz-intro, .edu-tour-main, .edu-tour-aside { background: var(--vw-surface-subtle); }
+.edu-tabs, .edu-stat-col { background: var(--vw-surface); border-color: var(--vw-border); }
+.edu-tabs button, .edu-stepper button { color: var(--vw-fg-secondary); }
+.edu-tabs button.active, .edu-stepper button.active, .edu-exam-lengths button[aria-pressed="true"] { background: var(--vw-accent-tint); color: var(--vw-accent-tint-fg); border-color: var(--vw-border-strong); }
+.edu-table-header, .edu-comparison-row:nth-child(odd), .edu-compare-provenance { background: var(--vw-surface-subtle); }
+.edu-quiz-answers button { border-color: var(--vw-border-strong); background: var(--vw-surface); color: var(--vw-fg); }
+.edu-quiz-answers button:hover { border-color: var(--vw-accent); background: var(--vw-surface-hover); }
+.edu-warning { background: var(--vw-warning-tint); color: var(--vw-warning); }
+.edu-warning svg, .edu-note svg { color: var(--vw-warning); }
+.edu-quality-grid .edu-quality-open { border-color: var(--vw-warning); }
+.edu-plate-set span, .edu-predecessors span { background: var(--vw-surface); border-color: var(--vw-border); color: var(--vw-fg); }
+.edu-quiz-progress, .edu-main-toolbar p, .edu-section-head p { color: var(--vw-fg-secondary); }
+
+/* Text tokens preserve established responsive layout while restoring legibility. */
+.verified-metric strong, .data-selected-metrics strong, .edu-metric strong { letter-spacing: -.025em; font-variant-numeric: tabular-nums; }
+:where(.gis-info-panel, .verified-panel, .edu-root, .data-main) :where(small, .verified-muted) { line-height: 1.5; }
+@media(max-width:680px) {
+  .bottom-nav { box-shadow: 0 -4px 18px rgba(12, 26, 45, .09); }
+  .verified-panel, .edu-section { border-radius: var(--vw-radius-md); }
+  .gis-mobile-view-detail, .gis-mobile-selection-clear, .gis-map-fullscreen-head button { min-height: 44px; }
+  .edu-tabs button { min-height: 44px; }
+  .edu-select-card select, .edu-tour-select select, .data-search input { font-size: 16px; } /* prevent iOS input-focus zoom */
+}
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* Ensure legacy high-specificity dark-mode overrides also consume canonical tokens. */
+:root[data-theme="dark"] .verified-panel { background: var(--vw-surface); border-color: var(--vw-border); }
+:root[data-theme="dark"] .verified-metric { background: var(--vw-surface-subtle); border-color: var(--vw-border); }
+:root[data-theme="dark"] .verified-metric strong,
+:root[data-theme="dark"] .verified-density strong { color: var(--vw-fg); }
+:root[data-theme="dark"] .verified-metric>span,
+:root[data-theme="dark"] .verified-metric small,
+:root[data-theme="dark"] .verified-plate small,
+:root[data-theme="dark"] .verified-muted { color: var(--vw-fg-secondary); }
+:root[data-theme="dark"] .verified-plate-chip { background: var(--vw-accent-tint); border-color: var(--vw-border-strong); color: var(--vw-accent-tint-fg); }
+/* High-specificity primary actions from older CSS must not inherit light-link blue. */
+.edu-quiz-finish-actions .edu-primary-button,
+.gis-map-column.is-map-fullscreen .gis-mobile-view-detail,
+.gis-info-panel.gis-detail-open .gis-mobile-modal-action button {
+  background: var(--vw-action); border-color: var(--vw-action); color: var(--vw-on-action);
+}
+.edu-quiz-finish-actions .edu-primary-button:hover,
+.gis-map-column.is-map-fullscreen .gis-mobile-view-detail:hover {
+  background: var(--vw-action-hover); color: var(--vw-on-action);
+}
+.edu-quiz-answers button.correct, .edu-quiz-result.right { background: var(--vw-success-tint); border-color: var(--vw-success); color: var(--vw-fg); }
+.edu-quiz-answers button.incorrect, .edu-quiz-result:not(.right) { background: var(--vw-danger-tint); border-color: var(--vw-danger); color: var(--vw-fg); }
+.edu-quiz-error { background: var(--vw-warning-tint); color: var(--vw-warning); }
+@media(max-width:680px){
+  .verified-metric strong { font-size: clamp(16px,4.1vw,20px); }
+  .verified-metric>span, .verified-metric small, .verified-plate small { font-size: 12px; }
+  .verified-plate-chip { font-size: 18px; }
+  .edu-tabs button { font-size: 12px; }
+  .data-province-label small, .data-unit-name small { font-size: 11px; }
+  .gis-info-name p, .gis-info-stat small { font-size: 12px; }
+}

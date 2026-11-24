@@ -17,7 +17,7 @@ export function HomeDashboard() {
   const { period } = useAtlas();
   return (
     <div className="home-page">
-      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V1.0.3</b></div></div>
+      <div className="top-intro"><span><Sparkles size={15}/> NỀN TẢNG KHÁM PHÁ ĐỊA LÝ VIỆT NAM</span><div className="home-release">Bản phát hành <b>V1.1.0</b></div></div>
       <section className="home-hero" aria-labelledby="hero-heading">
         <div className="hero-text">
           <span className="hero-eyebrow"><span className="hero-eyebrow-dot"/> VIETWARDS · GEOGRAPHIC KNOWLEDGE</span>
@@ -62,7 +62,7 @@ export function HomeDashboard() {
 
       <div className="section-heading"><div><span className="eyebrow">CÁC KHÔNG GIAN</span><h2>Khám phá theo cách của bạn</h2></div></div>
       <div className="quick-grid">{quickLinks.map(({ href, icon: Icon, title, description, tone }) => (
-        <Link className="quick-card" href={href} key={href}><span className={`quick-icon ${tone}`}><Icon size={23}/></span><span className="quick-title">{title} <ArrowUpRight size={17}/></span><span className="quick-description">{description}</span></Link>
+        <Link className="quick-card vw-card" href={href} key={href}><span className={`quick-icon ${tone}`}><Icon size={23}/></span><span className="quick-title">{title} <ArrowUpRight size={17}/></span><span className="quick-description">{description}</span></Link>
       ))}</div>
 
       <div className="section-heading"><div><span className="eyebrow">CẬP NHẬT PHÁT TRIỂN</span><h2>Các mốc phát triển đã triển khai</h2></div><Link href="/gioi-thieu" className="section-link">Toàn bộ roadmap <ArrowUpRight size={17}/></Link></div>

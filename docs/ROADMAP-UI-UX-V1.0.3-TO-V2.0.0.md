@@ -31,3 +31,5 @@
 
 - V1.0.3: đã triển khai code trong bản ZIP này, cần kiểm thử trực tiếp iOS PWA + Vercel trước khi xem là đã nghiệm thu thực tế.
 - V1.1.0 → V2.0.0: kế hoạch, chưa triển khai.
+
+- V1.1.0: đã triển khai source Design System 2.0, đã thêm QA cấu trúc/theme; cần nghiệm thu production build và các thiết bị thực sau deploy.

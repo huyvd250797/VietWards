@@ -1,3 +1,5 @@
+> **VietWards V1.1.0 — Unified Design System 2.0.** Cấu trúc token: `src/app/design-tokens.css`; các override giao diện: `src/app/design-system.css`; tài liệu: `docs/DESIGN-SYSTEM-V2.0.md`.
+
 # VietWards V1.0.1 — Mobile Map UX & Contrast Polish
 
 **VietWards** is a responsive Vietnamese educational administrative geography PWA. Built on Next.js App Router, React 19, TypeScript, MapLibre GL JS and `vn-local-divisions`. Deployed on Vercel, the app requires no localhost or login for end users.
@@ -75,4 +77,4 @@ See `docs/RELEASE-V1.0.1.md`, `docs/QA-REPORT-V1.0.1.md`, `docs/RELEASE-V1.0.0.m
 
 ### Lộ trình nâng cấp UI/UX
 
-Roadmap V1.0.3 đến V2.0.0 đã được chốt trong [`docs/ROADMAP-UI-UX-V1.0.3-TO-V2.0.0.md`](docs/ROADMAP-UI-UX-V1.0.3-TO-V2.0.0.md). V1.0.3 tập trung header, scroll, fullscreen, modal và safe-area mobile.
+Roadmap V1.0.3 đến V2.0.0 đã được chốt trong [`docs/ROADMAP-UI-UX-V1.0.3-TO-V2.0.0.md`](docs/ROADMAP-UI-UX-V1.0.3-TO-V2.0.0.md). V1.0.3 ổn định trải nghiệm iPhone; V1.1.0 bổ sung Design System 2.0 với tokens semantic, typography, card, nút, modal và Light/Dark Mode.

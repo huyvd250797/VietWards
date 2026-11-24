@@ -40,6 +40,8 @@ jobs:
         run: npm run check:challenge
       - name: V1.0.3 Mobile iOS stabilization contracts
         run: npm run check:mobile-stability
+      - name: V1.1.0 Design System contracts and contrast
+        run: npm run check:design-system
       - name: TypeScript check
         run: npm run typecheck
       - name: ESLint check

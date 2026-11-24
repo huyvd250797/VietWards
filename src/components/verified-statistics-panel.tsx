@@ -50,10 +50,10 @@ export function VerifiedStatisticsPanel({ period, provinceCode, wardCode = null,
     {error && <p className="verified-error" role="alert">{error}. Vẫn có thể tiếp tục dùng bản đồ.</p>}
     {result && <>
       <div className="verified-metric-grid">
-        <div className="verified-metric"><span><Ruler size={14}/> Diện tích</span>
+        <div className="verified-metric vw-stat-card"><span><Ruler size={14}/> Diện tích</span>
           <strong>{result.area ? `${fmtArea(result.area.valueKm2)} km²` : "Chưa có số liệu xác minh"}</strong>
           {result.area && <small>{areaLabel(result.area)}</small>}</div>
-        <div className="verified-metric"><span><UsersRound size={14}/> Dân số</span>
+        <div className="verified-metric vw-stat-card"><span><UsersRound size={14}/> Dân số</span>
           <strong>{result.population ? `${fmtNum(result.population.value)} người` : "Chưa có số liệu xác minh"}</strong>
           {result.population && <small>{yearLabel(result.population)}</small>}</div>
       </div>
