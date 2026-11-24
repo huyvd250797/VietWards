@@ -3,8 +3,8 @@ export const APP = {
   title: "VietWards — Bản đồ hành chính Việt Nam",
   description:
     "Khám phá địa giới hành chính Việt Nam và hành trình thay đổi trước, sau ngày 01/07/2025.",
-  version: "1.1.1",
-  releaseName: "Roadmap Typecheck Hotfix",
+  version: "1.1.2",
+  releaseName: "Roadmap Status Type Safety Fix",
 } as const;
 
 export const PERIODS = {
@@ -26,6 +26,17 @@ export const PERIODS = {
 
 export type Period = keyof typeof PERIODS;
 
+/** Each roadmap has its own closed state union. Keep their view logic separate. */
+export type FoundationRoadmapStatus = "done" | "partial";
+export type UXRoadmapStatus = "done" | "current" | "planned";
+
+type RoadmapMilestone<S extends string> = {
+  version: string;
+  name: string;
+  detail: string;
+  status: S;
+};
+
 export const ROADMAP = [
   { version: "0.1.0", name: "Foundation & Design System", detail: "Giao diện, điều hướng, responsive, PWA, cấu hình Vercel", status: "done" },
   { version: "0.2.0", name: "Canonical Administrative Data", detail: "Chuẩn hóa danh mục hành chính, mã, nguồn và hiệu lực", status: "done" },
@@ -37,7 +48,7 @@ export const ROADMAP = [
   { version: "0.8.0", name: "Verified Statistics & Plates", detail: "Diện tích và dân số phân kỳ, biển số trước/sau sáp nhập, nguồn từng chỉ tiêu", status: "done" },
   { version: "0.9.0", name: "Educational Experience & QA", detail: "Khám phá có hướng dẫn, so sánh GIS, quiz, kiểm định số liệu và QA", status: "done" },
   { version: "1.0.0", name: "VietWards Public Release", detail: "Ổn định phần mềm, phục hồi lỗi, PWA cập nhật và công bố rõ giới hạn dữ liệu", status: "done" },
-] as const;
+] as const satisfies readonly RoadmapMilestone<FoundationRoadmapStatus>[];
 
 
 /** Roadmap nâng cấp UX chốt ngày 24/11/2026, độc lập roadmap nền tảng V0.x → V1.0.0. */
@@ -53,4 +64,4 @@ export const UX_ROADMAP = [
   { version: "1.8.0", name: "Accessibility & PWA Refinement", detail: "VoiceOver, TalkBack, bàn phím, phóng to chữ", status: "planned" },
   { version: "1.9.0", name: "Performance & Motion Optimization", detail: "Cache, memory, FPS và chuyển động", status: "planned" },
   { version: "2.0.0", name: "VietWards UX Release", detail: "Nghiệm thu UI/UX trên mobile và desktop", status: "planned" },
-] as const;
+] as const satisfies readonly RoadmapMilestone<UXRoadmapStatus>[];

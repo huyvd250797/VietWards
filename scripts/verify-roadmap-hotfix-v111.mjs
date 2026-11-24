@@ -18,12 +18,14 @@ assert.equal(new Set(ux.map(m => m[1])).size, 11, "UX roadmap versions must be d
 assert.equal(ux.filter(m => m[3] === "current").length, 1);
 assert.equal(ux[1][3], "current");
 const coreAbout = about.split("{ROADMAP.map(")[1]?.split("{UX_ROADMAP.map(")[0];
+const uxView = about.split("{UX_ROADMAP.map(")[1];
+assert.ok(uxView && !/status === "partial"/.test(uxView), "UX roadmap must not check foundation-only partial");
 const coreHome = home.split("{ROADMAP.slice(")[1];
 assert.ok(coreAbout && coreHome, "Core roadmap sections must exist");
 assert.ok(!/status === "current"/.test(coreAbout), "Impossible core roadmap status on About page");
 assert.ok(!/status === "current"/.test(coreHome), "Impossible core roadmap status in Home dashboard");
 assert.ok(/status === "partial"/.test(coreAbout), "Partial GIS history must stay visible");
-assert.equal(pkg.version, "1.1.1");
-assert.match(appConfig, /version: "1\.1\.1"/);
-assert.match(read("public/sw.js"), /v1\.1\.1/);
-console.log("PASS VietWards V1.1.1: no unreachable ROADMAP status branches; 10 core and 11 distinct UX milestones; partial GIS warning retained; version metadata synchronized.");
+assert.equal(pkg.version, "1.1.2");
+assert.match(appConfig, /version: "1\.1\.2"/);
+assert.match(read("public/sw.js"), /v1\.1\.2/);
+console.log("PASS VietWards V1.1.2: no unreachable ROADMAP status branches; 10 core and 11 distinct UX milestones; partial GIS warning retained; version metadata synchronized.");

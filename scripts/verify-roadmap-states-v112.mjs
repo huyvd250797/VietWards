@@ -1,0 +1,37 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+
+const read = p => readFileSync(new URL(`../${p}`, import.meta.url), "utf8");
+const config = read("src/lib/config.ts");
+const about = read("src/app/gioi-thieu/page.tsx");
+const home = read("src/components/home-dashboard.tsx");
+const pkg = JSON.parse(read("package.json"));
+const ux = config.split("export const UX_ROADMAP = [")[1]?.split("] as const satisfies")[0];
+const foundation = config.split("export const ROADMAP = [")[1]?.split("] as const satisfies")[0];
+assert.ok(ux && foundation, "Both roadmaps must be declared as immutable, typed records");
+const extract = source => [...source.matchAll(/\{ version: "([^"]+)", name: "[^"]+", detail: "[^"]+", status: "([^"]+)" \}/g)];
+const uxEntries = extract(ux);
+const foundationEntries = extract(foundation);
+assert.equal(uxEntries.length, 11);
+assert.equal(foundationEntries.length, 10);
+assert.ok(uxEntries.every(row => ["done", "current", "planned"].includes(row[2])));
+assert.ok(foundationEntries.every(row => ["done", "partial"].includes(row[2])));
+assert.deepEqual(uxEntries.map(x=>x[2]).slice(0,3), ["done", "current", "planned"]);
+assert.equal(new Set(uxEntries.map(x=>x[1])).size, 11);
+assert.match(config, /type UXRoadmapStatus = "done" \| "current" \| "planned"/);
+assert.match(config, /type FoundationRoadmapStatus = "done" \| "partial"/);
+assert.match(about, /satisfies Record<UXRoadmapStatus/);
+assert.match(about, /UX_ROADMAP_DISPLAY\[status\]/);
+assert.match(about, /done: \{ label: "ĐÃ TRIỂN KHAI"/);
+assert.match(about, /current: \{ label: "ĐANG KIỂM THỬ"/);
+assert.match(about, /planned: \{ label: "KẾ HOẠCH"/);
+const uxView = about.split("{UX_ROADMAP.map(")[1];
+assert.ok(uxView && !uxView.includes('status === "partial"'), "Never use foundation-only partial in UX view");
+const foundationView = about.split("{ROADMAP.map(")[1]?.split("{UX_ROADMAP.map(")[0];
+assert.ok(foundationView && !foundationView.includes('status === "current"'), "Never use UX-only current in foundation view");
+assert.ok(!home.split("{ROADMAP.slice(")[1]?.includes('status === "current"'));
+// TypeScript syntax and unreachable comparisons are checked by `npm run typecheck` in CI.
+assert.equal(pkg.version, "1.1.2");
+assert.match(config, /version: "1\.1\.2"/);
+assert.match(read("public/sw.js"), /v1\.1\.2/);
+console.log("PASS V1.1.2: 10 foundation + 11 UX milestones, disjoint closed status unions, exhaustive UX display, no cross-roadmap unreachable comparisons, status contracts verified.");
